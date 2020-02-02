@@ -13,6 +13,16 @@
 - `cd` into `honesthalls/` (dir with manage.py)
 - Run `python manage.py runserver` to start the server (default port is 8000)
 
+### *Remember to work on your own feature branch*
+- To create a new branch make sure you are on `master` (`git checkout master`) and run `git checkout -b new-branch`
+- To checkout an existing branch do `git checkout existing-branch`
+- Never push or commit directly into `master`
+- To push your own branch do `git push origin existing-branch`
+- To request your changes to be merged into `master` go to the [Branches tab](https://gitlab.cs.man.ac.uk/f07893fm/first_group_project/branches) in GitLab and make a *Merge Request*.
+
+### *Always test your code before commiting and run linters on it*
+- To check PEP8 compilance run `pycodestyle .` in the root project dir.
+
 ### Requirements
 - Python v3.8
 - Pipenv
