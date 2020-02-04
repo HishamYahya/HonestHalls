@@ -3,6 +3,14 @@
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
+
+{% if username %}
+<div class="alert alert-success" role="alert">
+  You are logged in as {{username}}.
+</div>
+{% endif %}
+
 <h1>Welcome to HonestHalls!</h1>
 <div>Where halls are honest and choice is easy!</div>
+
 {% endblock content %}
