@@ -11,3 +11,8 @@ class RegistrationForm(forms.Form):
     username = forms.CharField(max_length=50, validators=(validate_username,))
     password1 = forms.CharField(max_length=50, validators=(validate_password,))
     password2 = forms.CharField(max_length=50)
+
+
+class LoginForm(forms.Form):
+    email = forms.EmailField()
+    password = forms.CharField(max_length=50, validators=(validate_password,))

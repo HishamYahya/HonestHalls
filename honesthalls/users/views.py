@@ -3,12 +3,13 @@ from django.shortcuts import (
     Http404, HttpResponse, HttpResponseRedirect
 )
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, auth
 from django.contrib.auth import login
+# from django.contrib.auth.decorator import login_required
 from django.contrib import messages
 
 from .models import Profile
-from .forms import RegistrationForm
+from .forms import RegistrationForm, LoginForm
 
 
 def signup(request):
@@ -33,6 +34,7 @@ def signup(request):
 
         # TODO: Validate student email
         # TODO: Check if user already exists
+        # TODO: Keep valid fields filled in when returning erronous signup form
 
         email = form.cleaned_data.get('email')
         username = form.cleaned_data.get('username')
@@ -49,4 +51,35 @@ def signup(request):
         # Just serve the signup view.
         return render(request, 'users/signup.html')
 
-# TODO: Add login view
+
+def login(request):
+    if request.method == 'POST':
+        user = auth.autheticate(email=email, password=password)
+        if user is not None:
+            auth.login(request, user)
+            return render(request, 'users/login.html')
+        else:
+            messages.info(request, 'invalid credentials')
+            return redirect('login')
+
+    #     # Validate the data and log in the user
+    #     form = LoginForm(request.POST)
+    #     if form.is_valid():
+    #         login(request, user)
+    #         messages.info(request, f'You are logged in as {username}')
+    #         return HttpResponseRedirect(reverse('index'))
+    #     else:
+    #         # Print all the errors
+    #         for field, errors in form.errors.items():
+    #             for error in errors:
+    #                 messages.error(request, error)
+    #         # Return partially filled in form.
+    #         return render(request, 'users/login.html', {'form': form})
+    # else:
+    #     # Just serve the login view.
+    #     return render(request, 'users/login.html')
+
+# Code for login restricted profile page
+# @login_required
+# def profile(request):
+#    return render(request, 'users/profile.html')

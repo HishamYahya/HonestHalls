@@ -1,0 +1,23 @@
+{% extends "halls/base.html" %}
+
+{% block title %}Log Out{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
+<h2>You have been logged out.</h2>
+<div class="border-top pt-3">
+  <small class="text-muted">
+    <a href="{% url 'login' %}">Log In Again</a>
+  </small>
+</div>
+
+
+{% endblock content %}

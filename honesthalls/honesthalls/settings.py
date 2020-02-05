@@ -130,3 +130,8 @@ MESSAGE_TAGS = {
     message_constants.WARNING: 'warning',
     message_constants.ERROR: 'danger'
 }
+
+# Once logged in, users taken to home page instead of profile page
+LOGIN_REDIRECT_URL = 'index'
+# Redirect login restricted pages to login page if user not logged in
+# LOGIN_URL = 'login'
