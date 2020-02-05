@@ -3,7 +3,7 @@ from django.shortcuts import (
     Http404, HttpResponse, HttpResponseRedirect
 )
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, auth
 from django.contrib.auth import login as django_login, authenticate
 # from django.contrib.auth.decorator import login_required
 from django.contrib import messages
@@ -82,4 +82,5 @@ def login(request):
 
 
 def logout(request):
-    pass
+    auth.logout(request)
+    return render(request, 'users/logout.html')
