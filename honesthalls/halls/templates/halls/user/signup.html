@@ -3,6 +3,15 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
 <h1>Sign Up</h1>
 <form action="{% url 'user_signup' %}" method="POST">
   {% csrf_token %}

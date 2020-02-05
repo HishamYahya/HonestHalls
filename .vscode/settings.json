@@ -10,5 +10,9 @@
     "editor.tabSize": 2
   },
   "editor.insertSpaces": true,
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "python.pythonPath": "C:\\Users\\vesko\\.virtualenvs\\FirstYearTeamProject-phYAnvH9\\Scripts\\python.exe",
+  "python.linting.pylintEnabled": false,
+  "python.linting.pycodestyleEnabled": true,
+  "python.linting.enabled": true
 }

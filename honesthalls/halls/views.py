@@ -1,53 +1,62 @@
-from django.shortcuts import render, reverse, Http404, HttpResponse, HttpResponseRedirect
+from django.shortcuts import (
+    render, reverse,
+    Http404, HttpResponse, HttpResponseRedirect
+)
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth import login
+from django.contrib import messages
 
 from .models import Profile
-from .validators import validate_email, validate_password, validate_username
+from .forms import RegistrationForm
 
-# Serves the project homepage
+
 def index(request):
-    context = { 'server_time': timezone.now() }
+    """ Serves the project homepage """
+    context = {'server_time': timezone.now()}
     if request.user.is_authenticated:
         context['username'] = request.user.username
 
     return render(request, 'halls/index.html', context)
 
-# User registration form
+
 def user_signup(request):
-    if request.method == 'GET':
-        # Just serve the signup view.
-        return render(request, 'halls/user/signup.html')
-    elif request.method == 'POST':
+    """ Handles user registration """
+    if request.method == 'POST':
         # Validate the data and create the user
-        email = request.POST['email']
-        username = request.POST['username']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
+        form = RegistrationForm(request.POST)
 
-        if password1 != password2:
-            return HttpResponse('Passwords do not match!')
+        if form.data.get('password1') != form.data.get('password2'):
+            messages.error(request, "The passwords don't match!")
+            return render(request, 'halls/user/signup.html')
 
-        try:
-            validate_email(email)
-            validate_username(username)
-            validate_password(password1)
-        except ValidationError as e:
-            return HttpResponse(f'Validation Error: {e}')
+        # Print all the errors
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(request, error)
+
+        # If there were validation errors
+        # return early and show the form again
+        if not form.is_valid():
+            return render(request, 'halls/user/signup.html', {'form': form})
 
         # TODO: Validate student email
         # TODO: Check if user already exists
 
+        email = form.cleaned_data.get('email')
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password1')
+
         user = User(email=email, username=username)
-        user.set_password(password1)
+        user.set_password(password)
         user.save()
 
         login(request, user)
-        return HttpResponseRedirect(reverse('index'))
-
+        messages.info(request, f'You are logged in as {username}')
+        return reverse('index')
     else:
-        return Http404();
+        # Just serve the signup view.
+        return render(request, 'halls/user/signup.html')
 
 # TODO: Add login view

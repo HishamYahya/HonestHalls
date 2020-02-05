@@ -4,10 +4,12 @@
 
 {% block content %}
 
-{% if username %}
-<div class="alert alert-success" role="alert">
-  You are logged in as {{username}}.
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}">
+  {{ message }}
 </div>
+{% endfor %}
 {% endif %}
 
 <h1>Welcome to HonestHalls!</h1>

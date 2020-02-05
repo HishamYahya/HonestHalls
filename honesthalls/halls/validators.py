@@ -1,4 +1,5 @@
 from django.core.validators import validate_email, RegexValidator
+from django.core.exceptions import ValidationError
 
 # 4 to 16 characters, lowercase, uppercase, digits or underscores.
 # Starting with a latin letter.
