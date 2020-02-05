@@ -3,8 +3,8 @@ from django.shortcuts import (
     Http404, HttpResponse, HttpResponseRedirect
 )
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User, auth
-from django.contrib.auth import login
+from django.contrib.auth.models import User
+from django.contrib.auth import login as django_login, authenticate
 # from django.contrib.auth.decorator import login_required
 from django.contrib import messages
 
@@ -44,8 +44,10 @@ def signup(request):
         user.set_password(password)
         user.save()
 
-        login(request, user)
-        messages.info(request, f'You are logged in as {username}')
+        # TODO: Login on signup
+        # django_login(request, user)
+        # messages.info(request, f'You are logged in as {username}')
+        messages.info(request, f'Account created for {email}')
         return HttpResponseRedirect(reverse('index'))
     else:
         # Just serve the signup view.
@@ -54,32 +56,30 @@ def signup(request):
 
 def login(request):
     if request.method == 'POST':
-        user = auth.autheticate(email=email, password=password)
-        if user is not None:
-            auth.login(request, user)
-            return render(request, 'users/login.html')
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+
+            user = User.objects.get(email__iexact=email)
+            if user is None or not user.check_password(password):
+                messages.error(request, f'Incorrect credentials!')
+                return HttpResponseRedirect(reverse('login'))
+
+            django_login(request, user)
+            messages.info(request, f'You are logged in as {email}!')
+            return HttpResponseRedirect(reverse('index'))
         else:
-            messages.info(request, 'invalid credentials')
-            return redirect('login')
+            # Print all the errors
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, error)
+            # Return partially filled in form.
+            return render(request, 'users/login.html', {'form': form})
+    else:
+        # Just serve the login view.
+        return render(request, 'users/login.html')
 
-    #     # Validate the data and log in the user
-    #     form = LoginForm(request.POST)
-    #     if form.is_valid():
-    #         login(request, user)
-    #         messages.info(request, f'You are logged in as {username}')
-    #         return HttpResponseRedirect(reverse('index'))
-    #     else:
-    #         # Print all the errors
-    #         for field, errors in form.errors.items():
-    #             for error in errors:
-    #                 messages.error(request, error)
-    #         # Return partially filled in form.
-    #         return render(request, 'users/login.html', {'form': form})
-    # else:
-    #     # Just serve the login view.
-    #     return render(request, 'users/login.html')
 
-# Code for login restricted profile page
-# @login_required
-# def profile(request):
-#    return render(request, 'users/profile.html')
+def logout(request):
+    pass
