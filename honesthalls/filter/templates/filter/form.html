@@ -1,6 +1,22 @@
 {% extends "halls/base.html" %}
 {% block content %}
-  <div>
-      Filter
-  </div>
+  <form method="POST">
+    {% csrf_token %}
+      {{ form }}
+      <button type="submit">Submit</button>
+      {% for hall in halls %}
+        {% if submitted %}
+        
+            {% if hall.isEnsuite == isEnsuite %}
+                <div>
+                {{hall.name}}
+                </div>
+            {% endif %}
+        {% else %}
+            <div>
+                {{ hall.name }}
+            </div>
+        {% endif %}
+      {% endfor %}
+  </form>
 {% endblock content %}
