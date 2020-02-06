@@ -1,0 +1,25 @@
+{% extends "halls/base.html" %}
+
+<!-- -------------------------------- 
+{% if title %}
+	<title>HonestHalls- {{ title }}</title>
+{% else %}
+	<title>HonestHalls</title>
+{% endif %}
+-------------------------------- -->
+{% block title %}Hall Page{% endblock %}
+<!-- -------------------------------- -->
+{% block content %}
+<div class="columnL">
+	<h5>PICTURES HERE</h5>
+</div>
+<div class="columnR">
+	<h2>{{ hallname }}</h2>
+	<h5>Campus: {{campus }}</h5>
+	<p>{{ description }}</p>
+	<p>Catering: {{ catering }} </p>
+	<p>Location: {{location}}</p>
+</div>
+{% endblock content %}
+<!-- -------------------------------- -->
+<!-- HOW DO I CHANGE POSITION OF ITEMS -->
