@@ -8,6 +8,7 @@ def index(request):
 
 
 def hallpage(request):
+	# Dummy data
 	# For fully working version, we need to get this info from database
 	context = {
 		'title': 'Hall Page',
