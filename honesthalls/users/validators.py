@@ -11,11 +11,13 @@ validate_username = RegexValidator(
     )
 )
 
-# 8 to 32 characters, at least one uppercase, lowercase, number and special character.
+# 8 to 32 characters, at least one uppercase, lowercase,
+# number and special character.
 validate_password = RegexValidator(
-    '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$',
+    '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,32}$',
     message=(
-        "Password should contain 8-32 characters with at least one of the following: "
+        "Password should contain 8-32 characters "
+        "with at least one of the following: "
         "lowercase letter, uppercase letter, digit, special character"
     )
 )

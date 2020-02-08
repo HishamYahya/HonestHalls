@@ -44,10 +44,8 @@ def signup(request):
         user.set_password(password)
         user.save()
 
-        # TODO: Login on signup
-        # django_login(request, user)
-        # messages.info(request, f'You are logged in as {username}')
-        messages.info(request, f'Account created for {email}')
+        django_login(request, user)
+        messages.info(request, f'You are logged in as {email}')
         return HttpResponseRedirect(reverse('index'))
     else:
         # Just serve the signup view.

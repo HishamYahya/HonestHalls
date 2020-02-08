@@ -10,7 +10,8 @@ class Profile(models.Model):
     Contains data complementing that of django.contrib.auth.models.User
     """
 
-    # Reference to the user model which holds email, username, names & password.
+    # Reference to the user model which holds
+    # email, username, names & password.
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     # TODO: Implement user verification.
