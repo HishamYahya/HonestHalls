@@ -3,6 +3,7 @@ from .forms import FilterForm
 
 
 def filter_view(request):
+    # Dummy data currently being used
     halls = [
         {
             'name': 'Hall1',
@@ -20,7 +21,7 @@ def filter_view(request):
     submitted = request.POST
 
     # Initilize filters
-    # TODO: Add filter variables here 
+    # TODO: Add filter variables here
     isEnsuite = None
 
     if(submitted):
@@ -33,7 +34,7 @@ def filter_view(request):
     else:
         form = FilterForm()
 
-    # Pass the halls data and the filters to the template
+    # Pass the halls data and the filters to the template form.html
     context = {
         'form': form,
         'halls': halls,
