@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .forms import FilterForm
 
+
 # Create your views here.
 def filter_view(request):
     halls = [
@@ -22,9 +23,9 @@ def filter_view(request):
     else:
         form = FilterForm()
     context = {
-        'form': form,   #
+        'form': form,
         'halls': halls,
-        'isEnsuite': isEnsuite, 
+        'isEnsuite': isEnsuite,
         'submitted': submitted
     }
     return render(request, 'filter/form.html', context)
