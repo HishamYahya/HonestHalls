@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'halls.apps.HallsConfig',
     'users.apps.UsersConfig',
+    'filter.apps.FilterConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
