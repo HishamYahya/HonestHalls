@@ -1,0 +1,37 @@
+{% extends "halls/base.html" %}
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
+<h1>Log In</h1>
+<form action="{% url 'login' %}" method="POST">
+  {% csrf_token %}
+  <!-- TODO: Add styling, validation and area attributes -->
+  <div class="pt-3">
+    <input class="form-control" type="email" name="email" placeholder="Email" required>
+  </div>
+  <div class="pt-3">
+  <input class="form-control" type="password" name="password" placeholder="Password" required>
+  </div>
+
+  <div class="border-top pt-3 pb-4">
+    <button class="btn btn-primary" type="submit">Login</button>
+  </div>
+
+  <div class="border-top pt-3">
+    <small class="text-muted">
+      Do you need an account? <a class="ml-2" href="{% url 'signup' %}">Sign Up Now</a>
+    </small>
+  </div>
+</form>
+
+{% endblock content %}
