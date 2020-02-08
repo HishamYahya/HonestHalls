@@ -19,6 +19,15 @@
 - Never push or commit directly into `master`
 - To push your own branch do `git push origin existing-branch`
 - To request your changes to be merged into `master` go to the [Branches tab](https://gitlab.cs.man.ac.uk/f07893fm/first_group_project/branches) in GitLab and make a *Merge Request*.
+- Before sending a merge request, make sure to update your own branch with the latest changes from master.
+```bash
+git checkout master # Switch to master
+git fetch origin # Update master from origin (the remote repo)
+git checkout exisiting-brach # Go to your feature branch
+git merge origin/master # Merge master in it to update it
+# Fix any conflicts and make sure that everything runs fine.
+# Open https://gitlab.cs.man.ac.uk/f07893fm/first_group_project/merge_requests/new and create the merge request
+```
 
 ### *Always test your code before commiting and run linters on it*
 - To check PEP8 compilance run `pycodestyle .` in the root project dir.
