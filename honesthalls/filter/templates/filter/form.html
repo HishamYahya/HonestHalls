@@ -4,9 +4,12 @@
     {% csrf_token %}
       {{ form }}
       <button type="submit">Submit</button>
+
+      <!-- Loop through the halls data and display the
+      ones that satisfy the filters -->
       {% for hall in halls %}
         {% if submitted %}
-        
+        <!-- TODO: Add filter checking here -->
             {% if hall.isEnsuite == isEnsuite %}
                 <div>
                 {{hall.name}}

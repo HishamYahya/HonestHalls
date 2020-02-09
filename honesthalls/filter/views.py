@@ -2,8 +2,8 @@ from django.shortcuts import render
 from .forms import FilterForm
 
 
-# Create your views here.
 def filter_view(request):
+    # Dummy data currently being used
     halls = [
         {
             'name': 'Hall1',
@@ -14,14 +14,27 @@ def filter_view(request):
             'isEnsuite': False
         }
     ]
+
+    # request.POST returns null if the form hasn't been submitted yet
+    # It's used to tell the template to show all halls
+    # the first time the page loads
     submitted = request.POST
+
+    # Initilize filters
+    # TODO: Add filter variables here
     isEnsuite = None
+
     if(submitted):
         form = FilterForm(request.POST)
         if(form.is_valid()):
+            # Get boolean value of checkbox
+            # TODO: Assign here all the filter variables to
+            # their respective values in the form
             isEnsuite = form.cleaned_data.get('isEnsuite')
     else:
         form = FilterForm()
+
+    # Pass the halls data and the filters to the template form.html
     context = {
         'form': form,
         'halls': halls,
