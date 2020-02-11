@@ -17,6 +17,9 @@ class Hall(models.Model):
     # below argument ensures last modified date stored
     date_modified = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f'[{self.id}] {self.name} - {self.campus}'
+
 
 # Desribes the HallPhotos table
 class HallPhotos(models.Model):
