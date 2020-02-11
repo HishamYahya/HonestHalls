@@ -6,11 +6,18 @@
 	<h5>PICTURES HERE</h5>
 </div>
 <div class="columnR">
-	<h2>{{ hallname }}</h2>
-	<h5>Campus: {{campus }}</h5>
-	<p>{{ description }}</p>
-	<p>Catering: {{ catering }} </p>
-	<p>Location: {{location}}</p>
+	<h2>{{ hall.name }}</h2>
+	<table border="1">
+		{% for room in roomtypes %}
+		<tr>
+			<td>{{ room.price }} ppw</td>
+			<td>{{ room.contract_length }} ppw</td>
+		</tr>
+		{% endfor %}
+	</table>
+	<h5>Campus: {{ hall.campus }}</h5>
+	<p>{{ hall.text }}</p>
+	<p>Location: {{ hall.latitude }} x {{ hall.longitude }}</p>
 </div>
 {% endblock content %}
 <!-- -------------------------------- -->
