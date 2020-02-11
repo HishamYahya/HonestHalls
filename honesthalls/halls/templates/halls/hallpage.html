@@ -7,17 +7,36 @@
 </div>
 <div class="columnR">
 	<h2>{{ hall.name }}</h2>
-	<table border="1">
-		{% for room in roomtypes %}
-		<tr>
-			<td>{{ room.price }} ppw</td>
-			<td>{{ room.contract_length }} ppw</td>
-		</tr>
-		{% endfor %}
-	</table>
 	<h5>Campus: {{ hall.campus }}</h5>
 	<p>{{ hall.text }}</p>
 	<p>Location: {{ hall.latitude }} x {{ hall.longitude }}</p>
+
+	<table border="1">
+		<tr>
+			<td>Price (£/per week)</td>
+			<td>Contract Length</td>
+			<td>Ensuite/Basin/Neither</td>
+			<td>Catered</td>
+			<td>Bedsize</td>
+		</tr>
+		{% for room in roomtypes %}
+		<tr>
+			<td>{{ room.price }}</td>
+			<td>{{ room.contract_length }}</td>
+
+			{% if room.ensuite %}
+			<td>Ensuite</td>
+			{% elif room.basin %}
+			<td>Basin</td>
+			{% else %}
+			<td>Neither</td>
+			{% endif %}
+
+			<td>{{ room.catered }} </td>
+			<td>{{ room.bedsize }}</td>
+		</tr>
+		{% endfor %}
+	</table>
 </div>
 {% endblock content %}
 <!-- -------------------------------- -->
