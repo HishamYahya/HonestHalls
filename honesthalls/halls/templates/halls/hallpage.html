@@ -2,41 +2,57 @@
 {% block title %}Hall Page{% endblock %}
 <!-- -------------------------------- -->
 {% block content %}
-<div class="columnL">
-	<h5>PICTURES HERE</h5>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-4">
+			<h5>insert picture carousel</h5>
+		</div>
+		<div class="col-sm-8">
+			<h2>{{ hall.name }}</h2>
+			<h5>Campus: {{ hall.campus }}</h5>
+			<div>
+				<p>{{ hall.text }}</p>
+			</div>
+			
+			<p>Location: {{ hall.latitude }} x {{ hall.longitude }}</p>
+		
+			<table class="table table-striped">
+				<tr>
+					<td>Price (£/per week)</td>
+					<td>Contract Length</td>
+					<td>Ensuite/Basin/Neither</td>
+					<td>Catered</td>
+					<td>Bedsize</td>
+				</tr>
+				{% for room in roomtypes %}
+				<tr>
+					<td>{{ room.price }}</td>
+					<td>{{ room.contract_length }}</td>
+		
+					{% if room.ensuite %}
+					<td>Ensuite</td>
+					{% elif room.basin %}
+					<td>Basin</td>
+					{% else %}
+					<td>Neither</td>
+					{% endif %}
+		
+					
+					{% if room.catered %}
+					<td>&#x2611</td>	
+					{% else %}
+					<td>&#x2610</td>
+					{% endif %}
+					
+					<td>{{ room.bedsize }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
 </div>
-<div class="columnR">
-	<h2>{{ hall.name }}</h2>
-	<h5>Campus: {{ hall.campus }}</h5>
-	<p>{{ hall.text }}</p>
-	<p>Location: {{ hall.latitude }} x {{ hall.longitude }}</p>
-
-	<table border="1">
-		<tr>
-			<td>Price (£/per week)</td>
-			<td>Contract Length</td>
-			<td>Ensuite/Basin/Neither</td>
-			<td>Catered</td>
-			<td>Bedsize</td>
-		</tr>
-		{% for room in roomtypes %}
-		<tr>
-			<td>{{ room.price }}</td>
-			<td>{{ room.contract_length }}</td>
-
-			{% if room.ensuite %}
-			<td>Ensuite</td>
-			{% elif room.basin %}
-			<td>Basin</td>
-			{% else %}
-			<td>Neither</td>
-			{% endif %}
-
-			<td>{{ room.catered }} </td>
-			<td>{{ room.bedsize }}</td>
-		</tr>
-		{% endfor %}
-	</table>
+<div class="container">
+	<h1>Reviews</h1>
 </div>
 {% endblock content %}
 <!-- -------------------------------- -->
