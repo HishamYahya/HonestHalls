@@ -30,5 +30,9 @@ class HallAdmin(admin.ModelAdmin):
     # Show the following attributes in the corresponding table
     list_display = ('id', 'name', 'campus', 'date_modified')
 
+    def get_form(self, request, obj=None, **kwargs):
+        default_form = super().get_form(request, obj, **kwargs)
+        return default_form
+
 
 admin.site.register(Hall, HallAdmin)

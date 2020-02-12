@@ -4,18 +4,39 @@
 {% block content %}
 <div class="container">
 	<div class="row">
-		<div class="col-sm-4">
-			<h5>insert picture carousel</h5>
+		<div class="col-md-6">
+			<div id="hh-hall-slider">
+				{% for photo in hallphotos %}
+				<li class="hh-flex-center h-100" data-thumb="{{ photo.photo_path.url }}">
+					<img class="w-100" src="{{ photo.photo_path.url }}" alt="{{ photo.photo_desc }}" />
+				</li>
+				{% empty %}
+				<li data-thumb="">
+
+					<div class="card-img-top m-0 hh-no-image-placeholder">
+						<h3 class="font-weight-normal hh-no-image-placeholder__content">
+							No image available
+						</h3>
+					</div>
+				</li>
+				{% endfor %}
+			</div>
 		</div>
-		<div class="col-sm-8">
+		<div class="col-md-6">
 			<h2>{{ hall.name }}</h2>
 			<h5>Campus: {{ hall.campus }}</h5>
+
 			<div>
 				<p>{{ hall.text }}</p>
 			</div>
-			
-			<p>Location: {{ hall.latitude }} x {{ hall.longitude }}</p>
-		
+
+			<p>
+				Location:
+				<a href="https://www.google.com/maps/search/?api=1&query={{ hall.latitude }},{{ hall.longitude }}">
+					Show on map
+				</a>
+			</p>
+
 			<table class="table table-striped">
 				<tr>
 					<td>Price (£/per week)</td>
@@ -28,7 +49,7 @@
 				<tr>
 					<td>{{ room.price }}</td>
 					<td>{{ room.contract_length }}</td>
-		
+
 					{% if room.ensuite %}
 					<td>Ensuite</td>
 					{% elif room.basin %}
@@ -36,14 +57,14 @@
 					{% else %}
 					<td>Neither</td>
 					{% endif %}
-		
-					
+
+
 					{% if room.catered %}
-					<td>&#x2611</td>	
+					<td>&#x2611</td>
 					{% else %}
 					<td>&#x2610</td>
 					{% endif %}
-					
+
 					<td>{{ room.bedsize }}</td>
 				</tr>
 				{% endfor %}
@@ -54,5 +75,6 @@
 <div class="container">
 	<h1>Reviews</h1>
 </div>
+
 {% endblock content %}
 <!-- -------------------------------- -->
