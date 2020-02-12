@@ -1,5 +1,20 @@
 {% extends "halls/base.html" %}
+
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" type="text/css"
+        href="{% static 'halls/css/main.css' %}">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js">
+  </script>
+{% endblock %}
+
+{% block title %}Search{% endblock %}
 {% block content %}
+  <div class="searchbar">
+    <input type="text" placeholder="Search..">
+    <button class="searchbtn" type="submit"><i class="fa fa-search"></i></button>
+  </div>
+
   <form method="POST">
     {% csrf_token %}
       {{ form }}
@@ -10,11 +25,22 @@
       {% for hall in halls %}
         {% if submitted %}
         <!-- TODO: Add filter checking here -->
-            {% if hall.isEnsuite == isEnsuite %}
-                <div>
-                {{hall.name}}
-                </div>
+        <!-- display hall if box checked and criteria is True
+        OR box unchecked-->
+            {% if hall.isEnsuite == isEnsuite == True or isEnsuite == False %}
+              {% if hall.isCatered == isCatered == True or isCatered == False %}
+                {% if hall.hasBasin == hasBasin == True or hasBasin == False %}
+                  {% if hall.isSingle == isSingle == True or isSingle == False %}
+                    {% if hall.isDouble == isDouble == True or isDouble == False %}
+                      <div>
+                        {{hall.name}}
+                      </div>
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+              {% endif %}
             {% endif %}
+
         {% else %}
             <div>
                 {{ hall.name }}

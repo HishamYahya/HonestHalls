@@ -7,11 +7,19 @@ def filter_view(request):
     halls = [
         {
             'name': 'Hall1',
-            'isEnsuite': True
+            'isEnsuite': True,
+            'isCatered' : False,
+            'hasBasin' : False,
+            'isSingle' : True,
+            'isDouble' : False
         },
         {
             'name': 'Hall2',
-            'isEnsuite': False
+            'isEnsuite': False,
+            'isCatered' : True,
+            'hasBasin' : True,
+            'isSingle' : False,
+            'isDouble' : True
         }
     ]
 
@@ -23,6 +31,10 @@ def filter_view(request):
     # Initilize filters
     # TODO: Add filter variables here
     isEnsuite = None
+    isCatered = None
+    hasBasin = None
+    isSingle = None
+    isDouble = None
 
     if(submitted):
         form = FilterForm(request.POST)
@@ -31,6 +43,11 @@ def filter_view(request):
             # TODO: Assign here all the filter variables to
             # their respective values in the form
             isEnsuite = form.cleaned_data.get('isEnsuite')
+            isCatered = form.cleaned_data.get('isCatered')
+            hasBasin = form.cleaned_data.get('hasBasin')
+            isSingle = form.cleaned_data.get('isSingle')
+            isDouble = form.cleaned_data.get('isDouble')
+            whichHall = form.cleaned_data.get('whichHall')
     else:
         form = FilterForm()
 
@@ -39,6 +56,10 @@ def filter_view(request):
         'form': form,
         'halls': halls,
         'isEnsuite': isEnsuite,
+        'isCatered': isCatered,
+        'hasBasin' : hasBasin,
+        'isSingle' : isSingle,
+        'isDouble': isDouble,
         'submitted': submitted
     }
     return render(request, 'filter/form.html', context)
