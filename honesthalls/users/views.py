@@ -82,3 +82,6 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return render(request, 'users/logout.html')
+
+def profile(request):
+    return render(request, 'users/profile.html')
