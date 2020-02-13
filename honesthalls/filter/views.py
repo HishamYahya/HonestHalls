@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import FilterForm
+from .forms import *
 
 
 def filter_view(request):
@@ -11,7 +11,8 @@ def filter_view(request):
             'isCatered' : False,
             'hasBasin' : False,
             'isSingle' : True,
-            'isDouble' : False
+            'isDouble' : False,
+            'Campus' : '1'
         },
         {
             'name': 'Hall2',
@@ -19,7 +20,8 @@ def filter_view(request):
             'isCatered' : True,
             'hasBasin' : True,
             'isSingle' : False,
-            'isDouble' : True
+            'isDouble' : True,
+            'Campus' : '1'
         }
     ]
 
@@ -35,7 +37,7 @@ def filter_view(request):
     hasBasin = None
     isSingle = None
     isDouble = None
-
+    CampusList = '1'
     if(submitted):
         form = FilterForm(request.POST)
         if(form.is_valid()):
@@ -48,8 +50,11 @@ def filter_view(request):
             isSingle = form.cleaned_data.get('isSingle')
             isDouble = form.cleaned_data.get('isDouble')
             whichHall = form.cleaned_data.get('whichHall')
+            CampusList = submitted.get('CampusList')
+
     else:
         form = FilterForm()
+        CampusList = submitted.get('CampusList')
 
     # Pass the halls data and the filters to the template form.html
     context = {
@@ -60,6 +65,7 @@ def filter_view(request):
         'hasBasin' : hasBasin,
         'isSingle' : isSingle,
         'isDouble': isDouble,
-        'submitted': submitted
+        'submitted': submitted,
+        'CampusList': CampusList
     }
     return render(request, 'filter/form.html', context)
