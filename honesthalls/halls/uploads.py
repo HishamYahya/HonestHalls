@@ -5,17 +5,32 @@ from math import ceil, floor
 
 
 def process_uploaded_image(filename):
+    """
+    Processes a file uploaded by the user.
+    Overwrites the existing file.
+    """
     im = Image.open(filename)
-    im = scale_and_crop_image(im, settings.MEDIA_IMAGE_MAX_SIZE,
-                              settings.MEDIA_IMAGE_ASPECT_RATIO)
-    im.save(filename, 'JPEG', quality=90)
+    # Crop the image to get desired aspect ratio
+    im = change_image_aspect_ratio(im, settings.MEDIA_IMAGE_ASPECT_RATIO)
+    # MEDIA_IMAGE_MAX_SIZE must be a float (eg. 1.33 for 4:3)
+    max_size = settings.MEDIA_IMAGE_MAX_SIZE
+    # thumbnail() works in-place
+    im.thumbnail((max_size, max_size), Image.NEAREST)
+    # Overwrite the input image file.
+    im.save(filename, 'JPEG', quality=settings.MEDIA_IMAGE_QUALITY)
 
 
 def remove_unused_image(filename):
+    """ Handles the deletion of unused image files. """
     os.remove(filename)
 
 
-def scale_and_crop_image(im, max_dim, aspect_ratio):
+def change_image_aspect_ratio(im, max_dim, aspect_ratio):
+    """
+    Crops an image file to conform to a specified aspect ratio.
+    The cropping is always centered.
+    A new image is returned.
+    """
     # Fix aspect ratio
     width, height = im.size
     exp_width, exp_height = width, height
@@ -36,6 +51,4 @@ def scale_and_crop_image(im, max_dim, aspect_ratio):
     im = im.crop((ceil(crop_x), ceil(crop_y),
                   width - floor(crop_x), height - floor(crop_y)))
 
-    # thumbnail() works in-place
-    im.thumbnail((max_dim, max_dim), Image.NEAREST)
     return im

@@ -14,6 +14,7 @@ body {
 	padding-top: 120px;
 }
 
+/** BEGIN ReusableComponents **/
 /* Centers the items in the container */
 .hh-flex-center {
 	display: flex;
@@ -21,6 +22,7 @@ body {
 	align-items: center;
 }
 
+/* Creates a dummy 4:3 gray block with text */
 .hh-no-image-placeholder {
 	/* Effectively sets 4:3 aspect ratio for the block */
 	position: relative;
@@ -38,7 +40,79 @@ body {
 	top: 50%;
 	transform: translateY(-50%);
 }
+/** END ReusableComponents **/
 
+/** BEGIN ImagePreview **/
+/* The backdrop for the image preview */
+.hh-image-preview-backdrop {
+	display: none;
+}
+
+/* The backdrop when an image is being previewed */
+.hh-image-preview-backdrop.active {
+	display: block;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 10000;
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* The base element for the preview */
+.hh-image-preview {
+	position: relative;
+	height: 100%;
+}
+
+/* The container of the image */
+.hh-image-preview__container {
+	width: 100%;
+	height: 100%;
+	padding: 48px 0;
+}
+
+/*
+The previewed image itself.
+Image should be set as background-image inline.
+*/
+.hh-image-preview__image {
+	text-align: right;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background-color: #333333;
+	background-clip: content-box;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+/*
+The button to close the preview.
+*/
+.hh-image-preview__close {
+	display: inline-block;
+	position: absolute;
+	top: 32px;
+	right: 0;
+	width: 32px;
+	height: 32px;
+	line-height: 28px;
+	font-size: 32px;
+	cursor: pointer;
+	background-color: white;
+	border-radius: 32px;
+	text-align: center;
+}
+
+.hh-image-preview__close:hover {
+	background-color: rgba(255, 255, 255, 0.75);
+}
+/** END ImagePreview **/
+
+/** BEGIN LightSlider **/
 /* Allow the drop-shadow to be visible outside the container */
 .lSSlideOuter, .lSPager.lSGallery {
 	overflow: visible !important;
@@ -69,3 +143,4 @@ body {
 	height: 100% !important;
 	object-fit: cover;
 }
+/** END LightSlider **/

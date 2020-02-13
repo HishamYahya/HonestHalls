@@ -16,12 +16,14 @@
 <div>Where halls are honest and choice is easy!</div>
 
 <div class="row">
+  <!-- Lists sample halls -->
   {% for hall in sample_halls %}
   <div class="col-md-4">
     <div class="card mb-3">
       {% if hall.main_photo %}
       <img class="card-img-top" src="{{ hall.main_photo.photo_path.url }}" alt="{{ hall.main_photo.photo_desc }}">
       {% else %}
+      <!-- There are no images for this hall -->
       <div class="card-img-top h6 m-0 hh-no-image-placeholder">
         <h6 class="font-weight-normal hh-no-image-placeholder__content">
           No image available

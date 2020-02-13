@@ -9,9 +9,10 @@ from .models import Hall, RoomType, HallPhotos
 
 def index(request):
     """ Serves the project homepage """
-    # values() gets dicts instead of instances
-    # which we can extend before passing to the view
-    sample_halls = [hall.get_card_data() for hall in Hall.objects.all()[:5]]
+    # Get a number of halls
+    sample_halls = Hall.objects.all()[:5]
+    # Convert them to dicts and add extras (eg. main_image).
+    sample_halls = [hall.get_card_data() for hall in sample_halls]
 
     context = {
         'server_time': timezone.now(),
@@ -33,4 +34,5 @@ def hallpage(request, id):
         'roomtypes': roomtypes,
         'hallphotos': hallphotos,
     }
+
     return render(request, 'halls/hallpage.html', context)
