@@ -30,14 +30,14 @@ def hallpage(request, id):
     roomtypes = hall.roomtype_set.all()
     # for loop iterates through room prices and turns pence into pounds
     for room in roomtypes:
-        room.price = str(room.price)[:-2] + "." + str(room.price)[-2:]
+        room.price = "%.2f" % (room.price / 100)
     hallphotos = hall.hallphotos_set.all()
     context = {
         'id': id,
         'hall': hall,
         'roomtypes': roomtypes,
         'hallphotos': hallphotos,
-        'reviews' : Review.objects.filter(roomtype__hall_id=id)
+        'reviews': Review.objects.filter(roomtype__hall_id=id)
     }
 
     return render(request, 'halls/hallpage.html', context)
