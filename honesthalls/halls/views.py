@@ -4,7 +4,7 @@ from django.shortcuts import (
 )
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, get_list_or_404
-from .models import Hall, RoomType, HallPhotos
+from .models import Hall, RoomType, HallPhotos, Review
 
 
 def index(request):
@@ -18,6 +18,7 @@ def index(request):
         'server_time': timezone.now(),
         'sample_halls': sample_halls
     }
+
     if request.user.is_authenticated:
         context['username'] = request.user.username
 
@@ -27,12 +28,16 @@ def index(request):
 def hallpage(request, id):
     hall = get_object_or_404(Hall, pk=id)
     roomtypes = hall.roomtype_set.all()
+    # for loop iterates through room prices and turns pence into pounds
+    for room in roomtypes:
+        room.price = str(room.price)[:-2] + "." + str(room.price)[-2:]
     hallphotos = hall.hallphotos_set.all()
     context = {
         'id': id,
         'hall': hall,
         'roomtypes': roomtypes,
         'hallphotos': hallphotos,
+        'reviews' : Review.objects.filter(roomtype__hall_id=id)
     }
 
     return render(request, 'halls/hallpage.html', context)
