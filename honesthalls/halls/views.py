@@ -27,6 +27,8 @@ def index(request):
 def hallpage(request, id):
     hall = get_object_or_404(Hall, pk=id)
     roomtypes = hall.roomtype_set.all()
+    for room in roomtypes:
+        room.price = str(room.price)[:-2] + "." + str(room.price)[-2:]
     hallphotos = hall.hallphotos_set.all()
     context = {
         'id': id,
