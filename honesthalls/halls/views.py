@@ -33,6 +33,6 @@ def hallpage(request, id):
         'hall': hall,
         'roomtypes': roomtypes,
         'hallphotos': hallphotos,
-        'reviews' : Review.objects.all()
+        'reviews' : Review.objects.filter(roomtype__hall_id=id)
     }
     return render(request, 'halls/hallpage.html', context)
