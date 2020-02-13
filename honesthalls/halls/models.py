@@ -22,6 +22,7 @@ class Hall(models.Model):
     # below argument ensures last modified date stored
     date_modified = models.DateTimeField(auto_now=True)
 
+<<<<<<< HEAD
     def get_card_data(self):
         hall = model_to_dict(self)
         hall['main_photo'] = self.hallphotos_set.first()
@@ -29,6 +30,10 @@ class Hall(models.Model):
 
     def __str__(self):
         return f'[{self.id}] {self.name} - {self.campus}'
+=======
+    def __str__(self):
+        return self.name
+>>>>>>> reviews
 
 
 # Desribes the HallPhotos table

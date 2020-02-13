@@ -1,0 +1,5 @@
+{% for review in reviews %}
+    <div style="border: 3px solid black; margin: 20px;">
+      {{review.roomtype.hall}} : {{review.text}}
+    </div>
+{% endfor %}
