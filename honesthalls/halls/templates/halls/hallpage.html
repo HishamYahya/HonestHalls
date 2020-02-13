@@ -24,7 +24,7 @@
 		</div>
 		<div class="col-md-6">
 			<h2>{{ hall.name }}</h2>
-			<h5>Campus: {{ hall.campus }}</h5>
+			<h5>Campus: <span class="badge badge-secondary">{{ hall.campus }}</span></h5>
 
 			<div>
 				<p>{{ hall.text }}</p>
@@ -37,10 +37,10 @@
 				</a>
 			</p>
 
-			<table class="table table-striped">
+			<table class="table table-striped table-bordered">
 				<tr>
 					<td>Price (£/per week)</td>
-					<td>Contract Length</td>
+					<td>Contract Length (weeks)</td>
 					<td>Ensuite/Basin/Neither</td>
 					<td>Catered</td>
 					<td>Bedsize</td>
@@ -76,5 +76,8 @@
 	<h1>Reviews</h1>
 </div>
 
+{% include 'reviews/reviews.html' %}
+
 {% endblock content %}
 <!-- -------------------------------- -->
+
