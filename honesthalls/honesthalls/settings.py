@@ -124,6 +124,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+# The maximum size for user-uploaded images
+MEDIA_IMAGE_MAX_SIZE = 2048
+MEDIA_IMAGE_ASPECT_RATIO = 4/3
+
+MEDIA_URL = '/media/'
+# User files are uploded relative to this directory
+MEDIA_ROOT = os.path.join(BASE_DIR, "../media")
 
 # Make Django messages compatible with Bootstrap's alerts.
 MESSAGE_TAGS = {

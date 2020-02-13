@@ -13,3 +13,59 @@ body {
 	width: 40%;
 	padding-top: 120px;
 }
+
+/* Centers the items in the container */
+.hh-flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.hh-no-image-placeholder {
+	/* Effectively sets 4:3 aspect ratio for the block */
+	position: relative;
+	height: 0;
+	padding-bottom: 75%;
+	background-color: #EEEEEE;
+	color: #555555;
+	text-align: center;
+}
+
+/* The placeholder slider image/text for no content. */
+.hh-no-image-placeholder__content {
+	position: absolute;
+	width: 100%;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+/* Allow the drop-shadow to be visible outside the container */
+.lSSlideOuter, .lSPager.lSGallery {
+	overflow: visible !important;
+}
+
+/* Border around the slides */
+.lSSlideWrapper {
+	border-radius: 4px;
+}
+
+/* Custom style for thumbnails */
+.lSPager.lSGallery li {
+	background-color: black;
+	height: 64px;
+	opacity: 0.8;
+	border-radius: 4px !important;
+	transition: 0.2s opacity ease-in-out;
+}
+
+/* Style the active thumbnail */
+.lSPager.lSGallery li.active {
+	opacity: 1;
+}
+
+/* Make the thumbnails cover the available space */
+.lSPager.lSGallery li img {
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: cover;
+}
