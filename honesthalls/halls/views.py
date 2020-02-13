@@ -3,9 +3,8 @@ from django.shortcuts import (
     Http404, HttpResponse, HttpResponseRedirect
 )
 from django.utils import timezone
-<<<<<<< HEAD
 from django.shortcuts import get_object_or_404, get_list_or_404
-from .models import Hall, RoomType, HallPhotos
+from .models import Hall, RoomType, HallPhotos, Review
 
 
 def index(request):
@@ -18,15 +17,12 @@ def index(request):
         'server_time': timezone.now(),
         'sample_halls': sample_halls
     }
-=======
-from .models import Review
 
 def index(request):
     """ Serves the project homepage """
 
  
     context = {'server_time': timezone.now()}
->>>>>>> reviews
     if request.user.is_authenticated:
         context['username'] = request.user.username
 
@@ -38,12 +34,10 @@ def hallpage(request, id):
     roomtypes = hall.roomtype_set.all()
     hallphotos = hall.hallphotos_set.all()
     context = {
-<<<<<<< HEAD
         'id': id,
         'hall': hall,
         'roomtypes': roomtypes,
         'hallphotos': hallphotos,
-=======
         'title': 'Hall Page',
         'hallname': 'Hulme Hall',
         'campus': 'Victoria Park',
@@ -51,6 +45,5 @@ def hallpage(request, id):
         'catering': 'Catered',
         'location': 'linktomap.com',
         'reviews' : Review.objects.all()
->>>>>>> reviews
     }
     return render(request, 'halls/hallpage.html', context)
