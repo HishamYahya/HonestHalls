@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -149,4 +150,6 @@ MESSAGE_TAGS = {
 # Once logged in, users taken to home page instead of profile page
 LOGIN_REDIRECT_URL = 'index'
 # Redirect login restricted pages to login page if user not logged in
-# LOGIN_URL = 'login'
+LOGIN_URL = 'login'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

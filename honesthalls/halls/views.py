@@ -18,11 +18,6 @@ def index(request):
         'sample_halls': sample_halls
     }
 
-def index(request):
-    """ Serves the project homepage """
-
- 
-    context = {'server_time': timezone.now()}
     if request.user.is_authenticated:
         context['username'] = request.user.username
 
