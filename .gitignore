@@ -281,3 +281,6 @@ Sessionx.vim
 tags
 # VIM Persistent undo
 [._]*.un~
+
+# Project specific
+media/uploads/

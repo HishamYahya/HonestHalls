@@ -1,18 +1,19 @@
 {% extends "halls/base.html" %}
-{% block title %}Hall Page{% endblock %}
+{% block title %}{{ hall.name }}{% endblock %}
 <!-- -------------------------------- -->
 {% block content %}
 <div class="container">
 	<div class="row">
 		<div class="col-md-6">
+			<!-- The image gallery/slider. Currently using LigtSlider -->
 			<div id="hh-hall-slider">
 				{% for photo in hallphotos %}
 				<li class="hh-flex-center h-100" data-thumb="{{ photo.photo_path.url }}">
-					<img class="w-100" src="{{ photo.photo_path.url }}" alt="{{ photo.photo_desc }}" />
+					<img class="w-100 hh-image-supports-preview" src="{{ photo.photo_path.url }}" alt="{{ photo.photo_desc }}" />
 				</li>
 				{% empty %}
+				<!-- No images are available -->
 				<li data-thumb="">
-
 					<div class="card-img-top m-0 hh-no-image-placeholder">
 						<h3 class="font-weight-normal hh-no-image-placeholder__content">
 							No image available
@@ -72,12 +73,24 @@
 		</div>
 	</div>
 </div>
+
 <div class="container">
 	<h1>Reviews</h1>
 </div>
 
+<!-- The element used for previewing images -->
+<div class="hh-image-preview-backdrop">
+	<div class="container hh-image-preview">
+		<div class="hh-image-preview__container">
+			<!-- The background-image style is set by JS -->
+			<div class="hh-image-preview__image"></div>
+			<a class="hh-image-preview__close" role="button">×</a>
+		</div>
+	</div>
+</div>
+
+<!-- Include the list of reviews. -->
 {% include 'reviews/reviews.html' %}
 
 {% endblock content %}
 <!-- -------------------------------- -->
-

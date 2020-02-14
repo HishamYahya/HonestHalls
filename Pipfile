@@ -8,7 +8,8 @@ pycodestyle = "*"
 pylint = "*"
 
 [packages]
-django = ">=3.0"
+django = "3.0.3"
+pillow = "7.0.0"
 
 [requires]
 python_version = "3"
