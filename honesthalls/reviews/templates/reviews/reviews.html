@@ -1,5 +1,16 @@
 {% for review in reviews %}
-    <div style="border: 3px solid black; margin: 20px;">
-      {{review.roomtype.hall}} : {{review.text}}
+    <div style="border: 3px solid gray; margin: 20px; padding: 10px;">
+      	<h5 style="float:left; width:80%">{{review.user}}</h5>
+      	<p style="float: right; width: 20%; font-size: 18px">Average Rating: &#9733;&#9733;&#9733;&#9733;&#9733;</p>
+      	<p style="font-size: 12px">Date Created: {{review.date_created}}</p>
+      	<div style="float: left; width:50%;">
+	        <p>Noise Level: {{review.noise}}</p>
+	        <p>Cleanliness: {{review.cleanliness}}</p>
+    	</div>
+      	<div style="float: right; width:50%;">
+	        <p>Social Life: {{review.social_life}}</p>
+	        <p>Facilities: {{review.facilities}}</p>
+    	</div>
+      	<p style="font-size: 12px">{{review.text}} {{review.text}} {{review.text}} {{review.text}} {{review.text}} {{review.text}}</p>
     </div>
 {% endfor %}

@@ -3,16 +3,6 @@ body {
     color: #333333;
 }
 
-.columnR {
-	float: right;
-	width: 60%;
-}
-
-.columnL {
-	float: left;
-	width: 40%;
-	padding-top: 120px;
-}
 
 /* Centers the items in the container */
 .hh-flex-center {
