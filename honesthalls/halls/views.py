@@ -9,15 +9,15 @@ from .models import Hall, RoomType, HallPhotos, Review
 
 def index(request):
     """ Serves the project homepage """
-    # values() gets dicts instead of instances
-    # which we can extend before passing to the view
-    sample_halls = [hall.get_card_data() for hall in Hall.objects.all()[:5]]
+    # Get a number of halls
+    sample_halls = Hall.objects.all()[:5]
+    # Convert them to dicts and add extras (eg. main_image).
+    sample_halls = [hall.get_card_data() for hall in sample_halls]
 
     context = {
         'server_time': timezone.now(),
         'sample_halls': sample_halls
     }
-
     if request.user.is_authenticated:
         context['username'] = request.user.username
 
@@ -27,18 +27,16 @@ def index(request):
 def hallpage(request, id):
     hall = get_object_or_404(Hall, pk=id)
     roomtypes = hall.roomtype_set.all()
+    # for loop iterates through room prices and turns pence into pounds
+    for room in roomtypes:
+        room.price = "%.2f" % (room.price / 100)
     hallphotos = hall.hallphotos_set.all()
     context = {
         'id': id,
         'hall': hall,
         'roomtypes': roomtypes,
         'hallphotos': hallphotos,
-        'title': 'Hall Page',
-        'hallname': 'Hulme Hall',
-        'campus': 'Victoria Park',
-        'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at eros porta elit faucibus luctus. Maecenas justo massa, euismod in pulvinar in, accumsan a erat. Sed ac dui ipsum. Nulla dapibus viverra rutrum. Proin id felis at massa ornare tristique. Morbi turpis mauris, facilisis non dolor vel, gravida scelerisque mauris.',
-        'catering': 'Catered',
-        'location': 'linktomap.com',
-        'reviews' : Review.objects.all()
+        'reviews': Review.objects.filter(roomtype__hall_id=id)
     }
+
     return render(request, 'halls/hallpage.html', context)
