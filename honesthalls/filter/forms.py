@@ -8,5 +8,3 @@ class FilterForm(forms.Form):
     hasBasin = forms.BooleanField(label='Basin ', required=False)
     isSingle = forms.BooleanField(label='Single ', required=False)
     isDouble = forms.BooleanField(label='Double ', required=False)
-    CampusList = ((1,"Campus 1"), (2, "Campus 2"), (3, "Campus 3"))
-    Campus = forms.ChoiceField(label=' ', choices=CampusList)
