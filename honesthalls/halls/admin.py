@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Hall, HallPhotos, RoomType
+from .models import Hall, HallPhotos, RoomType, Review
 
 
 class RoomTypeInline(admin.TabularInline):
@@ -36,3 +36,4 @@ class HallAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Hall, HallAdmin)
+admin.site.register(Review)

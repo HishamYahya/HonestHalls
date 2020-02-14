@@ -33,5 +33,14 @@
     </form>
   </div>
 </div>
+{% for review in reviews %}
+  <div class="row" style="margin-top: 10px;">
+  <div class="card" style="width: 100%;">
+    <div class="card-body">
+      {{review.roomtype.hall}} : {{review.text}}
+    </div>
+  </div>
+  </div>
+{% endfor %}
 </div>
 {% endblock content %}

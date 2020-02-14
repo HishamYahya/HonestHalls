@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from .models import Profile
+from halls.models import Review
 from .forms import RegistrationForm, LoginForm, UserUpdateForm
 
 
@@ -95,6 +96,7 @@ def profile(request):
     else:
         form = UserUpdateForm(instance=request.user)
     context = {
-        'form': form
+        'form': form,
+        'reviews': Review.objects.all().filter(user=request.user)
     }
     return render(request, 'users/profile.html', context)

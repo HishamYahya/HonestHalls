@@ -18,10 +18,6 @@ def index(request):
         'server_time': timezone.now(),
         'sample_halls': sample_halls
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> hallpage
     if request.user.is_authenticated:
         context['username'] = request.user.username
 
