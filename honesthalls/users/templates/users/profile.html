@@ -1,0 +1,46 @@
+{% extends "halls/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% if messages %}
+      {% for message in messages %}
+      <div {% if message.tags %} class="{{ message.tags }} alert alert-success"{% endif %} role="alert">{{ message }}</div>
+      {% endfor %}
+  {% endif %}
+  <div class="row">
+    
+    <div class="col">
+      <h1 class="display-2">{{ user.username }}</h1>
+    </div>
+    <div class="col-8">
+      
+      <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+          <legend class="border-bottom mb-4">
+          Edit details
+        </legend>
+        {{ form|crispy }}
+      </fieldset>
+      <div class="form-group">
+        <button class="btn btn-outline-info" type="submit">
+          Update
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% for review in reviews %}
+  <div class="row" style="margin-top: 10px;">
+  <div class="card" style="width: 100%;">
+    <div class="card-body">
+      {{review.roomtype.hall}} : {{review.text}}
+    </div>
+  </div>
+  </div>
+{% endfor %}
+</div>
+{% endblock content %}

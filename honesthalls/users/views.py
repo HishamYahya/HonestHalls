@@ -1,15 +1,17 @@
 from django.shortcuts import (
     render, reverse,
-    Http404, HttpResponse, HttpResponseRedirect
+    Http404, HttpResponse, HttpResponseRedirect,
+    redirect
 )
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import login as django_login, authenticate
-# from django.contrib.auth.decorator import login_required
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from .models import Profile
-from .forms import RegistrationForm, LoginForm
+from halls.models import Review
+from .forms import RegistrationForm, LoginForm, UserUpdateForm
 
 
 def signup(request):
@@ -82,3 +84,19 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return render(request, 'users/logout.html')
+
+@login_required
+def profile(request):
+    if(request.method == 'POST'):
+        form = UserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect('profile')
+    else:
+        form = UserUpdateForm(instance=request.user)
+    context = {
+        'form': form,
+        'reviews': Review.objects.all().filter(user=request.user)
+    }
+    return render(request, 'users/profile.html', context)
