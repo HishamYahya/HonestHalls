@@ -28,7 +28,7 @@ class Hall(models.Model):
         return hall
 
     def __str__(self):
-        return f'[{self.id}] {self.name} - {self.campus}'
+        return f' {self.name} - {self.campus}'
 
 
 # Desribes the HallPhotos table
