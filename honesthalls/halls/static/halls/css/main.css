@@ -3,7 +3,6 @@ body {
     color: #333333;
 }
 
-
 /** BEGIN ReusableComponents **/
 /* Centers the items in the container */
 .hh-flex-center {
@@ -134,3 +133,19 @@ The button to close the preview.
 	object-fit: cover;
 }
 /** END LightSlider **/
+
+
+.searchbar input {
+  border: 3px solid ;
+  height: 40px;
+  width: 300px;
+  border-radius: 50px;
+  padding: 0px 10px;
+}
+
+.searchbtn {
+  background-image: url('searchicon.png');
+  height: 30px;
+  border-radius: 50px;
+}
+

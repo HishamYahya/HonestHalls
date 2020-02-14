@@ -1,25 +1,88 @@
 {% extends "halls/base.html" %}
+
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" type="text/css"
+        href="{% static 'halls/css/main.css' %}">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js">
+  </script>
+{% endblock %}
+
+{% block title %}Search{% endblock %}
 {% block content %}
   <form method="POST">
     {% csrf_token %}
-      {{ form }}
-      <button type="submit">Submit</button>
+    <input type="text" name="search" id="search" placeholder="Search..">
+    <button class="searchbtn" type="submit"><i class="fa fa-search">Search</i></button>
+  </form>
 
+  <form method="POST">
+    {% csrf_token %}
+      {{ form }}
+      </br>
+      Price range:From<input type="text" name="price1" placeholder="Min price" maxlength="10">to<input type="text" name="price2" placeholder="Max price" maxlength="10">
+      <button type="submit">Submit</button>
       <!-- Loop through the halls data and display the
       ones that satisfy the filters -->
       {% for hall in halls %}
         {% if submitted %}
         <!-- TODO: Add filter checking here -->
-            {% if hall.isEnsuite == isEnsuite %}
-                <div>
-                {{hall.name}}
-                </div>
+        <!-- display hall if box checked and criteria is True
+        OR box unchecked-->
+          {% if search == None %}
+            {% if hall.isEnsuite == isEnsuite == True or isEnsuite == False %}
+              {% if hall.isCatered == isCatered == True or isCatered == False %}
+                {% if hall.hasBasin == hasBasin == True or hasBasin == False %}
+                  {% if hall.isSingle == isSingle == True or isSingle == False %}
+                    {% if hall.isDouble == isDouble == True or isDouble == False %}
+                      {% if price1 != 0 or price2 != 0 %}
+                        {% if hall.price > price1 and hall.price < price2 %}
+                          <div>
+                            {{hall.name}}
+                          </div>
+                        {% endif %}
+                      {% else %}
+                        <div>
+                          {{hall.name}}
+                        </div>
+                      {% endif %}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+              {% endif %}
             {% endif %}
+          {% else %}
+            {% if search in hall.name %}
+              <div>
+                {{hall.name}}
+              </div>
+            {% endif %}
+          {% endif %}
         {% else %}
             <div>
                 {{ hall.name }}
             </div>
         {% endif %}
       {% endfor %}
+  </form>
+  </br>
+  <form method="POST">
+    {% csrf_token %}
+    <select name="Campus">
+      <option value="City">City</option>
+      <option value="Victoria Park">Victoria Park</option>
+      <option value="Fallowfield">Fallowfield</option>
+    </select>
+    <button type="submit">Search</button>
+    {% if submitted %}
+      <select name="Hall">
+        {% for hall in halls %}
+          {% if hall.Campus == Campus %}
+            <option>{{ hall.name }}</option>
+          {% else %}
+          {% endif %}
+        {% endfor %}
+      </select>
+    {% endif %}
   </form>
 {% endblock content %}
