@@ -1,7 +1,20 @@
 {% for review in reviews %}
     <div style="border: 3px solid gray; margin: 20px; padding: 10px;">
-      	<h5 style="float:left; width:80%">{{review.user}}</h5>
-      	<p style="float: right; width: 20%; font-size: 18px">Average Rating: &#9733;&#9733;&#9733;&#9733;&#9733;</p>
+				<!-- TODO: Check if this is actually the user -->
+				{% if True %}
+				<a class="btn btn-sm btn-primary" href="{% url 'review-edit' review.id %}">
+					<i class="material-icons">edit</i>
+				</a>
+				<form class="d-inline" action="{% url 'review-delete' review.id %}" method="POST">
+					{% csrf_token %}
+					<button class="btn btn-sm btn-danger" type="submit">
+						<i class="material-icons">delete</i>
+					</button>
+				</form>
+				{% endif %}
+				
+				<h5 style="float:left; width:80%">{{review.user}}</h5>
+      	<p style="float: right; width: 20%; font-size: 18px">Average Rating: &#9733;&#97	33;&#9733;&#9733;&#9733;</p>
       	<p style="font-size: 12px">Date Created: {{review.date_created}}</p>
       	<div style="float: left; width:50%;">
 	        <p>Noise Level: {{review.noise}}</p>
