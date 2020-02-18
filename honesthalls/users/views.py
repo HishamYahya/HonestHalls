@@ -11,6 +11,7 @@ from django.contrib import messages
 
 from .models import Profile
 from halls.models import Review
+from halls.utils import render_form_errors
 from .forms import RegistrationForm, LoginForm, UserUpdateForm
 
 
@@ -25,9 +26,7 @@ def signup(request):
             return render(request, 'users/signup.html')
 
         # Print all the errors
-        for field, errors in form.errors.items():
-            for error in errors:
-                messages.error(request, error)
+        render_form_errors(request, form)
 
         # If there were validation errors
         # return early and show the form again
@@ -84,6 +83,7 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return render(request, 'users/logout.html')
+
 
 @login_required
 def profile(request):
