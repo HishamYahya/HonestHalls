@@ -1,27 +1,17 @@
 from django import forms
 from django.contrib.auth.models import User
-from .validators import (
-    validate_email,
-    validate_password,
-    validate_username
-)
+from django.contrib.auth.forms import UserCreationForm
 
 
-class RegistrationForm(forms.Form):
+class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
-    username = forms.CharField(max_length=50, validators=(validate_username,))
-    password1 = forms.CharField(max_length=50, validators=(validate_password,))
-    password2 = forms.CharField(max_length=50)
-
-
-class LoginForm(forms.Form):
-    email = forms.EmailField()
-    password = forms.CharField(max_length=50, validators=(validate_password,))
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    field_order = ['first_name', 'last_name', 'email', 'username', 'password1', 'password2']
 
 class UserUpdateForm(forms.ModelForm):
-    username = forms.CharField(max_length=50, validators=(validate_username,))
     email = forms.EmailField()
 
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ['username', 'email', 'first_name', 'last_name']

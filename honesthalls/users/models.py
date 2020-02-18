@@ -20,6 +20,9 @@ class Profile(models.Model):
     # Automatically set to the right date & time.
     date_created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
     @receiver(post_save, sender=User)
     def on_user_saved(sender, instance, created, **kwargs):
         """
