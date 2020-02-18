@@ -76,24 +76,4 @@
   {% endfor %}
 </form>
 </br>
-<!-- None of the below will work -->
-<form method="POST">
-  {% csrf_token %}
-  <select name="Campus">
-    <option value="City">City</option>
-    <option value="Victoria Park">Victoria Park</option>
-    <option value="Fallowfield">Fallowfield</option>
-  </select>
-  <button type="submit">Search</button>
-  {% if submitted %}
-  <select name="Hall">
-    {% for hall in halls %}
-    {% if hall.Campus == Campus %}
-    <option>{{ hall.name }}</option>
-    {% else %}
-    {% endif %}
-    {% endfor %}
-  </select>
-  {% endif %}
-</form>
 {% endblock content %}
