@@ -20,13 +20,16 @@ CATERED = [
     ('catered', 'Catered')
 ]
 
+CAMPUSES = [
+    ('na', 'Don\'t care'),
+    ('fallowfield', 'Fallowfield'),
+    ('victoria', 'Victoria Park'),
+    ('city', 'City')
+]
+
 class FilterForm(forms.Form):
     # TODO: Add fields here
-    #isEnsuite = forms.BooleanField(label='Ensuite ', required=False)
-    #hasBasin = forms.BooleanField(label='Basin ', required=False)
-    toilet_options = forms.ChoiceField(choices = BASIN_ENSUITE_NA)
-    bed_options = forms.ChoiceField(choices = BEDSIZE_OPTIONS)
-    eat_options = forms.ChoiceField(choices = CATERED)
-    #isCatered = forms.BooleanField(label='Catered ', required=False)
-    #isSingle = forms.BooleanField(label='Single ', required=False)
-    #isDouble = forms.BooleanField(label='Double ', required=False)
+    toilet_options = forms.ChoiceField(choices = BASIN_ENSUITE_NA, label = "Toilet Options: ")
+    bed_options = forms.ChoiceField(choices = BEDSIZE_OPTIONS, label = "Bedsize: ")
+    eat_options = forms.ChoiceField(choices = CATERED, label = "Catering: ")
+    campus_options = forms.ChoiceField(choices = CAMPUSES, label = "Campus: ")

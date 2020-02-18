@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block title %}Search{% endblock %}
+
 {% block content %}
 <form method="POST">
   {% csrf_token %}
@@ -15,65 +16,42 @@
   <button class="searchbtn" type="submit"><i class="fa fa-search">Search</i></button>
 </form>
 
+
 <form method="POST">
   {% csrf_token %}
-  {{ form | crispy }}
-  </br>
-  Price range:From<input type="text" name="price1" placeholder="Min price" maxlength="10">to<input type="text"
-    name="price2" placeholder="Max price" maxlength="10">
-  <button type="submit">Submit</button>
-  <!-- Loop through the halls data and display the
-      ones that satisfy the filters -->
-  {% for hall in results_halls %}
+
   <div>
-    {{ hall.name }}
+    <div class="row">
+      <div class="col-md-3">
+        {{ form | crispy }}
+        Price range:From<input type="text" name="price1" placeholder="Min price" maxlength="10">to<input type="text"
+          name="price2" placeholder="Max price" maxlength="10">
+        <button type="submit">Submit</button>
+      </div>
+
+      <div class="col-md-9">
+        <!-- Loop through the halls data and display the
+          ones that satisfy the filters -->
+        {% for hall in results_halls %}
+        <div>
+          {{ hall.name }}
+        </div>
+
+        {% for room in results_rooms %}
+        {% if room.hall.id == hall.id %}
+        <div> - Room {{ room.id }}</div>
+        <!-- TODO : FORMAT HALLS/ROOM INFORMATION-->
+        {% endif %}
+        {% endfor %}
+
+        {% empty %}
+        <h5>No halls fit criteria.</h5>
+        {% endfor %}
+      </div>
+    </div>
   </div>
 
-  {% for room in results_rooms %}
-  {% if room.hall.id == hall.id %}
-  <div> - Room {{ room.id }}</div>
-  <!-- TODO : FORMAT HALLS/ROOM INFORMATION-->
-  {% endif %}
-  {% endfor %}
 
-  {% empty %}
-  <h5>No halls fit criteria.</h5>
-  <!-- {% if submitted %}
-      {% if search == None %}
-        {% if hall.isEnsuite == isEnsuite == True or isEnsuite == False %}
-          {% if hall.isCatered == isCatered == True or isCatered == False %}
-            {% if hall.hasBasin == hasBasin == True or hasBasin == False %}
-              {% if hall.isSingle == isSingle == True or isSingle == False %}
-                {% if hall.isDouble == isDouble == True or isDouble == False %}
-                  {% if price1 != 0 or price2 != 0 %}
-                    {% if hall.price > price1 and hall.price < price2 %}
-                    <div>
-                      {{hall.name}}
-                    </div>
-                    {% endif %}
-                  {% else %}
-                  <div>
-                    {{hall.name}}
-                  </div>
-                  {% endif %}
-                {% endif %}
-              {% endif %}
-            {% endif %}
-          {% endif %}
-        {% endif %}
-      {% else %}
-        {% if search in hall.name %}
-        <div>
-          {{hall.name}}
-        </div>
-        {% endif %}
-      {% endif %}
-    {% else %}
-      <div>
-        {{ hall.name }}
-      </div>
-    {% endif %} -->
-  {% endfor %}
 </form>
 </br>
 {% endblock content %}
