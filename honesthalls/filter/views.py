@@ -37,12 +37,12 @@ def filter_view(request):
             try:
                 min_price = int(min_price) * 100
             except:
-                min_price = None # was 0 before?
+                min_price = None
 
             try:
                 max_price = int(max_price) * 100
             except:
-                max_price = None # was 0 before?
+                max_price = None
 
 
             # ------- BUILDING THE QUERY ----------
@@ -72,9 +72,7 @@ def filter_view(request):
             elif catered == 'catered':
                 query.append(Q(catered=True))
 
-
-
-
+            # TODO: need to add appending query for price filter 
 
             # ------ hisham delete this once you're done --------------------------------------------------
             if min_price == None and max_price == None: # if both fields left empty
