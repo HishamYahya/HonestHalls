@@ -17,6 +17,8 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/css/lightslider.min.css">
   <!-- Custom Styles -->
   <link rel="stylesheet" type="text/css" href="{% static 'halls/css/main.css' %}">
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
@@ -27,6 +29,14 @@
   {% include 'halls/partials/navbar.html' %}
 
   <div class="container">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
     {% block content %}{% endblock %}
   </div>
 

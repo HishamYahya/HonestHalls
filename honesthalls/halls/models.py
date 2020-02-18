@@ -77,6 +77,10 @@ class RoomType(models.Model):
     catered = models.BooleanField()
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
 
+    @property
+    def formatted_price(self):
+        return "%.2f" % (self.price / 100)
+
 
 # Describes the Review table
 class Review(models.Model):
@@ -86,7 +90,7 @@ class Review(models.Model):
     # below argument ensures last modified date stored
     date_modified = models.DateTimeField(auto_now=True)
     anonymous = models.BooleanField()
-    reported = models.BooleanField()
+    reported = models.BooleanField(default=False)
     cleanliness = models.IntegerField()
     social_life = models.IntegerField()
     noise = models.IntegerField()

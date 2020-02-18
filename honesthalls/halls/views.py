@@ -27,9 +27,6 @@ def index(request):
 def hallpage(request, id):
     hall = get_object_or_404(Hall, pk=id)
     roomtypes = hall.roomtype_set.all()
-    # for loop iterates through room prices and turns pence into pounds
-    for room in roomtypes:
-        room.price = "%.2f" % (room.price / 100)
     hallphotos = hall.hallphotos_set.all()
     context = {
         'id': id,
@@ -37,6 +34,7 @@ def hallpage(request, id):
         'roomtypes': roomtypes,
         'hallphotos': hallphotos,
         'reviews': Review.objects.filter(roomtype__hall_id=id)
+        # 'reviewphotos': ReviewPhotos.objects.filter(review__hall__id=id)
     }
 
     return render(request, 'halls/hallpage.html', context)

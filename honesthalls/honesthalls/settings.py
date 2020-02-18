@@ -151,6 +151,6 @@ MESSAGE_TAGS = {
 # Once logged in, users taken to home page instead of profile page
 LOGIN_REDIRECT_URL = 'index'
 # Redirect login restricted pages to login page if user not logged in
-LOGIN_URL = 'login'
+LOGIN_URL = '/user/login'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
