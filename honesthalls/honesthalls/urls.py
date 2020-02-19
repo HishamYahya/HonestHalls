@@ -23,7 +23,8 @@ urlpatterns = [
     path('user/', include('users.urls')),
     path('filter/', include('filter.urls')),
     path('reviews/', include('reviews.urls')),
-    path('', include('halls.urls'))
+    path('', include('halls.urls')),
+    path('search/', include('search.urls'))
 ]
 
 # WARN: This work in DEBUG only.
