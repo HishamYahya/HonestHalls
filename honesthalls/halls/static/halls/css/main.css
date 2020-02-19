@@ -29,7 +29,17 @@ body {
 	top: 50%;
 	transform: translateY(-50%);
 }
+
+.hh-not-allowed * {
+	cursor: not-allowed;
+}
 /** END ReusableComponents **/
+
+/** BEGIN RatingInput **/
+.hh-rating-input {
+	display: none;
+}
+/** END RatingInput **/
 
 /** BEGIN ImagePreview **/
 /* The backdrop for the image preview */
@@ -149,3 +159,38 @@ The button to close the preview.
   border-radius: 50px;
 }
 
+/** BEGIN Ratings **/
+
+.hh-material-icon-center {
+	vertical-align: text-top;
+}
+
+.hh-rating {
+	user-select: none;
+}
+
+.hh-rating__star {
+	color: #ffc100;
+	cursor: pointer;
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: #ff9500;
+}
+
+.hh-rating:not(.readonly) .hh-rating__star:hover {
+	color: #fa0;
+}
+
+.hh-rating.readonly .hh-rating__star {
+	cursor: default;
+}
+
+.hh-rating__star .material-icons {
+	font-size: 32px;
+}
+
+.hh-rating__star.unchecked {
+	color: rgba(255, 191, 0, 0.33);
+	-webkit-text-stroke-color: #ffc100;
+}
+
+/** END Ratings **/

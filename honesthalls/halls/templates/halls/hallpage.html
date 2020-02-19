@@ -8,8 +8,10 @@
 			<!-- The image gallery/slider. Currently using LigtSlider -->
 			<div id="hh-hall-slider">
 				{% for photo in hallphotos %}
-				<li class="hh-flex-center h-100" data-thumb="{{ photo.photo_path.url }}">
-					<img class="w-100 hh-image-supports-preview" src="{{ photo.photo_path.url }}" alt="{{ photo.photo_desc }}" />
+				<li class="hh-flex-center h-100"
+					data-thumb="{{ photo.photo_path.url }}">
+					<img class="w-100 hh-image-supports-preview"
+						src="{{ photo.photo_path.url }}" alt="{{ photo.photo_desc }}" />
 				</li>
 				{% empty %}
 				<!-- No images are available -->
@@ -25,7 +27,8 @@
 		</div>
 		<div class="col-md-6">
 			<h2>{{ hall.name }}</h2>
-			<h5>Campus: <span class="badge badge-secondary">{{ hall.campus }}</span></h5>
+			<h5>Campus: <span class="badge badge-secondary">{{ hall.campus }}</span>
+			</h5>
 
 			<div>
 				<p>{{ hall.text }}</p>
@@ -33,7 +36,8 @@
 
 			<p>
 				Location:
-				<a href="https://www.google.com/maps/search/?api=1&query={{ hall.latitude }},{{ hall.longitude }}">
+				<a
+					href="https://www.google.com/maps/search/?api=1&query={{ hall.latitude }},{{ hall.longitude }}">
 					Show on map
 				</a>
 			</p>
@@ -48,7 +52,7 @@
 				</tr>
 				{% for room in roomtypes %}
 				<tr>
-					<td>{{ room.price }}</td>
+					<td>{{ room.formatted_price }}</td>
 					<td>{{ room.contract_length }}</td>
 
 					{% if room.ensuite %}
@@ -75,7 +79,15 @@
 </div>
 
 <div class="container">
-	<h1>Reviews</h1>
+	<h1>Reviews
+		<a href="{% url 'review-write' hall.id %}"
+			class="btn btn-primary btn-lg float-right" role="button">
+			Write a Review
+		</a>
+	</h1>
+
+	<!-- Include the list of reviews. -->
+	{% include 'reviews/reviews.html' %}
 </div>
 
 <!-- The element used for previewing images -->
@@ -88,9 +100,6 @@
 		</div>
 	</div>
 </div>
-
-<!-- Include the list of reviews. -->
-{% include 'reviews/reviews.html' %}
 
 {% endblock content %}
 <!-- -------------------------------- -->
