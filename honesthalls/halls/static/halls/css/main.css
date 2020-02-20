@@ -170,6 +170,7 @@ The button to close the preview.
 }
 
 .hh-rating__star {
+	vertical-align: text-bottom;
 	color: #ffc100;
 	cursor: pointer;
 	-webkit-text-stroke-width: 1px;
@@ -188,9 +189,42 @@ The button to close the preview.
 	font-size: 32px;
 }
 
-.hh-rating__star.unchecked {
+.hh-rating__star :not(.hh-rating__star__bg) {
+	position: relative;
+	z-index: 50;
+}
+
+.hh-rating__star__bg {
+	position: absolute;
 	color: rgba(255, 191, 0, 0.33);
 	-webkit-text-stroke-color: #ffc100;
+}
+
+.hh-rating__star.unchecked {
+	color: transparent;
+	-webkit-text-stroke-color: transparent;
+}
+
+.hh-rating__star.semichecked-1-4,
+.hh-rating__star.semichecked-2-4,
+.hh-rating__star.semichecked-3-4 {
+	display: inline-block;
+	overflow: hidden;
+}
+
+.hh-rating__star.semichecked-1-4 {
+	width: 12px;
+	margin-right: 20px;
+}
+
+.hh-rating__star.semichecked-2-4 {
+	width: 16px;
+	margin-right: 16px;
+}
+
+.hh-rating__star.semichecked-3-4 {
+	width: 20px;
+	margin-right: 12px;
 }
 
 /** END Ratings **/

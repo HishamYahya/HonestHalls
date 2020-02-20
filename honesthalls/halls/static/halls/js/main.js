@@ -14,6 +14,7 @@
 
       let starHtml = (
         '<span class="hh-rating__star">' +
+        '<i class="material-icons hh-rating__star__bg">star</i>' +
         '<i class="material-icons">star</i>' +
         '</span>'
       );
@@ -29,9 +30,14 @@
 
       // Updates the rating and value of <input>.
       function setRating(rating) {
-        $stars.removeClass('unchecked');
-        for (let i = rating; i < $stars.length; i++) {
+        $stars.removeClass('unchecked semichecked-1-4 semichecked-2-4 semichecked-3-4');
+        for (let i = Math.ceil(rating); i < $stars.length; i++) {
           $($stars[i]).addClass('unchecked');
+        }
+
+        if (Math.floor(rating) !== Math.ceil(rating)) {
+          const level = Math.round((rating % 1) * 4);
+          $($stars[Math.ceil(rating) - 1]).addClass('semichecked-' + level + '-4');
         }
 
         $input.val(rating);
@@ -51,7 +57,7 @@
 
       // Initialize with the initial value of the <input>.
       if ($input.val()) {
-        setRating($input.val() | 0);
+        setRating(parseFloat($input.val()));
       }
 
       $element.insertAfter($input);

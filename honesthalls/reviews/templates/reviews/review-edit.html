@@ -223,7 +223,7 @@
 
           const newRating = total / $sourceRatings.length;
           // The rating bars only support integers.
-          $overallRating[0].$rating.setRating(Math.round(newRating));
+          $overallRating[0].$rating.setRating(newRating);
           // But we still show two fraction digits in the text.
           $overallRatingText.text(newRating.toFixed(2));
         }

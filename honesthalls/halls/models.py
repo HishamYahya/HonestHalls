@@ -28,7 +28,7 @@ class Hall(models.Model):
         return hall
 
     def __str__(self):
-        return f' {self.name} - {self.campus}'
+        return f'{self.name} - {self.campus}'
 
 
 # Desribes the HallPhotos table
@@ -81,6 +81,9 @@ class RoomType(models.Model):
     def formatted_price(self):
         return "%.2f" % (self.price / 100)
 
+    def __str__(self):
+        return f'{self.contract_length} weeks @ {int(self.price) / 100} ppw'
+
 
 # Describes the Review table
 class Review(models.Model):
@@ -98,11 +101,14 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     roomtype = models.ForeignKey(RoomType, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'#{self.id} for {self.roomtype.hall.name} by {self.user.username}'
+
 
 # Describes the ReviewPhotos table
 class ReviewPhotos(models.Model):
     # below will store the path to any photos of halls
-    photo_path = models.CharField(max_length=100)
+    photo_path = models.ImageField(max_length=100, upload_to='review-uploads/')
     # below will store a brief description of the corresponding photo
     photo_desc = models.TextField()
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
