@@ -34,6 +34,7 @@ def hallpage(request, id):
         'roomtypes': roomtypes,
         'hallphotos': hallphotos,
         'reviews': Review.objects.filter(roomtype__hall_id=id)
+        # 'reviewphotos': ReviewPhotos.objects.filter(review__hall__id=id)
     }
 
     return render(request, 'halls/hallpage.html', context)

@@ -1,29 +1,122 @@
+{% load divide_filter %}
+{% load int_filter %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap 4 Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
 {% for review in reviews %}
-    <div style="border: 3px solid gray; margin: 20px; padding: 10px;">
-				<!-- TODO: Check if this is actually the user -->
-				{% if True %}
-				<a class="btn btn-sm btn-primary" href="{% url 'review-edit' review.id %}">
-					<i class="material-icons">edit</i>
-				</a>
-				<form class="d-inline" action="{% url 'review-delete' review.id %}" method="POST">
-					{% csrf_token %}
-					<button class="btn btn-sm btn-danger" type="submit">
-						<i class="material-icons">delete</i>
-					</button>
-				</form>
-				{% endif %}
-				
-				<h5 style="float:left; width:80%">{{review.user}}</h5>
-      	<p style="float: right; width: 20%; font-size: 18px">Average Rating: &#9733;&#97	33;&#9733;&#9733;&#9733;</p>
-      	<p style="font-size: 12px">Date Created: {{review.date_created}}</p>
-      	<div style="float: left; width:50%;">
-	        <p>Noise Level: {{review.noise}}</p>
-	        <p>Cleanliness: {{review.cleanliness}}</p>
-    	</div>
-      	<div style="float: right; width:50%;">
-	        <p>Social Life: {{review.social_life}}</p>
-	        <p>Facilities: {{review.facilities}}</p>
-    	</div>
-      	<p style="font-size: 12px">{{review.text}} {{review.text}} {{review.text}} {{review.text}} {{review.text}} {{review.text}}</p>
-    </div>
+	{% with noise=review.noise|convert_to_int %}
+	{% with social=review.social_life|convert_to_int %}
+	{% with facilities=review.facilities|convert_to_int %}
+	{% with cleanliness=review.cleanliness|convert_to_int %}
+
+	{% with total=noise|add:facilities|add:social|add:cleanliness %}
+	{% with average=total|divide_filter %}
+
+	<div class="container-fluid pt-3 my-3 border border-info bg-white text-dark shadow-sm">
+	    <div class="row">
+			<!-- TODO: Check if this is actually the user -->
+			{% if True %}
+				<div class="col-sm-7">
+	    			<h5>{{review.user}}</h5>
+	    			<p style="font-size: 12px">Date Created: {{review.date_created.date}}</p>
+	    		</div>
+	    		<div class="col-sm-4 float-right">
+	    			<h5 class="float-right">Average Rating <input class="hh-rating-input" value="{{average}}" readonly></h5>
+	    		</div>
+	    		<div class="col-sm-1">
+	    			<a class="btn btn-xs btn-primary" href="{% url 'review-edit' review.id %}">
+						<i class="material-icons">edit</i>
+					</a>
+					<form class="d-inline" action="{% url 'review-delete' review.id %}" method="POST">
+						{% csrf_token %}
+						<button class="btn btn-xs btn-danger" type="submit">
+							<i class="material-icons">delete</i>
+						</button>
+					</form>
+	    		</div>
+	    	{% else %}
+		    	<div class="col-sm-8">
+		    		<h5>{{review.user}}</h5>
+		    		<p style="font-size: 12px">Date Created: {{review.date_created.date}}</p>
+		    	</div>
+		    	<div class="col-sm-4">
+	    			<h5 class="float-right">Average Rating <input class="hh-rating-input" value="{{average}}" readonly></h5>
+		    	</div>
+			{% endif %} 	
+	    </div>
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
+		<div class="row">
+			<div class="col">
+				<table class="table table-borderless">
+					<tbody>
+						<tr>
+							<td>Noise</td>
+							<td><input class="hh-rating-input" value="{{review.noise}}" readonly></td>
+						</tr>
+							<tr>
+							<td>Social</td>
+							<td><input class="hh-rating-input" value="{{review.social_life}}" readonly></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col">
+				<table class="table table-borderless">
+					<tbody>
+						<tr>
+							<td>Cleanliness</td>
+							<td><input class="hh-rating-input" value="{{review.cleanliness}}" readonly></td>
+						</tr>
+						<tr>
+							<td>Facilities</td>
+							<td><input class="hh-rating-input" value="{{review.facilities}}" readonly></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+
+			{% if reviewphotos %}
+				<!-- SHOW PHOTOS FOR REVIEW- POP UP OPTION?? -->
+				<div class="col-sm-3">
+	 				<h5>THUMBNAIL HERE</h5>
+ 					<div id="hh-hall-slider">
+						{% for photo in hallphotos %}
+						<li class="hh-flex-center h-100"
+							data-thumb="{{ photo.photo_path.url }}">
+							<img class="w-100 hh-image-supports-preview"
+								src="{{ photo.photo_path.url }}" alt="{{ photo.photo_desc }}" />
+						</li>
+						{% endfor %}
+					</div>
+				</div>
+
+				<div class="col-sm-9"><p>{{review.text}}</p>
+				</div>
+			{% else %}
+				<!-- Full width review-->
+				<p class ="px-2">{{review.text}}</p>
+			{% endif %}
+		</div>
+	</div>
+
+
 {% endfor %}
+</body>
+</html>
