@@ -95,8 +95,8 @@
 			{% if reviewphotos %}
 				<!-- SHOW PHOTOS FOR REVIEW- POP UP OPTION?? -->
 				<div class="col-sm-3">
-<!-- 					<h5>THUMBNAIL HERE</h5>
- -->					<div id="hh-hall-slider">
+	 				<h5>THUMBNAIL HERE</h5>
+ 					<div id="hh-hall-slider">
 						{% for photo in hallphotos %}
 						<li class="hh-flex-center h-100"
 							data-thumb="{{ photo.photo_path.url }}">
@@ -107,11 +107,11 @@
 					</div>
 				</div>
 
-				<div class="col-sm-9"><p>{{review.text}}{{review.text}}{{review.text}}{{review.text}}{{review.text}}{{review.text}}{{review.text}}{{review.text}}{{review.text}}{{review.text}}</p></div>
-
+				<div class="col-sm-9"><p>{{review.text}}</p>
+				</div>
 			{% else %}
 				<!-- Full width review-->
-				<p>{{review.text}}{{review.text}}{{review.text}}{{review.text}}{{review.text}}{{review.text}}{{review.text}}{{review.text}}{{review.text}}{{review.text}}</p>
+				<p class ="px-2">{{review.text}}</p>
 			{% endif %}
 		</div>
 	</div>
