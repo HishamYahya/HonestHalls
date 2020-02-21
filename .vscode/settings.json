@@ -11,7 +11,7 @@
   },
   "editor.insertSpaces": true,
   "editor.formatOnSave": true,
-  "python.pythonPath": "C:\\Python38\\python.exe",
+  "python.pythonPath": "C:\\Users\\vesko\\.virtualenvs\\FirstYearTeamProject-phYAnvH9\\Scripts\\python.exe",
   "python.linting.pylintEnabled": false,
   "python.linting.pycodestyleEnabled": true,
   "python.linting.enabled": true,

@@ -13,7 +13,8 @@
   <div class="col-md-4">
     <div class="card mb-3">
       {% if hall.main_photo %}
-      <img class="card-img-top" src="{{ hall.main_photo.photo_path.url }}" alt="{{ hall.main_photo.photo_desc }}">
+      <img class="card-img-top" src="{{ hall.main_photo.thumbnail_url }}"
+        alt="{{ hall.main_photo.photo_desc }}">
       {% else %}
       <!-- There are no images for this hall -->
       <div class="card-img-top h6 m-0 hh-no-image-placeholder">
@@ -23,7 +24,8 @@
       </div>
       {% endif %}
       <div class="card-body">
-        <h5 class="card-title">{{ hall.name }} <span class="badge badge-secondary">{{ hall.campus }}</span></h5>
+        <h5 class="card-title">{{ hall.name }} <span
+            class="badge badge-secondary">{{ hall.campus }}</span></h5>
         <p class="card-text">{{ hall.text }}</p>
         <a href="{% url 'hallpage' hall.id %}" class="btn btn-primary">View</a>
       </div>

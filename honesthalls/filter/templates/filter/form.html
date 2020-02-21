@@ -34,7 +34,7 @@
 
 						<div id="hh-hall-slider">
 							{% for photo in hall.photos %}
-							<li class="hh-flex-center h-100" data-thumb="{{ photo.photo_path.url }}">
+							<li class="hh-flex-center h-100" data-thumb="{{ photo.thumbnail_url }}">
 								<img class="w-100 hh-image-supports-preview" src="{{ photo.photo_path.url }}"
 									alt="{{ photo.photo_desc }}" />
 							</li>

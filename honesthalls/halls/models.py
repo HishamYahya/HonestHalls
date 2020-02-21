@@ -2,11 +2,15 @@
 # File is a model description of the database
 
 from django.db import models
-from django.contrib.auth.models import User  # import the User table
 from django.forms.models import model_to_dict
-from PIL import Image
 
-from .uploads import process_uploaded_image, remove_unused_image
+from users.models import User
+from .uploads import (
+    process_uploaded_image,
+    remove_unused_image,
+    create_thumbnail,
+    get_thumbnail_filename,
+)
 
 # Describes the Hall table
 
@@ -33,13 +37,20 @@ class Hall(models.Model):
 
 # Desribes the HallPhotos table
 class HallPhotos(models.Model):
-    # TODO: Add thumbnails
     # below will store the path to any photos of halls
     photo_path = models.ImageField(max_length=100, upload_to='uploads/')
     # below will store a brief description of the corresponding photo
     photo_desc = models.TextField()
     # foreign key for the Hall class, on_delete removes record if hall deleted
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
+
+    @property
+    def photo_url(self):
+        return self.photo_path.url
+
+    @property
+    def thumbnail_url(self):
+        return get_thumbnail_filename(self.photo_path.url)
 
     def __init__(self, *args, **kwargs):
         super(HallPhotos, self).__init__(*args, **kwargs)
@@ -52,7 +63,6 @@ class HallPhotos(models.Model):
         except:
             pass
 
-
     def save(self, update_fields=None, **kwargs):
         # TODO: Check for badly-made images (strange aspect ratio etc.)
         super().save(**kwargs)
@@ -64,6 +74,9 @@ class HallPhotos(models.Model):
             old_photo = self._original_photo_path
             # Process the image (optimize)
             process_uploaded_image(filename)
+            # Also create the thumbnail as a file in
+            # the same dir with but with a predefined suffix.
+            create_thumbnail(filename)
             # Check if we had a valid image before that
             if (old_photo is not None and old_photo.name != ''
                     and old_photo.path != filename):
@@ -79,6 +92,7 @@ class RoomType(models.Model):
     basin = models.BooleanField()
     bedsize = models.CharField(max_length=30)
     catered = models.BooleanField()
+    accessible = models.BooleanField()
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
 
     @property
@@ -87,33 +101,3 @@ class RoomType(models.Model):
 
     def __str__(self):
         return f'{self.contract_length} weeks @ {int(self.price) / 100} ppw'
-
-
-# Describes the Review table
-class Review(models.Model):
-    text = models.TextField()
-    # below argument ensures only creation date stored
-    date_created = models.DateTimeField(auto_now_add=True)
-    # below argument ensures last modified date stored
-    date_modified = models.DateTimeField(auto_now=True)
-    anonymous = models.BooleanField()
-    reported = models.BooleanField(default=False)
-    cleanliness = models.IntegerField()
-    social_life = models.IntegerField()
-    noise = models.IntegerField()
-    facilities = models.IntegerField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    roomtype = models.ForeignKey(RoomType, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'#{self.id} for {self.roomtype.hall.name} by {self.user.username}'
-
-
-# Describes the ReviewPhotos table
-class ReviewPhotos(models.Model):
-    # below will store the path to any photos of halls
-    photo_path = models.ImageField(max_length=100, upload_to='review-uploads/')
-    # below will store a brief description of the corresponding photo
-    photo_desc = models.TextField()
-    review = models.ForeignKey(Review, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -9,7 +9,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from halls.utils import render_form_errors
-from halls.models import Review, RoomType, Hall
+from halls.models import Hall
+from reviews.models import Review, RoomType
 
 from .forms import ReviewEditForm
 

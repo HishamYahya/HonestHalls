@@ -4,7 +4,8 @@ from django.shortcuts import (
 )
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, get_list_or_404
-from .models import Hall, RoomType, HallPhotos, Review
+from reviews.models import Review
+from .models import Hall, RoomType, HallPhotos
 
 
 def index(request):
@@ -19,7 +20,7 @@ def index(request):
         'sample_halls': sample_halls
     }
     if request.user.is_authenticated:
-        context['username'] = request.user.username
+        context['email'] = request.user.email
 
     return render(request, 'halls/index.html', context)
 
