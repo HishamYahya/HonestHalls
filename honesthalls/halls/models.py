@@ -52,7 +52,6 @@ class HallPhotos(models.Model):
         except:
             pass
 
-
     def save(self, update_fields=None, **kwargs):
         # TODO: Check for badly-made images (strange aspect ratio etc.)
         super().save(**kwargs)
@@ -106,7 +105,8 @@ class Review(models.Model):
     roomtype = models.ForeignKey(RoomType, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'#{self.id} for {self.roomtype.hall.name} by {self.user.username}'
+        return f'#{self.id} for {self.roomtype.hall.name} by\
+        {self.user.username}'
 
 
 # Describes the ReviewPhotos table

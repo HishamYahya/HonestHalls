@@ -4,5 +4,4 @@ from django.contrib.auth import views as log_views
 
 urlpatterns = [
     path('', views.search, name='search'),
-    
 ]

@@ -34,11 +34,13 @@ class HallAdmin(admin.ModelAdmin):
         default_form = super().get_form(request, obj, **kwargs)
         return default_form
 
+
 class ReviewPhotosInline(admin.TabularInline):
     """
     An Inline variant for the ReviewPhotos model.
     """
     model = ReviewPhotos
+
 
 class ReviewAdmin(admin.ModelAdmin):
     """
@@ -51,6 +53,7 @@ class ReviewAdmin(admin.ModelAdmin):
 
     # Show the following attributes in the corresponding table
     list_display = ('id', 'text', 'date_modified')
+
 
 admin.site.register(Hall, HallAdmin)
 admin.site.register(Review, ReviewAdmin)
