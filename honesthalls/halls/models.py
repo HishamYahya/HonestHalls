@@ -47,7 +47,11 @@ class HallPhotos(models.Model):
         self._original_photo_path = self.photo_path
 
     def get_main_photo(hall_id):
-        return HallPhotos.filter(hall_id=hall_id)[0]
+        try:
+            return HallPhotos.objects.get(hall_id=hall_id)[0]
+        except:
+            pass
+
 
     def save(self, update_fields=None, **kwargs):
         # TODO: Check for badly-made images (strange aspect ratio etc.)

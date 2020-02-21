@@ -10,68 +10,80 @@
 {% block title %}Search{% endblock %}
 
 {% block content %}
-<form method="POST">
-  {% csrf_token %}
-  <input type="text" name="search" id="search" placeholder="Search..">
-  <button class="searchbtn" type="submit"><i class="fa fa-search">Search</i></button>
-</form>
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<form method="POST">
+				{% csrf_token %}
+
+				<div>
+
+					{% crispy form %}
+				</div>
+			</form>
+		</div>
+
+		<div class="col-md-9">
+			<!-- Loop through the halls data and display the
+			ones that satisfy the filters -->
+			{% for hall in results_halls %}
+			<div class="card m-3 container">
+				<div class="row">
+
+					<div class="col-md-5">
+
+						<div id="hh-hall-slider">
+							{% for photo in hall.photos %}
+							<li class="hh-flex-center h-100" data-thumb="{{ photo.photo_path.url }}">
+								<img class="w-100 hh-image-supports-preview" src="{{ photo.photo_path.url }}"
+									alt="{{ photo.photo_desc }}" />
+							</li>
+							{% empty %}
+							<!-- No images are available -->
+							<li data-thumb="">
+								<div class="hh-no-image-placeholder">
+									<h3 class="font-weight-normal hh-no-image-placeholder__content">
+										No image available
+									</h3>
+								</div>
+							</li>
+
+							{% endfor %}
+						</div>
+					</div>
+					<div class="container">
+						<div class="row">
+							<a type="button" class="btn btn-link" href="{% url 'hallpage' hall.id %}">
+
+								<h3 class="col mt-3">
+									{{ hall.name }}
+								</h3>
+							</a>
+
+						</div>
+						<div class="card-body">
+							{{ hall.text }}
+						</div>
+						<h6>Room Types:</h6>
+						<ul class="list-group list-group-flush mb-3">
+							{% for room in results_rooms %}
+							{% if room.hall.id == hall.id %}
+							<li class="list-group-item"> Room {{ room.id }}</li>
+							<!-- TODO : FORMAT HALLS/ROOM INFORMATION-->
+							{% endif %}
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			{% empty %}
+			<h5>No halls fit criteria.</h5>
+			{% endfor %}
+		</div>
+	</div>
+</div>
 
 
-<form method="POST">
-  {% csrf_token %}
 
-  <div>
-    <div class="row">
-      <div class="col-md-3">
-        {{ form | crispy }}
-        Price range:From<input type="text" name="price1" placeholder="Min price" maxlength="10">to<input type="text"
-          name="price2" placeholder="Max price" maxlength="10">
-        <button type="submit">Submit</button>
-      </div>
-
-      <div class="col-md-9">
-        <!-- Loop through the halls data and display the
-          ones that satisfy the filters -->
-        {% for hall in results_halls %}
-        <div>
-          {{ hall.name }}
-        </div>
-
-        {% for room in results_rooms %}
-        {% if room.hall.id == hall.id %}
-        <div> - Room {{ room.id }}</div>
-        <!-- TODO : FORMAT HALLS/ROOM INFORMATION-->
-        {% endif %}
-        {% endfor %}
-
-        {% empty %}
-        <h5>No halls fit criteria.</h5>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-  <p>
-    <label for="amount">Price range:</label>
-    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-  </p>
-   
-  <div id="slider-range"></div>
-
-</form>
-</br>
-<script>
-  $( function() {
-    $( "#slider-range" ).slider({
-      range: true,
-      min: 0,
-      max: 500,
-      values: [ 75, 300 ],
-      slide: function( event, ui ) {
-        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-      }
-    });
-    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-      " - $" + $( "#slider-range" ).slider( "values", 1 ) );
-  } );
-</script>
 {% endblock content %}

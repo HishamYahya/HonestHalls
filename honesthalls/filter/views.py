@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.db.models import Q
 from .forms import *
-from halls.models import Hall, RoomType
+from halls.models import Hall, RoomType, HallPhotos
 
 
 def filter_view(request):
@@ -76,7 +76,7 @@ def filter_view(request):
 
             # ------ hisham delete this once you're done --------------------------------------------------
             if min_price == None and max_price == None: # if both fields left empty
-                #results_rooms = RoomType.objects.filter(ensuite=isEnsuite, catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize)
+                # results_rooms = RoomType.objects.filter(ensuite=isEnsuite, catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize)
                 pass
             elif max_price == None:
                 query.append(Q(price__gte=min_price))
@@ -103,7 +103,10 @@ def filter_view(request):
         form = FilterForm()
         for i in results_rooms:
             unique_halls.add(i.hall)
-
+    
+    # add image attribute to access in template
+    for hall in unique_halls:
+        hall.photos = list(HallPhotos.objects.filter(hall=hall))
 
     # Pass the halls data and the filters to the template form.html
     context = {
@@ -112,4 +115,5 @@ def filter_view(request):
         'results_halls': unique_halls,
         'search': search,
     }
+
     return render(request, 'filter/form.html', context)
