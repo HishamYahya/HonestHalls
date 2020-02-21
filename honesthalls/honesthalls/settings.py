@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'filter.apps.FilterConfig',
     'reviews.apps.ReviewsConfig',
     'misc.apps.MiscConfig',
+    'search.apps.SearchConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

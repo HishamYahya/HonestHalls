@@ -1,88 +1,89 @@
 {% extends "halls/base.html" %}
-
+{% load crispy_forms_tags %}
 {% load static %}
 {% block css %}
-  <link rel="stylesheet" type="text/css"
-        href="{% static 'halls/css/main.css' %}">
-  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js">
-  </script>
+<link rel="stylesheet" type="text/css" href="{% static 'halls/css/main.css' %}">
+<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js">
+</script>
 {% endblock %}
 
 {% block title %}Search{% endblock %}
-{% block content %}
-  <form method="POST">
-    {% csrf_token %}
-    <input type="text" name="search" id="search" placeholder="Search..">
-    <button class="searchbtn" type="submit"><i class="fa fa-search">Search</i></button>
-  </form>
 
-  <form method="POST">
-    {% csrf_token %}
-      {{ form }}
-      </br>
-      Price range:From<input type="text" name="price1" placeholder="Min price" maxlength="10">to<input type="text" name="price2" placeholder="Max price" maxlength="10">
-      <button type="submit">Submit</button>
-      <!-- Loop through the halls data and display the
-      ones that satisfy the filters -->
-      {% for hall in halls %}
-        {% if submitted %}
-        <!-- TODO: Add filter checking here -->
-        <!-- display hall if box checked and criteria is True
-        OR box unchecked-->
-          {% if search == None %}
-            {% if hall.isEnsuite == isEnsuite == True or isEnsuite == False %}
-              {% if hall.isCatered == isCatered == True or isCatered == False %}
-                {% if hall.hasBasin == hasBasin == True or hasBasin == False %}
-                  {% if hall.isSingle == isSingle == True or isSingle == False %}
-                    {% if hall.isDouble == isDouble == True or isDouble == False %}
-                      {% if price1 != 0 or price2 != 0 %}
-                        {% if hall.price > price1 and hall.price < price2 %}
-                          <div>
-                            {{hall.name}}
-                          </div>
-                        {% endif %}
-                      {% else %}
-                        <div>
-                          {{hall.name}}
-                        </div>
-                      {% endif %}
-                    {% endif %}
-                  {% endif %}
-                {% endif %}
-              {% endif %}
-            {% endif %}
-          {% else %}
-            {% if search in hall.name %}
-              <div>
-                {{hall.name}}
-              </div>
-            {% endif %}
-          {% endif %}
-        {% else %}
-            <div>
-                {{ hall.name }}
-            </div>
-        {% endif %}
-      {% endfor %}
-  </form>
-  </br>
-  <form method="POST">
-    {% csrf_token %}
-    <select name="Campus">
-      <option value="City">City</option>
-      <option value="Victoria Park">Victoria Park</option>
-      <option value="Fallowfield">Fallowfield</option>
-    </select>
-    <button type="submit">Search</button>
-    {% if submitted %}
-      <select name="Hall">
-        {% for hall in halls %}
-          {% if hall.Campus == Campus %}
-            <option>{{ hall.name }}</option>
-          {% else %}
-          {% endif %}
-        {% endfor %}
-      </select>
-    {% endif %}
-  </form>
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<form method="POST">
+				{% csrf_token %}
+
+				<div>
+
+					{% crispy form %}
+				</div>
+			</form>
+		</div>
+
+		<div class="col-md-9">
+			<!-- Loop through the halls data and display the
+			ones that satisfy the filters -->
+			{% for hall in results_halls %}
+			<div class="card m-3 container">
+				<div class="row">
+
+					<div class="col-md-5">
+
+						<div id="hh-hall-slider">
+							{% for photo in hall.photos %}
+							<li class="hh-flex-center h-100" data-thumb="{{ photo.photo_path.url }}">
+								<img class="w-100 hh-image-supports-preview" src="{{ photo.photo_path.url }}"
+									alt="{{ photo.photo_desc }}" />
+							</li>
+							{% empty %}
+							<!-- No images are available -->
+							<li data-thumb="">
+								<div class="hh-no-image-placeholder">
+									<h3 class="font-weight-normal hh-no-image-placeholder__content">
+										No image available
+									</h3>
+								</div>
+							</li>
+
+							{% endfor %}
+						</div>
+					</div>
+					<div class="container">
+						<div class="row">
+							<a type="button" class="btn btn-link" href="{% url 'hallpage' hall.id %}">
+
+								<h3 class="col mt-3">
+									{{ hall.name }}
+								</h3>
+							</a>
+
+						</div>
+						<div class="card-body">
+							{{ hall.text }}
+						</div>
+						<h6>Room Types:</h6>
+						<ul class="list-group list-group-flush mb-3">
+							{% for room in results_rooms %}
+							{% if room.hall.id == hall.id %}
+							<li class="list-group-item"> Room {{ room.id }}</li>
+							<!-- TODO : FORMAT HALLS/ROOM INFORMATION-->
+							{% endif %}
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			{% empty %}
+			<h5>No halls fit criteria.</h5>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+
+
 {% endblock content %}
