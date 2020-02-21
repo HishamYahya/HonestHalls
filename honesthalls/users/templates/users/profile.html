@@ -4,33 +4,41 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-<div class="container">
-  <div class="row">
-
-    <div class="col">
-      <h1 class="display-2">{{ user.username }}</h1>
-    </div>
-    <div class="col-8">
-
-      <form method="POST">
-        {% csrf_token %}
-        <fieldset class="form-group">
-          <legend class="border-bottom mb-4">
-            Edit details
-          </legend>
-          {{ form|crispy }}
-        </fieldset>
-        <div class="form-group">
-          <button class="btn btn-outline-info" type="submit">
-            Update
-          </button>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h1 class="container display-3 mt-5">{{ user.first_name }} {{user.last_name}}</h1>
+        <div class="container mt-5">
+          <h4 style="display: inline">Verified:</h4>
+          {% if profile.verified %}
+            <i class="material-icons ml-3", style="vertical-align:text-bottom;">check</i>
+          {% else %}
+            <i class="material-icons ml-3", style="vertical-align:text-bottom;">cancel</i>
+            <a href="{% url 'verify' %}" class="btn btn-outline-info ml-4">Verify</a>
+          {% endif %}
         </div>
-      </form>
+      </div>
+      <div class="col-8 mt-3">
+        <form method="POST">
+          {% csrf_token %}
+          <fieldset class="form-group">
+            <legend class="border-bottom mb-4">
+              Edit details
+            </legend>
+            {{ form|crispy }}
+          </fieldset>
+          <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+    <div class="container">
+      <h2 class="pl-6">My Reviews:</h2>
+    </div>
+    {% include 'reviews/reviews.html' %}
   </div>
-
-  <!-- Include the list of reviews. -->
-  {% include 'reviews/reviews.html' %}
-
-</div>
 {% endblock content %}
+

@@ -1,88 +1,29 @@
-from django.shortcuts import (
-    render, reverse,
-    Http404, HttpResponse, HttpResponseRedirect,
-    redirect
-)
-from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User, auth
-from django.contrib.auth import login as django_login, authenticate
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-
-from .models import Profile
+from django.contrib.auth.decorators import login_required
+from .forms import UserRegisterForm, UserUpdateForm
 from halls.models import Review
-from halls.utils import render_form_errors
-from .forms import RegistrationForm, LoginForm, UserUpdateForm
+from .models import Profile
 
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from .tokens import verification_token
+from django.core.mail import EmailMessage
 
-def signup(request):
-    """ Handles user registration """
+def register(request):
     if request.method == 'POST':
-        # Validate the data and create the user
-        form = RegistrationForm(request.POST)
-
-        if form.data.get('password1') != form.data.get('password2'):
-            messages.error(request, "The passwords don't match!")
-            return render(request, 'users/signup.html')
-
-        # Print all the errors
-        render_form_errors(request, form)
-
-        # If there were validation errors
-        # return early and show the form again
-        if not form.is_valid():
-            return render(request, 'users/signup.html', {'form': form})
-
-        # TODO: Validate student email
-        # TODO: Check if user already exists
-        # TODO: Keep valid fields filled in when returning erronous signup form
-
-        email = form.cleaned_data.get('email')
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password1')
-
-        user = User(email=email, username=username)
-        user.set_password(password)
-        user.save()
-
-        django_login(request, user)
-        messages.info(request, f'You are logged in as {email}')
-        return HttpResponseRedirect(reverse('index'))
-    else:
-        # Just serve the signup view.
-        return render(request, 'users/signup.html')
-
-
-def login(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-
-            user = User.objects.get(email__iexact=email)
-            if user is None or not user.check_password(password):
-                messages.error(request, f'Incorrect credentials!')
-                return HttpResponseRedirect(reverse('login'))
-
-            django_login(request, user)
-            messages.info(request, f'You are logged in as {email}!')
-            return HttpResponseRedirect(reverse('index'))
-        else:
-            # Print all the errors
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, error)
-            # Return partially filled in form.
-            return render(request, 'users/login.html', {'form': form})
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Your account has been created! You are now able to login.')
+            return redirect('login')
     else:
-        # Just serve the login view.
-        return render(request, 'users/login.html')
-
-
-def logout(request):
-    auth.logout(request)
-    return render(request, 'users/logout.html')
+        form = UserRegisterForm()
+    return render(request, 'users/register.html', {'form' : form})
 
 
 @login_required
@@ -97,6 +38,43 @@ def profile(request):
         form = UserUpdateForm(instance=request.user)
     context = {
         'form': form,
+        'profile': Profile.objects.get(user=request.user),
         'reviews': Review.objects.all().filter(user=request.user)
     }
     return render(request, 'users/profile.html', context)
+
+
+@login_required
+def verify(request):
+    profile = Profile.objects.get(user=request.user)
+    if profile.verified:
+        messages.error(request, 'Account already verified.')
+    else:
+        domain = profile.user.email.split("@")[1]
+        if domain != "manchester.ac.uk" and \
+           domain != "postgrad.manchester.ac.uk" and \
+           domain != "student.manchester.ac.uk":
+           messages.error(request, 'Not a vaild university email account.')
+        else:
+            current_site = get_current_site(request)
+            mail_subject = "Verify your HonestHalls account."
+            uid = urlsafe_base64_encode(force_bytes(profile.user.pk))
+            token = verification_token.make_token(profile)
+            message = f'http://{current_site.domain}/user/verify-complete/{uid}/{token}'
+
+            email = EmailMessage(
+                        mail_subject, message, to=[profile.user.email]
+            )
+            email.send()
+            messages.success(request, 'A verification email has been sent to your account.')
+    return redirect('profile')
+
+def verify_complete(request, uidb64, token):
+    uid = force_text(urlsafe_base64_decode(uidb64))
+    profile = Profile.objects.get(user__pk=uid)
+    if profile.verified != True:
+        profile.verified = True
+        profile.save()
+        messages.success(request, 'Account has been verified.')
+    return redirect('profile')
+

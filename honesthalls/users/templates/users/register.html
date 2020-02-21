@@ -1,27 +1,24 @@
 {% extends "halls/base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Log In{% endblock %}
+{% block title %}Sign Up{% endblock %}
 
 {% block content %}
 
-<h1>Log In</h1>
+<h1>Sign Up</h1>
 <div class="content-section">
   <form method="POST">
     {% csrf_token %}
     <fieldset class="form-group">
       {{ form|crispy }}
-    </fieldset>
+    </fieldset> 
     <div class="form-group">
-      <button class="btn btn-outline-info" type="submit">Log In</button>
-      <small class="text-muted ml-2">
-        <a href="{% url 'password_reset' %}">Forgot password?</a>
-      </small>
-    </div>
+      <button class="btn btn-outline-info" type="submit"> Sign Up </button>
+    </div>    
   </form>
   <div class="border-top pt-3">
     <small class="text-muted">
-      Need An Account? <a class="ml02" href="{% url 'signup' %}">Sign Up Now</a>
+      Already Have An Account? <a class="ml02" href=" {% url 'login' %}">Sign In</a>
     </small>
   </div>
 </div>
