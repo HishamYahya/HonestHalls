@@ -1,6 +1,10 @@
 {% load divide_filter %}
 {% load int_filter %}
 
+
+<!-- THIS IS THE FILTER -->
+<!-- {% load get_review_photos %} -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,15 +18,17 @@
 </head>
 <body>
 {% for review in reviews %}
+
 	{% with noise=review.noise|convert_to_int %}
 	{% with social=review.social_life|convert_to_int %}
 	{% with facilities=review.facilities|convert_to_int %}
 	{% with cleanliness=review.cleanliness|convert_to_int %}
-
 	{% with total=noise|add:facilities|add:social|add:cleanliness %}
 	{% with average=total|divide_filter %}
 
 	<div class="container-fluid pt-3 my-3 border border-info bg-white text-dark shadow-sm">
+	    
+		<!-- 'Header' of review card, with name, ave review, buttons, date -->
 	    <div class="row">
 			<!-- TODO: Check if this is actually the user -->
 			{% if True %}
@@ -53,13 +59,9 @@
 	    			<h5 class="float-right">Average Rating <input class="hh-rating-input" value="{{average}}" readonly></h5>
 		    	</div>
 			{% endif %} 	
-	    </div>
-	{% endwith %}
-	{% endwith %}
-	{% endwith %}
-	{% endwith %}
-	{% endwith %}
-	{% endwith %}
+		</div>
+
+		<!-- Next row, has star ratings in two columns -->
 		<div class="row">
 			<div class="col">
 				<table class="table table-borderless">
@@ -90,32 +92,26 @@
 				</table>
 			</div>
 		</div>
+
+
+		<!-- This row has the body of the review, either:
+		- Photos on left, text on right
+		- Text in full width
+		-->
 		<div class="row">
-
-			{% if reviewphotos %}
-				<!-- SHOW PHOTOS FOR REVIEW- POP UP OPTION?? -->
-				<div class="col-sm-3">
-	 				<h5>THUMBNAIL HERE</h5>
- 					<div id="hh-hall-slider">
-						{% for photo in hallphotos %}
-						<li class="hh-flex-center h-100"
-							data-thumb="{{ photo.photo_path.url }}">
-							<img class="w-100 hh-image-supports-preview"
-								src="{{ photo.photo_path.url }}" alt="{{ photo.photo_desc }}" />
-						</li>
-						{% endfor %}
-					</div>
-				</div>
-
-				<div class="col-sm-9"><p>{{review.text}}</p>
-				</div>
-			{% else %}
-				<!-- Full width review-->
-				<p class ="px-2">{{review.text}}</p>
-			{% endif %}
+<!-- 		TO DO: THIS DOESN'T WORK, BREAKS IT EVEN WHEN COMMENTED OUT, SO ATTACHED IN 'broken_function.html' FILE.
+	 		Currently trying to retrieve photo paths using a filter because view function wasn't working. This still doesn't work. -->
+			<p class ="px-2">{{review.text}}</p>	
 		</div>
+
 	</div>
 
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
 
 {% endfor %}
 </body>

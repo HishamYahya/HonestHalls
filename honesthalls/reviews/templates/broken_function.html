@@ -1,0 +1,22 @@
+{% with photos=review.review_id|get_review_photos %}
+	{% if photos %}
+		<div class="col-sm-3">
+			<h5>THUMBNAIL HERE</h5>
+			<div id="hh-hall-slider">
+				{% for photo in photos %}
+					<li class="hh-flex-center h-100" data-thumb="{{ photo.photo_path.url }}">
+						<img class="w-100 hh-image-supports-preview" src="{{ photo.photo_path.url }}" alt="{{ photo.photo_desc }}" />
+						<p> {{photo.photo_desc}} </p>
+					</li>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="col-sm-9">
+			<p>{{review.text}}</p>
+		</div>
+	
+	{% else %}
+		<p class ="px-2">{{review.text}}</p>			
+	{% endif %}
+{% endwith %}
