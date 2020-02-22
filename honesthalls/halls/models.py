@@ -11,6 +11,7 @@ from .uploads import (
     create_thumbnail,
     get_thumbnail_filename,
 )
+from .utils import yesno
 
 # Describes the Hall table
 
@@ -100,4 +101,16 @@ class RoomType(models.Model):
         return "%.2f" % (self.price / 100)
 
     def __str__(self):
-        return f'{self.contract_length} weeks @ {int(self.price) / 100} ppw'
+        text = (
+            yesno(self.catered, "Catered", "Non-catered") +
+            yesno(self.ensuite, "ensuite", "") +
+            " room " +
+            yesno(self.basin, "with basin and ", "with ") +
+            str(self.bedsize).lower() +
+            " bed for " +
+            str(self.contract_length) +
+            " weeks at £" +
+            self.formatted_price +
+            "/week"
+        )
+        return text

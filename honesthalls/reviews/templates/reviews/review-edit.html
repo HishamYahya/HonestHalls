@@ -67,12 +67,7 @@
             We are generating this human-friendly text so that
             we don't have to resort to <table>s for radio button selection.
           -->
-          {{roomtype.catered|yesno:"Catered,Non-catered"}}
-          {{roomtype.ensuite|yesno:"ensuite,"}} room
-          {{roomtype.basin|yesno:"with basin and,with"}}
-          {{roomtype.bedsize|lower}} bed for
-          {{roomtype.contract_length}} weeks at
-          £{{roomtype.formatted_price}}/week
+          {{roomtype}}
         </label>
       </div>
       {% endfor  %}
