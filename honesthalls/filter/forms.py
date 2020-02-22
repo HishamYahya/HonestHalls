@@ -2,6 +2,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 
+
 BEDSIZE_OPTIONS = [
     ('na', 'Don\'t care'),
     ('single', 'Single'),
@@ -29,12 +30,14 @@ CAMPUSES = [
     ('city', 'City')
 ]
 
+
 class FilterForm(forms.Form):
     # TODO: Add fields here
-    toilet_options = forms.ChoiceField(choices = BASIN_ENSUITE_NA, label = "Toilet Options: ")
-    bed_options = forms.ChoiceField(choices = BEDSIZE_OPTIONS, label = "Bedsize: ")
-    eat_options = forms.ChoiceField(choices = CATERED, label = "Catering: ")
-    campus_options = forms.ChoiceField(choices = CAMPUSES, label = "Campus: ")
+    toilet_options = forms.ChoiceField(choices=BASIN_ENSUITE_NA,
+                                       label="Toilet Options: ")
+    bed_options = forms.ChoiceField(choices=BEDSIZE_OPTIONS, label="Bedsize: ")
+    eat_options = forms.ChoiceField(choices=CATERED, label="Catering: ")
+    campus_options = forms.ChoiceField(choices=CAMPUSES, label="Campus: ")
     min_price = forms.IntegerField(initial=None, required=False)
     max_price = forms.IntegerField(initial=None, required=False)
 
@@ -53,4 +56,3 @@ class FilterForm(forms.Form):
             ),
             Submit('submit', 'Search')
         )
-

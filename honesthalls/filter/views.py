@@ -28,12 +28,12 @@ def filter_view(request):
             bedsize = form.cleaned_data.get('bed_options')
             campus = form.cleaned_data.get('campus_options')
 
-
             min_price = submitted.get('price1')
             max_price = submitted.get('price2')
-            #Campus = submitted.get('Campus')
+            # Campus = submitted.get('Campus')
 
-            # tries need to be seperate to allow only min price or only max price to be used
+            # tries need to be seperate to allow only min price or only
+            # max price to be used
             try:
                 min_price = int(min_price) * 100
             except:
@@ -44,14 +44,13 @@ def filter_view(request):
             except:
                 max_price = None
 
-
             # ------- BUILDING THE QUERY ----------
             query = []
             # we use this to build up a query
             # this lets us choose the 'dont care' option
             # example query:
-            # query = [Q(ensuite=isEnsuite), Q(catered=isCatered), Q(basin=hasBasin), Q(bedsize__iexact=bedsize)]
-
+            # query = [Q(ensuite=isEnsuite), Q(catered=isCatered),
+            # Q(basin=hasBasin), Q(bedsize__iexact=bedsize)]
 
             if basin_ensuite == 'basin':
                 query.append(Q(basin=True))
@@ -72,25 +71,35 @@ def filter_view(request):
             elif catered == 'catered':
                 query.append(Q(catered=True))
 
-            # TODO: need to add appending query for price filter 
+            # TODO: need to add appending query for price filter
 
-            # ------ hisham delete this once you're done --------------------------------------------------
-            if min_price == None and max_price == None: # if both fields left empty
-                # results_rooms = RoomType.objects.filter(ensuite=isEnsuite, catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize)
+            # ------ hisham delete this once you're done -------------------
+            # if both fields left empty
+            if min_price is None and max_price is None:
+                # results_rooms = RoomType.objects.filter(ensuite=isEnsuite,
+                # catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize)
                 pass
-            elif max_price == None:
+            elif max_price is None:
                 query.append(Q(price__gte=min_price))
-                #results_rooms = RoomType.objects.filter(ensuite=isEnsuite, catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize, price__gte=min_price)
-            elif min_price == None:
+                # results_rooms = RoomType.objects.filter(ensuite=isEnsuite,
+                # catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize,
+                # price__gte=min_price)
+            elif min_price is None:
                 query.append(Q(price__lte=max_price))
-                #results_rooms = RoomType.objects.filter(ensuite=isEnsuite, catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize, price__lte=max_price)
-            elif min_price >= 0 and max_price >= 0 and min_price <= max_price: # if fields filled correctly
+                # results_rooms = RoomType.objects.filter(ensuite=isEnsuite,
+                # catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize,
+                # price__lte=max_price)
+            # if fields filled correctly
+            elif min_price >= 0 and max_price >= 0 and min_price <= max_price:
                 query.append(Q(price__range=(min_price, max_price)))
-                #results_rooms = RoomType.objects.filter(ensuite=isEnsuite, catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize, price__range=(min_price, max_price))
+                # results_rooms = RoomType.objects.filter(ensuite=isEnsuite,
+                # catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize,
+                # price__range=(min_price, max_price))
             else:
                 pass
-                #results_rooms = RoomType.objects.filter(ensuite=isEnsuite, catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize)
-            # -------------------------------------------------------------------------------------------
+                # results_rooms = RoomType.objects.filter(ensuite=isEnsuite,
+                # catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize)
+            # ---------------------------------------------------------------
 
             results_rooms = RoomType.objects.filter(*query)
 
@@ -98,12 +107,11 @@ def filter_view(request):
                 unique_halls.add(i.hall)
                 # only adds unique hall objects since unique_halls is a set
 
-
     else:
         form = FilterForm()
         for i in results_rooms:
             unique_halls.add(i.hall)
-    
+
     # add image attribute to access in template
     for hall in unique_halls:
         hall.photos = list(HallPhotos.objects.filter(hall=hall))
