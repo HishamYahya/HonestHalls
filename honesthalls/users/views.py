@@ -20,8 +20,8 @@ def register(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, f'Your account has been created! \
-                             You are now able to login.')
+            messages.success(request, f'Your account has been created!'
+                             'You are now able to login.')
             return redirect('login')
     else:
         form = UserRegisterForm()
@@ -53,8 +53,8 @@ def verify(request):
         messages.error(request, 'Account already verified.')
     else:
         domain = profile.user.email.split("@")[1]
-        if domain != "manchester.ac.uk" and \
-           domain != "postgrad.manchester.ac.uk" and \
+        if domain != "manchester.ac.uk" and
+           domain != "postgrad.manchester.ac.uk" and
            domain != "student.manchester.ac.uk":
             messages.error(request, 'Not a vaild university email account.')
         else:
@@ -62,15 +62,15 @@ def verify(request):
             mail_subject = "Verify your HonestHalls account."
             uid = urlsafe_base64_encode(force_bytes(profile.user.pk))
             token = verification_token.make_token(profile)
-            message = f'http://{current_site.domain}\
-                      /user/verify-complete/{uid}/{token}'
+            message = f'http://{current_site.domain}'
+                      '/user/verify-complete/{uid}/{token}'
 
             email = EmailMessage(
                         mail_subject, message, to=[profile.user.email]
             )
             email.send()
-            messages.success(request, 'A verification email has been sent\
-                             to your account.')
+            messages.success(request, 'A verification email has been sent'
+                             'to your account.')
     return redirect('profile')
 
 
