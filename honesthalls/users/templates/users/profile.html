@@ -14,7 +14,13 @@
             <i class="material-icons ml-3", style="vertical-align:text-bottom;">check</i>
           {% else %}
             <i class="material-icons ml-3", style="vertical-align:text-bottom;">cancel</i>
-            <a href="{% url 'verify' %}" class="btn btn-outline-info ml-4">Verify</a>
+            <a href="{% url 'verify' %}" class="btn btn-outline-info ml-4">
+              Verify
+            </a><br>
+            <a href="#" data-toggle="tooltip" title="Verification lets other users know that you are a current or past student at the University of Manchester, and that your reviews are therefore authentic.">
+              What is verification?
+            </a>
+
           {% endif %}
         </div>
       </div>
