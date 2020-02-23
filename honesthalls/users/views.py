@@ -57,7 +57,8 @@ def password_change(request):
                              'You can now log in with your new password.')
             return redirect('profile')
         else:
-            messages.error(request, f'Invalid data. Try again.')
+            messages.error(request, f'Please enter your current password, '
+                           'and make sure the "New password" fields match.')
             return redirect('password-change')
     else:
         form = PasswordChangeForm(user=request.user)
@@ -80,7 +81,12 @@ def verify(request):
             mail_subject = "Verify your HonestHalls account."
             uid = urlsafe_base64_encode(force_bytes(profile.user.pk))
             token = verification_token.make_token(profile)
-            message = f'http://{current_site.domain}/user/verify-complete/{uid}/{token}'
+
+            # Do not break the following string or the email will get cut off
+            message = f"Hi {profile.user.username},\n\n You're receiving this email because you requested to verify your HonestHalls account.\n\n Please click on the following link to do so: http://{current_site.domain}/user/verify-complete/{uid}/{token} \n\n This is an automated email, please do not reply to this directly.\n\n\n Regards,\n The HonestHalls Team."
+
+            # Old email:
+            # message = f'http://{current_site.domain}/user/verify-complete/{uid}/{token}'
 
             email = EmailMessage(
                         mail_subject, message, to=[profile.user.email]
@@ -95,7 +101,7 @@ def verify_complete(request, uidb64, token):
     uid = force_text(urlsafe_base64_decode(uidb64))
     profile = Profile.objects.get(user__pk=uid)
     if profile.verified is not True:
-        profile.verified is True
+        profile.verified = True
         profile.save()
         messages.success(request, 'Account has been verified.')
     return redirect('profile')
