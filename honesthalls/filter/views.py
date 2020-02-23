@@ -10,10 +10,8 @@ def filter_view(request):
     # the first time the page loads
     submitted = request.POST
 
-    # Initilize filters
-    # TODO: Add filter variables here
-    search = None
 
+    # TODO: results_rooms should only query the search results
     results_rooms = RoomType.objects.all()
     unique_halls = set()
     # A set is being used so it does not/cannot have duplicate halls
@@ -21,8 +19,6 @@ def filter_view(request):
     if(submitted):
         form = FilterForm(request.POST)
         if(form.is_valid()):
-            search = submitted.get('search')
-
             catered = form.cleaned_data.get('eat_options')
             basin_ensuite = form.cleaned_data.get('toilet_options')
             bedsize = form.cleaned_data.get('bed_options')
@@ -44,62 +40,7 @@ def filter_view(request):
             except:
                 max_price = None
 
-            # ------- BUILDING THE QUERY ----------
-            query = []
-            # we use this to build up a query
-            # this lets us choose the 'dont care' option
-            # example query:
-            # query = [Q(ensuite=isEnsuite), Q(catered=isCatered),
-            # Q(basin=hasBasin), Q(bedsize__iexact=bedsize)]
-
-            if basin_ensuite == 'basin':
-                query.append(Q(basin=True))
-            elif basin_ensuite == 'ensuite':
-                query.append(Q(ensuite=True))
-            elif basin_ensuite == 'neither':
-                query.append(Q(basin=False))
-                query.append(Q(ensuite=False))
-
-            if campus != 'na':
-                query.append(Q(hall__campus__iexact=campus))
-
-            if bedsize != 'na':
-                query.append(Q(bedsize__iexact=bedsize))
-
-            if catered == 'self':
-                query.append(Q(catered=False))
-            elif catered == 'catered':
-                query.append(Q(catered=True))
-
-            # TODO: need to add appending query for price filter
-
-            # ------ hisham delete this once you're done -------------------
-            # if both fields left empty
-            if min_price is None and max_price is None:
-                # results_rooms = RoomType.objects.filter(ensuite=isEnsuite,
-                # catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize)
-                pass
-            elif max_price is None:
-                query.append(Q(price__gte=min_price))
-                # results_rooms = RoomType.objects.filter(ensuite=isEnsuite,
-                # catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize,
-                # price__gte=min_price)
-            elif min_price is None:
-                query.append(Q(price__lte=max_price))
-                # results_rooms = RoomType.objects.filter(ensuite=isEnsuite,
-                # catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize,
-                # price__lte=max_price)
-            # if fields filled correctly
-            elif min_price >= 0 and max_price >= 0 and min_price <= max_price:
-                query.append(Q(price__range=(min_price, max_price)))
-                # results_rooms = RoomType.objects.filter(ensuite=isEnsuite,
-                # catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize,
-                # price__range=(min_price, max_price))
-            else:
-                pass
-                # results_rooms = RoomType.objects.filter(ensuite=isEnsuite,
-                # catered=isCatered, basin=hasBasin, bedsize__iexact=bedsize)
-            # ---------------------------------------------------------------
+            query = build_filter(catered, basin_ensuite, bedsize, campus, min_price, max_price)
 
             results_rooms = RoomType.objects.filter(*query)
 
@@ -121,7 +62,53 @@ def filter_view(request):
         'form': form,
         'results_rooms': results_rooms,
         'results_halls': unique_halls,
-        'search': search,
     }
 
     return render(request, 'filter/form.html', context)
+
+def build_filter(catered, basin_ensuite, bedsize, campus, min_price, max_price):
+    # ------- BUILDING THE QUERY ----------
+    query = []
+    # we use this to build up a query
+    # this lets us choose the 'dont care' option
+    # example query:
+    # query = [Q(ensuite=isEnsuite), Q(catered=isCatered),
+    # Q(basin=hasBasin), Q(bedsize__iexact=bedsize)]
+
+    if basin_ensuite == 'basin':
+        query.append(Q(basin=True))
+    elif basin_ensuite == 'ensuite':
+        query.append(Q(ensuite=True))
+    elif basin_ensuite == 'neither':
+        query.append(Q(basin=False))
+        query.append(Q(ensuite=False))
+
+    if campus != 'na':
+        query.append(Q(hall__campus__iexact=campus))
+
+    if bedsize != 'na':
+        query.append(Q(bedsize__iexact=bedsize))
+
+    if catered == 'self':
+        query.append(Q(catered=False))
+    elif catered == 'catered':
+        query.append(Q(catered=True))
+
+    # TODO: need to add appending query for price filter slider
+
+    # ------ hisham delete this once you're done -------------------
+    # if both fields left empty
+    if min_price is None and max_price is None:
+        pass
+    elif max_price is None:
+        query.append(Q(price__gte=min_price))
+    elif min_price is None:
+        query.append(Q(price__lte=max_price))
+    # if fields filled correctly
+    elif min_price >= 0 and max_price >= 0 and min_price <= max_price:
+        query.append(Q(price__range=(min_price, max_price)))
+    else:
+        pass
+    # ---------------------------------------------------------------
+    return query
+
