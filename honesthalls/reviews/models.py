@@ -55,7 +55,6 @@ class ReviewPhotos(models.Model):
         self._original_photo_path = self.photo_path
 
     def save(self, update_fields=None, **kwargs):
-        # TODO: Check for badly-made images (strange aspect ratio etc.)
         super().save(**kwargs)
         # If the photo_path field was updated
         if update_fields is None or 'photo_path' in update_fields:
