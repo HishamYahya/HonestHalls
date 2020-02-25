@@ -26,8 +26,6 @@ def write(request, hall_id):
     # get_card_data mainly adds main_photo
     hall = get_object_or_404(Hall, pk=hall_id)
     hall_data = hall.get_card_data()
-    # TODO: Verify whether the user is allowed to post this review.
-
     if request.method == 'POST':
         form = ReviewEditForm(request.POST)
         if form.is_valid():

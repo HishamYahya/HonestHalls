@@ -79,12 +79,12 @@
 </div>
 
 <div class="container">
-	<h1>Reviews
+	<p class="display-4 mt-4">Reviews
 		<a href="{% url 'review-write' hall.id %}"
 			class="btn btn-primary btn-lg float-right" role="button">
 			Write a Review
 		</a>
-	</h1>
+	</p>
 
 	<!-- Include the list of reviews. -->
 	{% include 'reviews/reviews.html' %}
