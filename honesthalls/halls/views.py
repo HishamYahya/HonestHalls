@@ -29,6 +29,7 @@ def hallpage(request, id):
     roomtypes = hall.roomtype_set.all()
     hallphotos = hall.hallphotos_set.all()
     context = {
+        'currentuser': request.user,
         'id': id,
         'hall': hall,
         'roomtypes': roomtypes,

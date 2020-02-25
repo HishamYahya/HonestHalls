@@ -40,6 +40,7 @@ def profile(request):
     else:
         form = UserUpdateForm(instance=request.user)
     context = {
+        'currentuser': request.user,
         'form': form,
         'profile': Profile.objects.get(user=request.user),
         'reviews': Review.objects.all().filter(user=request.user)

@@ -25,7 +25,7 @@
 	<div class="container-fluid pt-3 my-3 border border-info bg-white text-dark shadow-sm">
 	    <div class="row">
 			<!-- TODO: Check if this is actually the user -->
-			{% if True %}
+			{% if review.user == currentuser %}
 				<div class="col-sm-7">
 	    			<h5>{{review.user}}</h5>
 	    			<p style="font-size: 12px">Date Created: {{review.date_created.date}}</p>
