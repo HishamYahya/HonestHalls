@@ -25,7 +25,7 @@ def remove_unused_image(filename):
     os.remove(filename)
 
 
-def change_image_aspect_ratio(im, max_dim, aspect_ratio):
+def change_image_aspect_ratio(im, aspect_ratio):
     """
     Crops an image file to conform to a specified aspect ratio.
     The cropping is always centered.
