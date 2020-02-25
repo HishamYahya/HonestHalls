@@ -1,5 +1,6 @@
 {% load divide_filter %}
 {% load int_filter %}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +12,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="{% static 'reviews/js/main.js' %}"></script>
 </head>
 <body>
 {% for review in reviews %}
@@ -37,9 +39,9 @@
 	    			<a class="btn btn-xs btn-primary" href="{% url 'review-edit' review.id %}">
 						<i class="material-icons">edit</i>
 					</a>
-					<form class="d-inline" action="{% url 'review-delete' review.id %}" method="POST">
+					<form class="d-inline" id = "delete-form" action="{% url 'review-delete' review.id %}" method="POST">
 						{% csrf_token %}
-						<button class="btn btn-xs btn-danger" type="submit">
+						<button class="btn btn-xs btn-danger" type = "button" onclick="trial()">
 							<i class="material-icons">delete</i>
 						</button>
 					</form>

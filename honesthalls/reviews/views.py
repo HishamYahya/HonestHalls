@@ -1,5 +1,5 @@
 from django.shortcuts import (
-    render, reverse,
+    render, reverse, redirect,
     Http404, HttpResponse, HttpResponseRedirect
 )
 from django.utils import timezone
@@ -38,11 +38,7 @@ def write(request, hall_id):
             form.save()
             messages.success(
                 request, "Your review was saved successfully!")
-            # We then allow the user to edit the review futher.
-            return HttpResponseRedirect(reverse(
-                'review-edit',
-                kwargs={'review_id': form.instance.id}
-            ))
+            return redirect(reverse('profile'))
         else:
             messages.error(
                 request, "Please, correct any errors in the review form!")
