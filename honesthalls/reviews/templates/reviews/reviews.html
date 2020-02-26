@@ -116,37 +116,81 @@
 		
 	</div>
 	-->
+	{% with noise=review.noise|convert_to_int %}
+	{% with social=review.social_life|convert_to_int %}
+	{% with facilities=review.facilities|convert_to_int %}
+	{% with cleanliness=review.cleanliness|convert_to_int %}
 
-<div class="container-fluid pt-3 my-3 border border-info bg-white text-dark shadow-sm">
-	<div class = "row">
-		<div class = "col">
-			<table class="table table-borderless" style="max-width:350px;">
-				<tbody>
-					<tr>
-						<td><h5>Noise:</h5></td>
-						<td ><input class="hh-rating-input" value="{{review.noise}}" readonly></td>
-					</tr>
-					<tr>
-						<td><h5>Social:</h5></td>
-						<td><input class="hh-rating-input" value="{{review.social_life}}" readonly></td>
-					</tr>
-					<tr>
-						<td><h5>Cleanliness:</h5></td>
-						<td><input class="hh-rating-input" value="{{review.cleanliness}}" readonly></td>
-					</tr>
-					<tr>
-						<td><h5>Facilities:</h5></td>
-						<td><input class="hh-rating-input" value="{{review.facilities}}" readonly></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="col-7">
-			<h5 class="mt-3">{{review.user.first_name}} {{review.user.last_name}}</h5>
-		</div>
-	</div>	
-</div>
+	{% with total=noise|add:facilities|add:social|add:cleanliness %}
+	{% with average=total|divide_filter %}
 
+	<div class="container-fluid pt-3 my-3 border border-info bg-white text-dark shadow-sm">
+		<div class = "row">
+			<div class = "col">
+				<table class="table table-borderless" style="max-width:350px;">
+					<tbody>
+						<tr>
+							<td><h5>Noise:</h5></td>
+							<td ><input class="hh-rating-input" value="{{review.noise}}" readonly></td>
+						</tr>
+						<tr>
+							<td><h5>Social:</h5></td>
+							<td><input class="hh-rating-input" value="{{review.social_life}}" readonly></td>
+						</tr>
+						<tr>
+							<td><h5>Cleanliness:</h5></td>
+							<td><input class="hh-rating-input" value="{{review.cleanliness}}" readonly></td>
+						</tr>
+						<tr>
+							<td><h5>Facilities:</h5></td>
+							<td><input class="hh-rating-input" value="{{review.facilities}}" readonly></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-8">
+				<div class="row">
+					<div class="col-5">
+						<center>
+							{% if review.anonymous == True %}
+								<h5 class="mt-3">Anonymous</h5>
+							{% else %}
+								<h5 class="mt-3">{{review.user.first_name}} {{review.user.last_name}}</h5>
+							{% endif %}
+							<p style="font-size: 12px">Date Created: {{review.date_created.date}}</p>
+						</center>
+					</div>
+					<div class="col ml-3">	
+						<h5 class="mt-2"><h5 class="ml-2">Average Rating</h5>
+						<input class="hh-rating-input" value="{{average}}" readonly></h5>
+					</div>
+					<div class="col-sm-3 mt-3 ml-1">
+						{% if review.user == currentuser %}
+							<a class="btn btn-xs btn-primary" href="{% url 'review-edit' review.id %}">
+								<i class="material-icons">edit</i>
+							</a>
+							<form class="d-inline" id = "delete-form" action="{% url 'review-delete' review.id %}" method="POST">
+								{% csrf_token %}
+								<button class="btn btn-xs btn-danger ml-3" type = "button" onclick="trial()">
+									<i class="material-icons">delete</i>
+								</button>
+							</form>
+						{% endif %}
+					</div>
+				</div>
+				<p class="mt-3 ml-3 mr-3 mb-3"><i>
+					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla bibendum erat id nisi vulputate, sed congue sapien tempor. Mauris turpis odio, placerat quis quam a, posuere viverra ligula. Sed eleifend, est in iaculis viverra, lacus odio accumsan nisi, ut convallis orci orci ultricies mi. Vestibulum et rhoncus lectus, luctus pharetra enim. Pellentesque pulvinar commodo massa, nec elementum orci vehicula consectetur. Mauris pharetra a velit nec molestie. Nulla ultrices elit sit amet malesuada blandit."</i>
+				</p>
+			</div>
+		</div>	
+	</div>
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
 {% endfor %}
 </body>
 </html>
