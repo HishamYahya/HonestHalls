@@ -10,18 +10,16 @@ def filter_view(request):
     # the first time the page loads
     submitted = request.POST
 
-    ########## String passed from search
+    # String passed from search
     search_string = request.GET.get('searchbar')
 
-
     # TODO: results_rooms should only query the search results
-    if (search_string==None):
+    if (search_string is None):
         results_rooms = RoomType.objects.all()
     else:
         results_rooms = RoomType.objects.all()
         # TODO: Change so it only queries search results
-    
-    
+
     unique_halls = set()
     # A set is being used so it does not/cannot have duplicate halls
 
@@ -49,12 +47,12 @@ def filter_view(request):
             except:
                 max_price = None
 
-            query = build_filter(catered, basin_ensuite, bedsize, campus, min_price, max_price)
+            query = build_filter(catered, basin_ensuite, bedsize, campus,
+                                 min_price, max_price)
             results_rooms = results_rooms.filter(*query)
 
     else:
         form = FilterForm()
-    
 
     for i in results_rooms:
         unique_halls.add(i.hall)
@@ -64,7 +62,7 @@ def filter_view(request):
     for hall in unique_halls:
         hall.photos = list(HallPhotos.objects.filter(hall=hall))
 
-    # Pass the halls data and the filters to the template form.html
+    # Pass the halls data and filters to the template form.html
     context = {
         'form': form,
         'results_rooms': results_rooms,
@@ -74,7 +72,8 @@ def filter_view(request):
     return render(request, 'filter/form.html', context)
 
 
-def build_filter(catered, basin_ensuite, bedsize, campus, min_price, max_price):
+def build_filter(catered, basin_ensuite, bedsize, campus,
+                 min_price, max_price):
     # ------- BUILDING THE QUERY ----------
     query = []
     # we use this to build up a query
@@ -119,4 +118,3 @@ def build_filter(catered, basin_ensuite, bedsize, campus, min_price, max_price):
         pass
     # ---------------------------------------------------------------
     return query
-
