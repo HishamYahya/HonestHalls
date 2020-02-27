@@ -180,6 +180,11 @@ The button to close the preview.
 .hh-preview-dialog-close:active {
 	background-color: rgba(0, 0, 0, 0.6);
 }
+
+/* Previewable images have maginfying glass cursor. */
+[data-hh-image-preview] {
+	cursor: zoom-in;
+}
 /** END ImagePreview **/
 
 /** BEGIN LightSlider **/
