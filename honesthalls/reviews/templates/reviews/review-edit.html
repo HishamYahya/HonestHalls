@@ -63,11 +63,7 @@
           required id="roomtype{{roomtype.id}}"
           {% if form.roomtype.value == roomtype.id %} checked {% endif %}>
         <label class="form-check-label" for="roomtype{{roomtype.id}}">
-          <!--
-            We are generating this human-friendly text so that
-            we don't have to resort to <table>s for radio button selection.
-          -->
-          {{roomtype}}
+          {{ roomtype.formatted_string }}
         </label>
       </div>
       {% endfor  %}
@@ -212,14 +208,15 @@
 
         function updateOverallRating() {
           let total = 0;
+          // Sum all the individual ratings.
           $sourceRatings.each(function () {
             total += $(this).val() | 0;
           });
 
           const newRating = total / $sourceRatings.length;
-          // The rating bars only support integers.
+          // Set the rating using the attached $rating property.
           $overallRating[0].$rating.setRating(newRating);
-          // But we still show two fraction digits in the text.
+          // Show value with two decimal digits.
           $overallRatingText.text(newRating.toFixed(2));
         }
 

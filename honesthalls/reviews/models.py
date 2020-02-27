@@ -55,6 +55,10 @@ class ReviewPhotos(models.Model):
         self._original_photo_path = self.photo_path
 
     def save(self, update_fields=None, **kwargs):
+        """
+        Saves the model to the DB. Processes the photo
+        if needed and creates a thumbnail file with a specified suffix.
+        """
         super().save(**kwargs)
         # If the photo_path field was updated
         if update_fields is None or 'photo_path' in update_fields:

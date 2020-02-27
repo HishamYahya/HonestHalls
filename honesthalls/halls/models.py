@@ -65,6 +65,10 @@ class HallPhotos(models.Model):
             pass
 
     def save(self, update_fields=None, **kwargs):
+        """
+        Saves the model to the DB. Processes the photo
+        if needed and creates a thumbnail file with a specified suffix.
+        """
         super().save(**kwargs)
         # If the photo_path field was updated
         if update_fields is None or 'photo_path' in update_fields:
@@ -99,8 +103,9 @@ class RoomType(models.Model):
     def formatted_price(self):
         return "%.2f" % (self.price / 100)
 
-    def __str__(self):
-        text = (
+    @property
+    def formatted_string(self):
+        return (
             yesno(self.catered, "Catered", "Non-catered") +
             yesno(self.ensuite, "ensuite", "") +
             " room " +
@@ -112,4 +117,6 @@ class RoomType(models.Model):
             self.formatted_price +
             "/week"
         )
-        return text
+
+    def __str__(self):
+        return self.formatted_string
