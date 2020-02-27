@@ -34,8 +34,7 @@
             </li>
         </ul>
     </div>
-    <form method="post" action="search.views/searchbar">
-        {% csrf_token %}
+    <form method="GET" action="/filter">
         <input type="text" name="searchbar" id="searchbar" placeholder="Search by hall name.">
         <button class="searchbar" ><a href="{% url 'filter-page' %}">Search</a></button>
     </form>

@@ -4,11 +4,15 @@ from .forms import *
 from halls.models import Hall, RoomType, HallPhotos
 
 
-def filter_view(request):
+def filter_view(request, search=None):
     # request.POST returns null if the form hasn't been submitted yet
     # It's used to tell the template to show all halls
     # the first time the page loads
     submitted = request.POST
+
+    ########## String passed from search
+    search_string = request.GET.get('searchbar')
+    print(search_string)
 
 
     # TODO: results_rooms should only query the search results
