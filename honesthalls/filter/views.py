@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.db.models import Q
 from .forms import *
 from halls.models import Hall, RoomType, HallPhotos
+from difflib import SequenceMatcher
 
 
 def filter_view(request):
@@ -17,7 +18,7 @@ def filter_view(request):
     if (search_string is None):
         results_rooms = RoomType.objects.all()
     else:
-        results_rooms = RoomType.objects.all()
+        results_rooms = RoomType.objects.filter(Q(hall__name__icontains = search_string))
         # TODO: Change so it only queries search results
 
     unique_halls = set()
