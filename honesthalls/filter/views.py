@@ -4,7 +4,7 @@ from .forms import *
 from halls.models import Hall, RoomType, HallPhotos
 
 
-def filter_view(request, search=None):
+def filter_view(request):
     # request.POST returns null if the form hasn't been submitted yet
     # It's used to tell the template to show all halls
     # the first time the page loads
@@ -12,11 +12,16 @@ def filter_view(request, search=None):
 
     ########## String passed from search
     search_string = request.GET.get('searchbar')
-    print(search_string)
 
 
     # TODO: results_rooms should only query the search results
-    results_rooms = RoomType.objects.all()
+    if (search_string==None):
+        results_rooms = RoomType.objects.all()
+    else:
+        results_rooms = RoomType.objects.all()
+        # TODO: Change so it only queries search results
+    
+    
     unique_halls = set()
     # A set is being used so it does not/cannot have duplicate halls
 
@@ -45,17 +50,15 @@ def filter_view(request, search=None):
                 max_price = None
 
             query = build_filter(catered, basin_ensuite, bedsize, campus, min_price, max_price)
-
-            results_rooms = RoomType.objects.filter(*query)
-
-            for i in results_rooms:
-                unique_halls.add(i.hall)
-                # only adds unique hall objects since unique_halls is a set
+            results_rooms = results_rooms.filter(*query)
 
     else:
         form = FilterForm()
-        for i in results_rooms:
-            unique_halls.add(i.hall)
+    
+
+    for i in results_rooms:
+        unique_halls.add(i.hall)
+        # only adds unique hall objects since unique_halls is a set
 
     # add image attribute to access in template
     for hall in unique_halls:
@@ -70,11 +73,12 @@ def filter_view(request, search=None):
 
     return render(request, 'filter/form.html', context)
 
+
 def build_filter(catered, basin_ensuite, bedsize, campus, min_price, max_price):
     # ------- BUILDING THE QUERY ----------
     query = []
     # we use this to build up a query
-    # this lets us choose the 'dont care' option
+    # this let's us choose the 'dont care' option
     # example query:
     # query = [Q(ensuite=isEnsuite), Q(catered=isCatered),
     # Q(basin=hasBasin), Q(bedsize__iexact=bedsize)]
@@ -100,7 +104,7 @@ def build_filter(catered, basin_ensuite, bedsize, campus, min_price, max_price):
 
     # TODO: need to add appending query for price filter slider
 
-    # ------ hisham delete this once you're done -------------------
+    # ------------------ amend if slider is added -------------------
     # if both fields left empty
     if min_price is None and max_price is None:
         pass
