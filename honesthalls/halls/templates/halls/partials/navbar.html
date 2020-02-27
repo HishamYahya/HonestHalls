@@ -34,6 +34,11 @@
             </li>
         </ul>
     </div>
+    <form method="post" action="search.views/searchbar">
+        {% csrf_token %}
+        <input type="text" name="searchbar" id="searchbar" placeholder="Search by hall name.">
+        <button class="searchbar" ><a href="{% url 'filter-page' %}">Search</a></button>
+    </form>
 </nav>
 
 <!--TODO: Login not aligned, fix the navbar dimensions-->

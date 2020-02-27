@@ -1,11 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import redirect
+from halls.models import Hall
 from .forms import SearchForm
 # Create your views here.
 
 
-def search(request):
-    form = SearchForm()
-    context = {
-        'form': form
-    }
-    return render(request, 'search/search.html', context)
+def searchbar(request):
+    request.session['user_input'] = request.get('searchbar')
+    return redirect(request, '/filter')
