@@ -3,7 +3,7 @@ from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm
-from halls.models import Review
+from reviews.models import Review
 from .models import Profile
 
 from django.contrib.sites.shortcuts import get_current_site
@@ -19,7 +19,7 @@ def register(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
             messages.success(request, f'Your account has been created!'
                              'You are now able to login.')
             return redirect('login')
@@ -63,7 +63,7 @@ def password_change(request):
             return redirect('password-change')
     else:
         form = PasswordChangeForm(user=request.user)
-        return render(request, 'users/password_change.html', {'form': form })
+        return render(request, 'users/password_change.html', {'form': form})
 
 
 @login_required
@@ -90,12 +90,13 @@ def verify(request):
             # message = f'http://{current_site.domain}/user/verify-complete/{uid}/{token}'
 
             email = EmailMessage(
-                        mail_subject, message, to=[profile.user.email]
+                mail_subject, message, to=[profile.user.email]
             )
             email.send()
-            messages.success(request, 'A verification email has been sent '
+
+            messages.success(request, 'A verification email has been sent'
                              'to your account.')
-    return redirect('profile')
+            return redirect('profile')
 
 
 def verify_complete(request, uidb64, token):

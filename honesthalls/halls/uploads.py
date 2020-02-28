@@ -3,6 +3,30 @@ from django.conf import settings
 from PIL import Image
 from math import ceil, floor
 
+THUMBNAIL_SUFFIX = '_thumb'
+
+
+def get_thumbnail_filename(filename):
+    bare_filename, ext = os.path.splitext(filename)
+    dest_filename = bare_filename + THUMBNAIL_SUFFIX + ext
+    return dest_filename
+
+
+def create_thumbnail(filename):
+    """
+    Creates a thumbnail for the provided image file.
+    """
+    dest_filename = get_thumbnail_filename(filename)
+    im = Image.open(filename)
+    # Crop the image to get desired aspect ratio
+    im = change_image_aspect_ratio(im, settings.MEDIA_IMAGE_ASPECT_RATIO)
+    # MEDIA_IMAGE_MAX_SIZE must be a float (eg. 1.33 for 4:3)
+    max_size = settings.MEDIA_THUMB_MAX_SIZE
+    # thumbnail() works in-place
+    im.thumbnail((max_size, max_size), Image.NEAREST)
+    # Overwrite the input image file.
+    im.save(dest_filename, 'JPEG', quality=settings.MEDIA_IMAGE_QUALITY)
+
 
 def process_uploaded_image(filename):
     """

@@ -193,7 +193,7 @@
                 <i class="material-icons">add_a_photo</i>
           </a>
           <br>
-        {% endif %} 
+        {% endif %}
 
         <button type="submit" class="btn btn-primary mt-3 mb-4">Submit</button>
 
@@ -232,9 +232,9 @@
               });
 
               const newRating = total / $sourceRatings.length;
-              // The rating bars only support integers.
+              // Set the rating using the attached $rating property.
               $overallRating[0].$rating.setRating(newRating);
-              // But we still show two fraction digits in the text.
+              // Show value with two decimal digits.
               $overallRatingText.text(newRating.toFixed(2));
             }
 
@@ -247,7 +247,7 @@
         });
       </script>
     {% else %}
-      <p class="mt-4">You cannot write a review as you have not verified with a Univeristy of Manchester email address.</p> 
+      <p class="mt-4">You cannot write a review as you have not verified with a Univeristy of Manchester email address.</p>
       <a href="{% url 'profile' %}">Click here to verify your account.</a>
     {% endif %}
   </div>
