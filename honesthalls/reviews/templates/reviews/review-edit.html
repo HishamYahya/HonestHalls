@@ -2,241 +2,253 @@
 {% block title %}Review of {{ hall.name }}{% endblock %}
 <!-- -------------------------------- -->
 {% block content %}
-<div class="container">
+  <div class="container">
+    {% if profile.verified == True %}
 
-  <form method="POST">
+      <form method="POST">
 
-    {% csrf_token %}
+        {% csrf_token %}
 
-    <!-- mode specifies whether we are editing an existing review or not -->
-    {% if mode == 'WRITE_NEW' %}
-    <h3>Write a Review</h3>
-    {% else %}
-    <h3>Edit your Review</h3>
-    {% endif %}
+        <!-- mode specifies whether we are editing an existing review or not -->
+        {% if mode == 'WRITE_NEW' %}
+        <h3>Write a Review</h3>
+        {% else %}
+        <h3>Edit your Review</h3>
+        {% endif %}
 
-    <h6 class="my-3">
-      <i class="material-icons hh-material-icon-center">account_circle</i>
-      {{ user.username }} ({{ user.first_name }} {{ user.last_name }})
-    </h6>
+        <h6 class="my-3">
+          <i class="material-icons hh-material-icon-center">account_circle</i>
+          {{ profile.user.username }} ({{ profile.user.first_name }} {{ profile.user.last_name }})
+        </h6>
 
-    <!-- If editing and existing review, show date information -->
-    {% if mode == 'CHANGE_EXISTING' %}
-    <p class="text-muted">
-      Review originally posted on <b>{{ date_created|date:"M d, Y" }}</b>
-      {% if date_created != date_modified %}
-      and later modified on <b>{{ date_modified|date:"M d, Y" }}</b>
-      {% endif %}
-    </p>
-    {% endif %}
-
-    <div class="card mb-3" style="max-width: 540px;">
-      <div class="row no-gutters">
-        <div class="col-md-4">
-          {% if hall.main_photo %}
-          <img class="card-img" src="{{ hall.main_photo.photo_path.url }}"
-            alt="{{ hall.main_photo.photo_desc }}">
-          {% else %}
-          <!-- There are no images for this hall -->
-          <div class="card-img-top h6 m-0 hh-no-image-placeholder">
-            <h6 class="font-weight-normal hh-no-image-placeholder__content">
-              No image available
-            </h6>
-          </div>
+        <!-- If editing and existing review, show date information -->
+        {% if mode == 'CHANGE_EXISTING' %}
+        <p class="text-muted">
+          Review originally posted on <b>{{ date_created|date:"M d, Y" }}</b>
+          {% if date_created != date_modified %}
+          and later modified on <b>{{ date_modified|date:"M d, Y" }}</b>
           {% endif %}
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h5 class="card-title">{{ hall.name }}</h5>
-            <p class="card-text">{{ hall.text }}</p>
+        </p>
+        {% endif %}
+
+        <div class="card mb-3" style="max-width: 540px;">
+          <div class="row no-gutters">
+            <div class="col-md-4">
+              {% if hall.main_photo %}
+              <img class="card-img" src="{{ hall.main_photo.photo_path.url }}"
+                alt="{{ hall.main_photo.photo_desc }}">
+              {% else %}
+              <!-- There are no images for this hall -->
+              <div class="card-img-top h6 m-0 hh-no-image-placeholder">
+                <h6 class="font-weight-normal hh-no-image-placeholder__content">
+                  No image available
+                </h6>
+              </div>
+              {% endif %}
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{ hall.name }}</h5>
+                <p class="card-text">{{ hall.text }}</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="form-group">
-      <h5>What type of room was your stay in?</h5>
-      {% for roomtype in roomtypes %}
-      <div class="form-check">
-        <input name="roomtype" class="form-check-input" type="radio"
-          value="{{roomtype.id}}" aria-describedby="roomtype{{roomtype.id}}"
-          required id="roomtype{{roomtype.id}}"
-          {% if form.roomtype.value == roomtype.id %} checked {% endif %}>
-        <label class="form-check-label" for="roomtype{{roomtype.id}}">
-          <!--
-            We are generating this human-friendly text so that
-            we don't have to resort to <table>s for radio button selection.
-          -->
-          {{roomtype.catered|yesno:"Catered,Non-catered"}}
-          {{roomtype.ensuite|yesno:"ensuite,"}} room
-          {{roomtype.basin|yesno:"with basin and,with"}}
-          {{roomtype.bedsize|lower}} bed for
-          {{roomtype.contract_length}} weeks at
-          £{{roomtype.formatted_price}}/week
-        </label>
-      </div>
-      {% endfor  %}
-      <small class="form-text text-muted">
-        {{ form.roomtype.errors }}
-      </small>
-    </div>
+        <div class="form-group">
+          <h5>What type of room was your stay in?</h5>
+          {% for roomtype in roomtypes %}
+          <div class="form-check">
+            <input name="roomtype" class="form-check-input" type="radio"
+              value="{{roomtype.id}}" aria-describedby="roomtype{{roomtype.id}}"
+              required id="roomtype{{roomtype.id}}"
+              {% if form.roomtype.value == roomtype.id %} checked {% endif %}>
+            <label class="form-check-label" for="roomtype{{roomtype.id}}">
+              <!--
+                We are generating this human-friendly text so that
+                we don't have to resort to <table>s for radio button selection.
+              -->
+              {{roomtype.catered|yesno:"Catered,Non-catered"}}
+              {{roomtype.ensuite|yesno:"ensuite,"}} room
+              {{roomtype.basin|yesno:"with basin and,with"}}
+              {{roomtype.bedsize|lower}} bed for
+              {{roomtype.contract_length}} weeks at
+              £{{roomtype.formatted_price}}/week
+            </label>
+          </div>
+          {% endfor  %}
+          <small class="form-text text-muted">
+            {{ form.roomtype.errors }}
+          </small>
+        </div>
 
 
-    <h5>How would you rate your stay?</h5>
-    <div class="row">
+        <h5>How would you rate your stay?</h5>
+        <div class="row">
 
-      <div class="form-group col-md-6">
-        <label for="cleanlinessRating">Cleanliness</label>
-        <!-- These inputs get replaced by JS with rating bars. -->
-        <input type="number" name="cleanliness"
-          class="form-control hh-rating-input" id="cleanlinessRating"
-          value="{{form.cleanliness.value}}" required
-          aria-describedby="cleanlinessHelp">
-        <small id="cleanlinessHelp" class="form-text text-muted">
-          How clean are the rooms and common areas?
-          {{ form.cleanliness.errors }}
-        </small>
-      </div>
+          <div class="form-group col-md-6">
+            <label for="cleanlinessRating">Cleanliness</label>
+            <!-- These inputs get replaced by JS with rating bars. -->
+            <input type="number" name="cleanliness"
+              class="form-control hh-rating-input" id="cleanlinessRating"
+              value="{{form.cleanliness.value}}" required
+              aria-describedby="cleanlinessHelp">
+            <small id="cleanlinessHelp" class="form-text text-muted">
+              How clean are the rooms and common areas?
+              {{ form.cleanliness.errors }}
+            </small>
+          </div>
 
-      <div class="form-group col-md-6">
-        <label for="socialLifeRating">Social Life</label>
-        <!-- These inputs get replaced by JS with rating bars. -->
-        <input type="number" name="social_life" class="form-control hh-rating-input
-            {{ form.social_life.errors|yesno:"is-invalid," }}"
-          id="socialLifeRating" value="{{form.social_life.value}}" required
-          aria-describedby="socialLifeHelp">
-        <small id="socialLifeHelp" class="form-text text-muted">
-          How is the social life?
-          {{ form.social_life.errors }}
-        </small>
-      </div>
+          <div class="form-group col-md-6">
+            <label for="socialLifeRating">Social Life</label>
+            <!-- These inputs get replaced by JS with rating bars. -->
+            <input type="number" name="social_life" class="form-control hh-rating-input
+                {{ form.social_life.errors|yesno:"is-invalid," }}"
+              id="socialLifeRating" value="{{form.social_life.value}}" required
+              aria-describedby="socialLifeHelp">
+            <small id="socialLifeHelp" class="form-text text-muted">
+              How is the social life?
+              {{ form.social_life.errors }}
+            </small>
+          </div>
 
-      <div class="form-group col-md-6">
-        <label for="noiseRating">Noise</label>
-        <!-- These inputs get replaced by JS with rating bars. -->
-        <input type="number" name="noise" class="form-control hh-rating-input
-        {{ form.noise.errors|yesno:"is-invalid," }}" id="noiseRating"
-          value="{{form.noise.value}}" required aria-describedby="noiseHelp">
-        <small id="noiseHelp" class="form-text text-muted">
-          How quiet is it at nighttime?
-          {{ form.noise.errors }}
-        </small>
-      </div>
+          <div class="form-group col-md-6">
+            <label for="noiseRating">Noise</label>
+            <!-- These inputs get replaced by JS with rating bars. -->
+            <input type="number" name="noise" class="form-control hh-rating-input
+            {{ form.noise.errors|yesno:"is-invalid," }}" id="noiseRating"
+              value="{{form.noise.value}}" required aria-describedby="noiseHelp">
+            <small id="noiseHelp" class="form-text text-muted">
+              How quiet is it at nighttime?
+              {{ form.noise.errors }}
+            </small>
+          </div>
 
-      <div class="form-group col-md-6">
-        <label for="facilitiesRating">Facilities</label>
-        <!-- These inputs get replaced by JS with rating bars. -->
-        <input type="number" name="facilities" class="form-control hh-rating-input
-          {{ form.facilities.errors|yesno:"is-invalid," }}"
-          id="facilitiesRating" value="{{form.facilities.value}}" required
-          aria-describedby="facilitiesHelp">
-        <small id="facilitiesHelp" class="form-text text-muted">
-          How good/bad are the facilities?
-          {{ form.facilities.errors }}
-        </small>
-      </div>
+          <div class="form-group col-md-6">
+            <label for="facilitiesRating">Facilities</label>
+            <!-- These inputs get replaced by JS with rating bars. -->
+            <input type="number" name="facilities" class="form-control hh-rating-input
+              {{ form.facilities.errors|yesno:"is-invalid," }}"
+              id="facilitiesRating" value="{{form.facilities.value}}" required
+              aria-describedby="facilitiesHelp">
+            <small id="facilitiesHelp" class="form-text text-muted">
+              How good/bad are the facilities?
+              {{ form.facilities.errors }}
+            </small>
+          </div>
 
-      <div class="form-group col-md-12 hh-not-allowed">
-        <!-- The overall rating is calculated by the script below. -->
-        <label class="h5" for="overallRating">Overall Rating (<span
-            id="overallRatingText"></span>/5.00)</label>
-        <!-- We don't want the user to be able to change this. -->
-        <input type="number" class="form-control hh-rating-input"
-          id="overallRating" readonly aria-describedby="overallHelp">
-        <small id="overallHelp" class="form-text text-muted">
-          Computed by the individual ratings.
-        </small>
-      </div>
+          <div class="form-group col-md-12 hh-not-allowed">
+            <!-- The overall rating is calculated by the script below. -->
+            <label class="h5" for="overallRating">Overall Rating (<span
+                id="overallRatingText"></span>/5.00)</label>
+            <!-- We don't want the user to be able to change this. -->
+            <input type="number" class="form-control hh-rating-input"
+              id="overallRating" readonly aria-describedby="overallHelp">
+            <small id="overallHelp" class="form-text text-muted">
+              Computed by the individual ratings.
+            </small>
+          </div>
 
-    </div>
+        </div>
 
-    <div class="form-group">
-      <label for="reviewText">Write your review</label>
-      <textarea name="text" class="form-control
-      {{ form.text.errors|yesno:"is-invalid," }}" id="reviewText" rows="6"
-        placeholder="What did you like or dislike?" minlength="50"
-        maxlength="2500" required
-        aria-describedby="reviewHelp">{% if form.text.value is not None %}{{ form.text.value }}{% endif %}</textarea>
-      <small id="reviewHelp" class="form-text text-muted">
-        How would you summarise your stay at {{ hall.name }}?
-        <span id="reviewCharCount"></span> out of 2500 characters
-        {{ form.text.errors }}
-      </small>
-    </div>
+        <div class="form-group">
+          <label for="reviewText">Write your review</label>
+          <textarea name="text" class="form-control
+          {{ form.text.errors|yesno:"is-invalid," }}" id="reviewText" rows="6"
+            placeholder="What did you like or dislike?" minlength="50"
+            maxlength="2500" required
+            aria-describedby="reviewHelp">{% if form.text.value is not None %}{{ form.text.value }}{% endif %}</textarea>
+          <small id="reviewHelp" class="form-text text-muted">
+            How would you summarise your stay at {{ hall.name }}?
+            <span id="reviewCharCount"></span> out of 2500 characters
+            {{ form.text.errors }}
+          </small>
+        </div>
 
-    <div class="form-group form-check">
-      <input name="anonymous" class="form-check-input" type="checkbox"
-        id="anonymousCheck" aria-describedby="anonymousHelp"
-        {{ form.anonymous.value|yesno:"checked," }}>
-      <label class="form-check-label" for="anonymousCheck">
-        Post anonymously?
-      </label>
-      <small id="anonymousHelp" class="form-text text-muted">
-        Do you want people to be able to see your name?
-      </small>
-    </div>
+        <div class="form-group form-check">
+          <input name="anonymous" class="form-check-input" type="checkbox"
+            id="anonymousCheck" aria-describedby="anonymousHelp"
+            {{ form.anonymous.value|yesno:"checked," }}>
+          <label class="form-check-label" for="anonymousCheck">
+            Post anonymously?
+          </label>
+          <small id="anonymousHelp" class="form-text text-muted">
+            Do you want people to be able to see your name?
+          </small>
+        </div>
 
-    <div class="form-group form-check">
-      <input class="form-check-input" type="checkbox"
-        id="termsAndConditionsCheck" required>
-      <label class="form-check-label" for="termsAndConditionsCheck">
-        <!-- TODO: Link to actual Privacy agreement  -->
-        I agree to the <a href="#">Privacy agreement</a>
-      </label>
-    </div>
+        <div class="form-group form-check">
+          <input class="form-check-input" type="checkbox"
+            id="termsAndConditionsCheck" required>
+          <label class="form-check-label" for="termsAndConditionsCheck">
+            <!-- TODO: Link to actual Privacy agreement  -->
+            I agree to the <a href="#">Privacy agreement</a>
+          </label>
+        </div>
 
-    <button type="submit" class="btn btn-primary mt-3">Submit</button>
 
-  </form>
+        {% if mode != 'WRITE_NEW' %}
+          <a class="btn btn-primary" href="{% url 'review-photos' review.id %}">
+                Review Photos
+                <i class="material-icons">add_a_photo</i>
+          </a>
+          <br>
+        {% endif %} 
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      (function initializeCharCount() {
-        /**
-         * Updates the char count for the textarea whenever the text changes
-         */
-        const $reviewText = $('#reviewText');
-        const $reviewCharCount = $("#reviewCharCount");
+        <button type="submit" class="btn btn-primary mt-3 mb-4">Submit</button>
 
-        function updateCharCount() {
-          const length = $reviewText.val().length;
-          $reviewCharCount.text(length);
-        }
+      </form>
 
-        $reviewText.on('keypress keyup', updateCharCount);
-        updateCharCount();
-      })(); // Self-invoked
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          (function initializeCharCount() {
+            /**
+             * Updates the char count for the textarea whenever the text changes
+             */
+            const $reviewText = $('#reviewText');
+            const $reviewCharCount = $("#reviewCharCount");
 
-      (function initializeRatings() {
-        /**
-         * Updates the overall rating whenever one of the other ratings change.
-         */
-        const $overallRating = $('#overallRating');
-        const $overallRatingText = $('#overallRatingText');
-        const $sourceRatings = $('#cleanlinessRating, #socialLifeRating, #facilitiesRating, #noiseRating');
+            function updateCharCount() {
+              const length = $reviewText.val().length;
+              $reviewCharCount.text(length);
+            }
 
-        function updateOverallRating() {
-          let total = 0;
-          $sourceRatings.each(function () {
-            total += $(this).val() | 0;
-          });
+            $reviewText.on('keypress keyup', updateCharCount);
+            updateCharCount();
+          })(); // Self-invoked
 
-          const newRating = total / $sourceRatings.length;
-          // The rating bars only support integers.
-          $overallRating[0].$rating.setRating(newRating);
-          // But we still show two fraction digits in the text.
-          $overallRatingText.text(newRating.toFixed(2));
-        }
+          (function initializeRatings() {
+            /**
+             * Updates the overall rating whenever one of the other ratings change.
+             */
+            const $overallRating = $('#overallRating');
+            const $overallRatingText = $('#overallRatingText');
+            const $sourceRatings = $('#cleanlinessRating, #socialLifeRating, #facilitiesRating, #noiseRating');
 
-        $sourceRatings.each(function () {
-          $(this).on('change', updateOverallRating);
+            function updateOverallRating() {
+              let total = 0;
+              $sourceRatings.each(function () {
+                total += $(this).val() | 0;
+              });
+
+              const newRating = total / $sourceRatings.length;
+              // The rating bars only support integers.
+              $overallRating[0].$rating.setRating(newRating);
+              // But we still show two fraction digits in the text.
+              $overallRatingText.text(newRating.toFixed(2));
+            }
+
+            $sourceRatings.each(function () {
+              $(this).on('change', updateOverallRating);
+            });
+
+            updateOverallRating();
+          })(); // Self-invoked
         });
-
-        updateOverallRating();
-      })(); // Self-invoked
-    });
-  </script>
-
-</div>
+      </script>
+    {% else %}
+      <p class="mt-4">You cannot write a review as you have not verified with a Univeristy of Manchester email address.</p> 
+      <a href="{% url 'profile' %}">Click here to verify your account.</a>
+    {% endif %}
+  </div>
 {% endblock content %}
-<!-- -------------------------------- -->

@@ -168,3 +168,5 @@ EMAIL_USE_TLS = True
 # -- don't forget to hide in environment variables when deploying!!! --
 EMAIL_HOST_USER = 'honesthalls@gmail.com'
 EMAIL_HOST_PASSWORD = 'F1rstPr0ject!'
+
+

@@ -117,3 +117,25 @@ class ReviewPhotos(models.Model):
     photo_desc = models.TextField()
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __init__(self, *args, **kwargs):
+        super(ReviewPhotos, self).__init__(*args, **kwargs)
+        # Save the initial ImageField to compare when saving
+        self._original_photo_path = self.photo_path
+
+    def save(self, update_fields=None, **kwargs):
+        # TODO: Check for badly-made images (strange aspect ratio etc.)
+        super().save(**kwargs)
+        # If the photo_path field was updated
+        if update_fields is None or 'photo_path' in update_fields:
+            # Get the path to the image file
+            filename = self.photo_path.path
+            # and the ImageField saved on construction
+            old_photo = self._original_photo_path
+            # Process the image (optimize)
+            process_uploaded_image(filename)
+            # Check if we had a valid image before that
+            if (old_photo is not None and old_photo.name != ''
+                    and old_photo.path != filename):
+                # And delete it to save space
+                remove_unused_image(old_photo.path)
