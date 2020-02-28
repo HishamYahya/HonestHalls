@@ -3,6 +3,7 @@ from django.db.models import Q
 from .forms import *
 from halls.models import Hall, RoomType, HallPhotos
 from difflib import SequenceMatcher
+import string
 
 
 def filter_view(request):
@@ -20,31 +21,34 @@ def filter_view(request):
         results_rooms = RoomType.objects.all()
     else:
 
-        '''matcher records the ratio of similarity of the search function
-         num refers to number which count the number all halls in database'''
+        '''
+        hall_data records the name of all the halls
+        matcher records the ratio of similarity of the search function
+         num refers to number which count the number all halls in database
+         '''
+
         results_rooms = RoomType.objects.filter(Q(hall__name__icontains = search_string))
         all_rooms = Hall.objects.all()
         hall_data = []
-        matcher = []
+        matcher = [[]]
         num = 0
-        text_ratio = 0
         name_ratio = 0
+        text_ratio = 0
         campus_ratio = 0
-        text_content = ''
+        search_string.lower()
         for hall in all_rooms:
             word_ratio = 0
+            matcher.append([])
             hall_data.append(hall.name)
             name_ratio = SequenceMatcher(None,search_string,hall.name).ratio()
-            text_content = hall.text
-            for word in text_content:
-                word = word.rstrip()
-                word_ratio = SequenceMatcher(None,search_string,word).ratio()
-                if word_ratio > text_ratio: text_ratio = word_ratio
+            text_ratio = SequenceMatcher(None, search_string, hall.text.lower()).ratio()
             campus_ratio = SequenceMatcher(None,search_string,hall.campus).ratio()
-            matcher.append(max(name_ratio,text_ratio,campus_ratio))
+            matcher[num].append(name_ratio)
+            matcher[num].append(text_ratio)
+            matcher[num].append(campus_ratio)
             num += 1
         for c in range(num):
-            if matcher[c] >= 0.8:
+            if matcher[c][0] >= 0.8 or matcher[c][2] > 0.5:
                 results_rooms = RoomType.objects.filter(Q(hall__name__icontains = hall_data[c]))
                 for i in results_rooms:
                     unique_halls.add(i.hall)
