@@ -2,7 +2,7 @@
 {% block title %}{{ hall.name }}{% endblock %}
 <!-- -------------------------------- -->
 {% block content %}
-<div class="container">
+<div class="container px-0">
 	<div class="row">
 		<div class="col-md-6">
 			<!-- The image gallery/slider. Currently using LigtSlider -->
@@ -10,8 +10,23 @@
 				{% for photo in hallphotos %}
 				<li class="hh-flex-center h-100"
 					data-thumb="{{ photo.photo_path.url }}">
-					<img class="w-100 hh-image-supports-preview"
+					<img class="w-100"
+						data-hh-image-preview="hh-preview-content-{{ photo.id }}"
 						src="{{ photo.photo_path.url }}" alt="{{ photo.photo_desc }}" />
+					<!--
+						Specifies the content to be shown when the image
+						is being previewed by clicking on it.
+					-->
+					<div id="hh-preview-content-{{ photo.id }}" class="d-none">
+						<a class="btn btn-sm btn-info pt-2 float-right"
+							data-toggle="tooltip" data-placement="top" title="Open in new tab"
+							href="{{ photo.photo_path.url }}" target="_blank">
+							<i class="material-icons">open_in_new</i>
+						</a>
+						<p class="pt-2 pr-5">
+							{{ photo.photo_desc }}
+						</p>
+					</div>
 				</li>
 				{% empty %}
 				<!-- No images are available -->
@@ -78,25 +93,28 @@
 	</div>
 </div>
 
-<div class="container">
-	<p class="display-4 mt-4">Reviews
+<div class="container px-0">
+	<div>
+		<span class="h1">Reviews</span>
 		<a href="{% url 'review-write' hall.id %}"
 			class="btn btn-primary btn-lg float-right" role="button">
 			Write a Review
 		</a>
-	</p>
+	</div>
 
 	<!-- Include the list of reviews. -->
 	{% include 'reviews/reviews.html' %}
 </div>
 
 <!-- The element used for previewing images -->
-<div class="hh-image-preview-backdrop">
-	<div class="container hh-image-preview">
-		<div class="hh-image-preview__container">
-			<!-- The background-image style is set by JS -->
-			<div class="hh-image-preview__image"></div>
-			<a class="hh-image-preview__close" role="button">×</a>
+<div class="hh-preview-dialog-backdrop">
+	<div class="hh-preview-dialog-container mx-auto">
+		<div class="hh-preview-dialog">
+			<img class="hh-preview-dialog__image">
+			<div class="hh-preview-dialog__content"></div>
+		</div>
+		<div class="hh-preview-dialog-close" role="button">
+			<i class="material-icons">close</i>
 		</div>
 	</div>
 </div>
