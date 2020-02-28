@@ -13,15 +13,45 @@ def filter_view(request):
 
     # String passed from search
     search_string = request.GET.get('searchbar')
+    unique_halls = set()
 
     # TODO: results_rooms should only query the search results
     if (search_string is None):
         results_rooms = RoomType.objects.all()
     else:
+
+        '''matcher records the ratio of similarity of the search function
+         num refers to number which count the number all halls in database'''
         results_rooms = RoomType.objects.filter(Q(hall__name__icontains = search_string))
+        all_rooms = Hall.objects.all()
+        hall_data = []
+        matcher = []
+        num = 0
+        text_ratio = 0
+        name_ratio = 0
+        campus_ratio = 0
+        text_content = ''
+        for hall in all_rooms:
+            word_ratio = 0
+            hall_data.append(hall.name)
+            name_ratio = SequenceMatcher(None,search_string,hall.name).ratio()
+            text_content = hall.text
+            for word in text_content:
+                word = word.rstrip()
+                word_ratio = SequenceMatcher(None,search_string,word).ratio()
+                if word_ratio > text_ratio: text_ratio = word_ratio
+            campus_ratio = SequenceMatcher(None,search_string,hall.campus).ratio()
+            matcher.append(max(name_ratio,text_ratio,campus_ratio))
+            num += 1
+        for c in range(num):
+            if matcher[c] >= 0.8:
+                results_rooms = RoomType.objects.filter(Q(hall__name__icontains = hall_data[c]))
+                for i in results_rooms:
+                    unique_halls.add(i.hall)
+                for hall in unique_halls:
+                    hall.photos = list(HallPhotos.objects.filter(hall=hall))
         # TODO: Change so it only queries search results
 
-    unique_halls = set()
     # A set is being used so it does not/cannot have duplicate halls
 
     if(submitted):
