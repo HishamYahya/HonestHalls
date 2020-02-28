@@ -3,5 +3,5 @@ from . import views
 from django.contrib.auth import views as log_views
 
 urlpatterns = [
-    path('', views.search, name='search'),
+    path('searchbar', views.searchbar, name='searchbar'),
 ]
