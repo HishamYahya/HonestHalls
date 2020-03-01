@@ -1,5 +1,6 @@
 {% load divide_filter %}
 {% load int_filter %}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +12,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="{% static 'reviews/js/main.js' %}"></script>
 </head>
 <body>
 {% for review in reviews %}
@@ -23,100 +25,97 @@
 	{% with average=total|divide_filter %}
 
 	<div class="container-fluid pt-3 my-3 border border-info bg-white text-dark shadow-sm">
-	    <div class="row">
-			<!-- TODO: Check if this is actually the user -->
-			{% if True %}
-				<div class="col-sm-7">
-	    			<h5>{{review.user}}</h5>
-	    			<p style="font-size: 12px">Date Created: {{review.date_created.date}}</p>
-	    		</div>
-	    		<div class="col-sm-4 float-right">
-	    			<h5 class="float-right">Average Rating <input class="hh-rating-input" value="{{average}}" readonly></h5>
-	    		</div>
-	    		<div class="col-sm-1">
-	    			<a class="btn btn-xs btn-primary" href="{% url 'review-edit' review.id %}">
-						<i class="material-icons">edit</i>
-					</a>
-					<form class="d-inline" action="{% url 'review-delete' review.id %}" method="POST">
-						{% csrf_token %}
-						<button class="btn btn-xs btn-danger" type="submit">
-							<i class="material-icons">delete</i>
-						</button>
-					</form>
-	    		</div>
-	    	{% else %}
-		    	<div class="col-sm-8">
-		    		<h5>{{review.user}}</h5>
-		    		<p style="font-size: 12px">Date Created: {{review.date_created.date}}</p>
-		    	</div>
-		    	<div class="col-sm-4">
-	    			<h5 class="float-right">Average Rating <input class="hh-rating-input" value="{{average}}" readonly></h5>
-		    	</div>
-			{% endif %} 	
-	    </div>
-	{% endwith %}
-	{% endwith %}
-	{% endwith %}
-	{% endwith %}
-	{% endwith %}
-	{% endwith %}
-		<div class="row">
-			<div class="col">
-				<table class="table table-borderless">
+
+		<div class = "row">
+			<div class = "col">
+				<table class="table table-borderless" style="max-width:350px;">
 					<tbody>
 						<tr>
-							<td>Noise</td>
-							<td><input class="hh-rating-input" value="{{review.noise}}" readonly></td>
+							<td><h5>Noise:</h5></td>
+							<td ><input class="hh-rating-input" value="{{review.noise}}" readonly></td>
 						</tr>
-							<tr>
-							<td>Social</td>
+						<tr>
+							<td><h5>Social:</h5></td>
 							<td><input class="hh-rating-input" value="{{review.social_life}}" readonly></td>
 						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="col">
-				<table class="table table-borderless">
-					<tbody>
 						<tr>
-							<td>Cleanliness</td>
+							<td><h5>Cleanliness:</h5></td>
 							<td><input class="hh-rating-input" value="{{review.cleanliness}}" readonly></td>
 						</tr>
 						<tr>
-							<td>Facilities</td>
+							<td><h5>Facilities:</h5></td>
 							<td><input class="hh-rating-input" value="{{review.facilities}}" readonly></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
-		</div>
-		<div class="row">
 
-			{% if reviewphotos %}
-				<!-- SHOW PHOTOS FOR REVIEW- POP UP OPTION?? -->
-				<div class="col-sm-3">
-	 				<h5>THUMBNAIL HERE</h5>
- 					<div id="hh-hall-slider">
-						{% for photo in hallphotos %}
-						<li class="hh-flex-center h-100"
-							data-thumb="{{ photo.photo_path.url }}">
-							<img class="w-100 hh-image-supports-preview"
-								src="{{ photo.photo_path.url }}" alt="{{ photo.photo_desc }}" />
-						</li>
-						{% endfor %}
+			<div class="col-8">
+				<div class="row">
+					<div class="col-5">
+						<center>
+							{% if review.anonymous == True %}
+								<h5 class="mt-3">Anonymous
+								<i class="material-icons ml-3", style="vertical-align:text-bottom;">verified_user</i></h5>
+							{% else %}
+								<h5 class="mt-3">{{review.user.first_name}} {{review.user.last_name}}
+								<i class="material-icons ml-3", style="vertical-align:text-bottom;">verified_user</i></h5>
+							{% endif %}
+							<p style="font-size: 12px">Date Created: {{review.date_created.date}}</p>
+						</center>
+					</div>
+					<div class="col ml-3">	
+						<h5 class="mt-2"><h5 class="ml-2">Average Rating</h5>
+						<input class="hh-rating-input" value="{{average}}" readonly></h5>
+					</div>
+					<div class="col-sm-3 ml-1">
+						{% if review.user == currentuser %}
+							<a class="btn btn-xs btn-primary mt-3" href="{% url 'review-edit' review.id %}">
+								<i class="material-icons">edit</i>
+							</a>
+							<form class="d-inline" id = "delete-form" action="{% url 'review-delete' review.id %}" method="POST">
+								{% csrf_token %}
+								<button class="btn btn-xs btn-danger ml-3 mt-3" type = "button" onclick="delete_review()">
+									<i class="material-icons">delete</i>
+								</button>
+							</form>
+						{% else %}
+							<a class="btn btn-xs btn-danger float-right mr-4 mt-1" href="#">
+								REPORT
+								<i class="material-icons ml-2">new_releases</i>
+							</a>
+						{% endif %}
+
 					</div>
 				</div>
-
-				<div class="col-sm-9"><p>{{review.text}}</p>
-				</div>
-			{% else %}
-				<!-- Full width review-->
-				<p class ="px-2">{{review.text}}</p>
-			{% endif %}
+				<p class="mt-3 ml-3 mr-3 mb-3"><i>
+					"{{review.text}}"</i>
+				</p>
+			</div>
 		</div>
+
+		{% if reviewphotos %}
+			<div class="row mb-4 border">
+				<!-- SHOW PHOTOS FOR REVIEW- POP UP OPTION?? -->
+				{% for photo in reviewphotos %}
+					{% if photo.review.id == review.id %}
+						<div class="col mt-3 mb-3" style="max-width: 400px;">
+							<center>
+								<img class="hh-image-supports-preview" style="max-height:180px; max-width: 320px;" src="{{ photo.photo_path.url }}" alt="{{ photo.photo_desc }}" />
+							</center>
+						</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+		{% endif %}
+
 	</div>
-
-
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
+	{% endwith %}
 {% endfor %}
 </body>
 </html>

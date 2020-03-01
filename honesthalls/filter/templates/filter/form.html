@@ -15,9 +15,7 @@
 		<div class="col-md-3">
 			<form method="POST">
 				{% csrf_token %}
-
 				<div>
-
 					{% crispy form %}
 				</div>
 			</form>
@@ -29,51 +27,63 @@
 			{% for hall in results_halls %}
 			<div class="card m-3 container">
 				<div class="row">
+					<a type="button" class="btn btn-link"
+						href="{% url 'hallpage' hall.id %}">
+						<h3 class="col mt-3">
+							{{ hall.name }}
+						</h3>
+					</a>
+				</div>
 
+				<div class="row">
 					<div class="col-md-5">
-
 						<div id="hh-hall-slider">
 							{% for photo in hall.photos %}
-							<li class="hh-flex-center h-100" data-thumb="{{ photo.photo_path.url }}">
-								<img class="w-100 hh-image-supports-preview" src="{{ photo.photo_path.url }}"
+							<li class="hh-flex-center h-100"
+								data-thumb="{{ photo.photo_path.url }}">
+								<img class="w-100 hh-image-supports-preview"
+									src="{{ photo.photo_path.url }}"
 									alt="{{ photo.photo_desc }}" />
 							</li>
 							{% empty %}
 							<!-- No images are available -->
 							<li data-thumb="">
 								<div class="hh-no-image-placeholder">
-									<h3 class="font-weight-normal hh-no-image-placeholder__content">
+									<h3
+										class="font-weight-normal hh-no-image-placeholder__content">
 										No image available
 									</h3>
 								</div>
 							</li>
-
 							{% endfor %}
 						</div>
 					</div>
+
 					<div class="container">
-						<div class="row">
-							<a type="button" class="btn btn-link" href="{% url 'hallpage' hall.id %}">
-
-								<h3 class="col mt-3">
-									{{ hall.name }}
-								</h3>
-							</a>
-
-						</div>
 						<div class="card-body">
 							{{ hall.text }}
+
+							<h5 class="mt-3">Room Types:</h5>
+							<ul class="list-group list-group-flush mb-3">
+								{% for room in results_rooms %}
+								{% if room.hall.id == hall.id %}
+								<li class="list-group-item"> Room {{ room.id }}</li>
+								<!-- TODO : FORMAT HALLS/ROOM INFORMATION-->
+								{% endif %}
+								{% endfor %}
+							</ul>
+
+							<a type="button" class="btn btn-primary"
+								href="{% url 'hallpage' hall.id %}">
+								Go to hall page
+							</a>
 						</div>
-						<h6>Room Types:</h6>
-						<ul class="list-group list-group-flush mb-3">
-							{% for room in results_rooms %}
-							{% if room.hall.id == hall.id %}
-							<li class="list-group-item"> Room {{ room.id }}</li>
-							<!-- TODO : FORMAT HALLS/ROOM INFORMATION-->
-							{% endif %}
-							{% endfor %}
-						</ul>
+
+
+
 					</div>
+
+
 				</div>
 			</div>
 

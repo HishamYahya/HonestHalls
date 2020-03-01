@@ -1,6 +1,6 @@
 from django import forms
 
-from halls.models import Review
+from reviews.models import Review, ReviewPhotos
 
 
 class ReviewEditForm(forms.ModelForm):
@@ -16,3 +16,9 @@ class ReviewEditForm(forms.ModelForm):
         model = Review
         fields = ['text', 'anonymous', 'cleanliness',
                   'social_life', 'noise', 'facilities']
+
+
+class ReviewPhotosEditForm(forms.ModelForm):
+    class Meta:
+        model = ReviewPhotos
+        fields = ['photo_path', 'photo_desc']

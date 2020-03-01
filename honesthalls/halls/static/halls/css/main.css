@@ -42,14 +42,36 @@ body {
 /** END RatingInput **/
 
 /** BEGIN ImagePreview **/
-/* The backdrop for the image preview */
-.hh-image-preview-backdrop {
-	display: none;
+.tooltip {
+	z-index: 10000001 !important;
 }
 
-/* The backdrop when an image is being previewed */
-.hh-image-preview-backdrop.active {
-	display: block;
+/* Shows the backdrop. Fill mode is forwards. */
+@keyframes hh-backdrop-appear {
+	from {
+		z-index: 100000;
+		opacity: 0;
+	}
+	to {
+		z-index: 100000;
+		opacity: 1;
+	}
+}
+
+/* Hides the backdrop. Fill mode is forwards. */
+@keyframes hh-backdrop-disappear {
+	from {
+		z-index: 100000;
+		opacity: 1;
+	}
+	to {
+		z-index: -1;
+		opacity: 0;
+	}
+}
+
+/* The backdrop for the dialog */
+.hh-preview-dialog-backdrop {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -57,29 +79,63 @@ body {
 	bottom: 0;
 	z-index: 10000;
 	background-color: rgba(0, 0, 0, 0.2);
+	z-index: -1;
+	opacity: 0;
+}
+
+/* The backdrop after the preview was closed */
+.hh-preview-dialog-backdrop.inactive {
+	animation: hh-backdrop-disappear 0.2s 1 forwards;
+}
+
+/* The backdrop when an image is being previewed */
+.hh-preview-dialog-backdrop.active {
+	animation: hh-backdrop-appear 0.2s 1 forwards;
 }
 
 /* The base element for the preview */
-.hh-image-preview {
+.hh-preview-dialog-container {
 	position: relative;
-	height: 100%;
+	width: 90vmin !important;
+	top: 50%;
+	transform: translate(0, -50%);
 }
 
-/* The container of the image */
-.hh-image-preview__container {
+.hh-preview-dialog {
+	margin: 0 auto;
 	width: 100%;
-	height: 100%;
-	padding: 48px 0;
+	max-height: 80vh;
+	overflow: hidden;
+	overflow-y: auto;
+	border-radius: 16px;
+	box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.2),
+				8px 16px 32px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes hh-dialog-zoom-in {
+	from {
+		opacity: 0;
+		transform: scale(0.5, 0.5);
+	}
+	50% {
+		opacity: 1;
+	}
+	to {
+		transform: scale(1, 1);
+	}
+}
+
+.hh-preview-dialog-backdrop.active .hh-preview-dialog {
+	animation: hh-dialog-zoom-in 0.5s 1;
 }
 
 /*
 The previewed image itself.
 Image should be set as background-image inline.
 */
-.hh-image-preview__image {
+.hh-preview-dialog__image {
 	text-align: right;
 	width: 100%;
-	height: 100%;
 	overflow: hidden;
 	background-color: #333333;
 	background-clip: content-box;
@@ -89,25 +145,45 @@ Image should be set as background-image inline.
 }
 
 /*
+The content shown below the image.
+*/
+.hh-preview-dialog__content {
+	padding: 24px;
+	background-color: white;
+}
+
+/*
 The button to close the preview.
 */
-.hh-image-preview__close {
+.hh-preview-dialog-close {
 	display: inline-block;
 	position: absolute;
-	top: 32px;
+	top: -60px;
 	right: 0;
-	width: 32px;
-	height: 32px;
+	width: 48px;
+	height: 48px;
 	line-height: 28px;
 	font-size: 32px;
 	cursor: pointer;
-	background-color: white;
+	user-select: none;
+	padding: 8px;
+	color: white;
+	background-color: rgba(0, 0, 0, 0.2);
 	border-radius: 32px;
 	text-align: center;
 }
 
-.hh-image-preview__close:hover {
-	background-color: rgba(255, 255, 255, 0.75);
+.hh-preview-dialog-close:hover {
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.hh-preview-dialog-close:active {
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Previewable images have maginfying glass cursor. */
+[data-hh-image-preview] {
+	cursor: zoom-in;
 }
 /** END ImagePreview **/
 
