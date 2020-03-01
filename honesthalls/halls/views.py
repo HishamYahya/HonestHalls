@@ -4,7 +4,8 @@ from django.shortcuts import (
 )
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, get_list_or_404
-from .models import Hall, RoomType, HallPhotos, Review
+from reviews.models import Review, ReviewPhotos
+from .models import Hall, RoomType, HallPhotos
 
 
 def index(request):
@@ -19,7 +20,7 @@ def index(request):
         'sample_halls': sample_halls
     }
     if request.user.is_authenticated:
-        context['username'] = request.user.username
+        context['email'] = request.user.email
 
     return render(request, 'halls/index.html', context)
 
@@ -29,12 +30,13 @@ def hallpage(request, id):
     roomtypes = hall.roomtype_set.all()
     hallphotos = hall.hallphotos_set.all()
     context = {
+        'currentuser': request.user,
         'id': id,
         'hall': hall,
         'roomtypes': roomtypes,
         'hallphotos': hallphotos,
-        'reviews': Review.objects.filter(roomtype__hall_id=id)
-        # 'reviewphotos': ReviewPhotos.objects.filter(review__hall__id=id)
+        'reviews': Review.objects.filter(roomtype__hall_id=id),
+        'reviewphotos': ReviewPhotos.objects.filter(review__roomtype__hall_id=id)
     }
 
     return render(request, 'halls/hallpage.html', context)
