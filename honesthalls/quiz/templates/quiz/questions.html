@@ -3,7 +3,7 @@
 
 {% block content %}
 <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
-<form action="" method="post">
+<form action="" method="POST">
   {% csrf_token %}
   <table>
     {{ wizard.management_form }}
