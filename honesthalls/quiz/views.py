@@ -16,9 +16,9 @@ class FormWizardView(SessionWizardView):
         # generating average for each hall (need to replace)
         all_halls = Hall.objects.all()
         all_reviews = Review.objects.all()
-        halls = {}
+        halls_avg = {}
         for hall in all_halls:
-            halls[hall.name] = {
+            halls_avg[hall.name] = {
                 "Cleanliness": 0,
                 "Noise": 0,
                 "Social Life": 0,
@@ -29,32 +29,47 @@ class FormWizardView(SessionWizardView):
         for review in all_reviews:
             for hall in all_halls:
                 if review.roomtype.hall ==  hall:
-                    halls[hall.name]["Cleanliness"] += review.cleanliness
-                    halls[hall.name]["Noise"] += review.noise
-                    halls[hall.name]["Social Life"] += review.social_life
-                    halls[hall.name]["Facilities"] += review.facilities
-                    halls[hall.name]["Number of reviews"] += 1
-        if(halls[hall.name]["Number of reviews"] != 0):
+                    halls_avg[hall.name]["Cleanliness"] += review.cleanliness
+                    halls_avg[hall.name]["Noise"] += review.noise
+                    halls_avg[hall.name]["Social Life"] += review.social_life
+                    halls_avg[hall.name]["Facilities"] += review.facilities
+                    halls_avg[hall.name]["Number of reviews"] += 1
+
+        if(halls_avg[hall.name]["Number of reviews"] != 0):
             for hall in all_halls:
-                halls[hall.name]["Cleanliness"] /= halls[hall.name]["Number of reviews"]
-                halls[hall.name]["Noise"] /= halls[hall.name]["Number of reviews"]
-                halls[hall.name]["Social Life"] /= halls[hall.name]["Number of reviews"]
-                halls[hall.name]["Facilities"] /= halls[hall.name]["Number of reviews"]
+                halls_avg[hall.name]["Cleanliness"] /= halls_avg[hall.name]["Number of reviews"]
+                halls_avg[hall.name]["Noise"] /= halls_avg[hall.name]["Number of reviews"]
+                halls_avg[hall.name]["Social Life"] /= halls_avg[hall.name]["Number of reviews"]
+                halls_avg[hall.name]["Facilities"] /= halls_avg[hall.name]["Number of reviews"]
 
 
         # algorithm
         scores = {}
-        for key in halls:
-            cleanliness = halls[key]['Cleanliness'] * (answers[0]/3)
-            noise = halls[key]['Noise'] * (answers[1]/3)
-            social_life = halls[key]['Social Life'] * (answers[2]/3)
-            facilities = halls[key]['Facilities'] * 2/3
+        for key in halls_avg:
+            cleanliness = halls_avg[key]['Cleanliness'] * (answers[0]/3)
+            noise = halls_avg[key]['Noise'] * (answers[1]/3)
+            social_life = halls_avg[key]['Social Life'] * (answers[2]/3)
+            facilities = halls_avg[key]['Facilities'] * 2/3
             score = (cleanliness + noise + social_life + facilities) / 4
             scores[key] = score
 
         results = {k: v for k, v in sorted(scores.items(), key=lambda item: item[1])}
 
 
+        all_halls = Hall.objects.all()
+        # repeated in case top one is deleted when code is replaced
+        form_halls = []
+        for key in results:
+            #print(''.join(str(ord(c)) for c in key))
+            for hall in all_halls:
+                #print(''.join(str(ord(c)) for c in hall.name)) 
+                if (results[key] == hall.name): #!!!!! NOT WORKING
+                    form_halls.append(hall)
+                    continue
+        
+        print(form_halls)
+
+
         return render(self.request, 'quiz/results.html', {
-            'form_data': [form.cleaned_data for form in form_list],
+            'form_data': form_halls,
         })
