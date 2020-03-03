@@ -60,10 +60,8 @@ class FormWizardView(SessionWizardView):
         # repeated in case top one is deleted when code is replaced
         form_halls = []
         for key in results:
-            #print(''.join(str(ord(c)) for c in key))
             for hall in all_halls:
-                #print(''.join(str(ord(c)) for c in hall.name)) 
-                if (results[key] == hall.name): #!!!!! NOT WORKING
+                if (key == hall.name):
                     form_halls.append(hall)
                     continue
         
