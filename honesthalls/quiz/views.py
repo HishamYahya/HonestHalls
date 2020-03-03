@@ -34,12 +34,12 @@ class FormWizardView(SessionWizardView):
                     halls[hall.name]["Social Life"] += review.social_life
                     halls[hall.name]["Facilities"] += review.facilities
                     halls[hall.name]["Number of reviews"] += 1
-
-        for hall in all_halls:
-            halls[hall.name]["Cleanliness"] /= halls[hall.name]["Number of reviews"]
-            halls[hall.name]["Noise"] /= halls[hall.name]["Number of reviews"]
-            halls[hall.name]["Social Life"] /= halls[hall.name]["Number of reviews"]
-            halls[hall.name]["Facilities"] /= halls[hall.name]["Number of reviews"]
+        if(halls[hall.name]["Number of reviews"] != 0):
+            for hall in all_halls:
+                halls[hall.name]["Cleanliness"] /= halls[hall.name]["Number of reviews"]
+                halls[hall.name]["Noise"] /= halls[hall.name]["Number of reviews"]
+                halls[hall.name]["Social Life"] /= halls[hall.name]["Number of reviews"]
+                halls[hall.name]["Facilities"] /= halls[hall.name]["Number of reviews"]
 
 
         # algorithm
@@ -52,9 +52,8 @@ class FormWizardView(SessionWizardView):
             score = (cleanliness + noise + social_life + facilities) / 4
             scores[key] = score
 
+        results = {k: v for k, v in sorted(scores.items(), key=lambda item: item[1])}
 
-
-        print(halls)
 
         return render(self.request, 'quiz/results.html', {
             'form_data': [form.cleaned_data for form in form_list],
