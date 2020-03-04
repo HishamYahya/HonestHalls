@@ -151,3 +151,12 @@ def review_photos(request, review_id):
     }
 
     return render(request, 'reviews/review-photos.html', context)
+
+
+@login_required
+def report(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+    if review.user_id == request.user.id:
+        # The review is by the reporter.
+        messages.error(
+            request, "You cannot report your own reviews.")
