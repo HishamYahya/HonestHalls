@@ -94,9 +94,9 @@ def verify(request):
             )
             email.send()
 
-            messages.success(request, 'A verification email has been sent'
+            messages.success(request, 'A verification email has been sent '
                              'to your account.')
-            return redirect('profile')
+    return redirect('profile')
 
 
 def verify_complete(request, uidb64, token):
