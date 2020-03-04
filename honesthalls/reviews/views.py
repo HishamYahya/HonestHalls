@@ -141,7 +141,7 @@ def review_photos(request, review_id):
             messages.success(
                 request, f'Your changes to review photos have been made.')
             request.method = 'GET'
-            return edit(request, review_id)
+            return redirect(reverse('review-edit', kwargs={'review_id': review.id}))
 
     else:
         formset = ReviewPhotosEditFormSet(queryset=ReviewPhotos.objects.none())
