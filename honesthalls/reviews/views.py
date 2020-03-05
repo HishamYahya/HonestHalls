@@ -13,8 +13,7 @@ from users.models import Profile
 from halls.models import Hall, RoomType
 from reviews.models import Review, ReviewPhotos
 
-from .forms import ReviewEditForm, ReviewPhotosEditForm
-from django.forms import modelformset_factory
+from .forms import ReviewEditForm, ReviewPhotosEditFormSet
 
 # Passed to the template to specify
 # whether an existing review is being edited or a new one is being created.
@@ -38,8 +37,11 @@ def write(request, hall_id):
             # Save to DB and print message.
             form.save()
             messages.success(
-                request, "Your review was saved successfully. You can now add photos to it!")
-            return redirect(reverse('review-edit', kwargs={'review_id': form.instance.id}))
+                request,
+                "Your review was saved successfully. "
+                "Now its time to add some photos!"
+            )
+            return redirect(reverse('review-photos', kwargs={'review_id': form.instance.id}))
         else:
             messages.error(
                 request, "Please, correct any errors in the review form!")
@@ -77,7 +79,11 @@ def edit(request, review_id):
             # Save to DB and print message.
             form.save()
             messages.success(
-                request, "Your review was saved successfully!")
+                request, "Your review was updated successfully!")
+
+            if 'goto-photos' in request.POST:
+                # The user pressed the save & edit photos button
+                return redirect(reverse('review-photos', kwargs={'review_id': form.instance.id}))
         else:
             messages.error(
                 request, "Please, correct any errors in the review form!")
@@ -86,12 +92,14 @@ def edit(request, review_id):
         form = ReviewEditForm(model_to_dict(review))
 
     # Get the room types from the DB
-    roomtypes = RoomType.objects.filter(hall_id=hall.get('id'))
+    room_types = RoomType.objects.filter(hall_id=hall.get('id'))
+    review_photos = review.reviewphotos_set.all()
     return render(request, 'reviews/review-edit.html', {
         'review': review,
+        'review_photos': review.reviewphotos_set.all(),
         'form': form,
         'hall': hall,
-        'roomtypes': roomtypes,
+        'roomtypes': room_types,
         'profile': Profile.objects.get(user=request.user),
         'date_created': review.date_created,
         'date_modified': review.date_modified,
@@ -109,11 +117,15 @@ def delete(request, review_id):
             request, "You can only delete reviews posted by yourself!")
         return HttpResponseRedirect(reverse('profile'))
 
-    # Delete the review from the DB and return to profile page.
-    review.delete()
-    messages.success(
-        request, "Review deleted successfully!")
-    return HttpResponseRedirect(reverse('profile'))
+    if request.method == 'POST':
+        # Delete the review from the DB and return to profile page.
+        review.delete()
+        messages.success(
+            request, "Review deleted successfully!")
+        return HttpResponseRedirect(reverse('profile'))
+    else:
+        # Send bad request for GET requests.
+        return HttpResponse(status=400)
 
 
 @login_required
@@ -125,29 +137,39 @@ def review_photos(request, review_id):
             request, "You can only delete reviews posted by yourself!")
         return HttpResponseRedirect(reverse('profile'))
 
-    ReviewPhotosEditFormSet = modelformset_factory(
-        ReviewPhotos, form=ReviewPhotosEditForm, extra=3)
-
     if request.method == 'POST':
-        formset = ReviewPhotosEditFormSet(request.POST, request.FILES,
-                                          queryset=ReviewPhotos.objects.none())
-        if formset.is_valid():
-            for form in formset.cleaned_data:
-                if form:
-                    image = form['photo_path']
-                    reviewPhoto = ReviewPhotos(photo_path=image, photo_desc=form['photo_desc'],
-                                               review=review, user=review.user)
-                    reviewPhoto.save()
+        formset = ReviewPhotosEditFormSet(
+            request.POST,
+            request.FILES,
+            queryset=review.reviewphotos_set.none()
+        )
+        context = {
+            'formset': formset,
+            'review': review,
+            'user': request.user,
+        }
+        if not formset.is_valid():
+            for form in formset.forms:
+                render_form_errors(request, form)
+            return render(request, 'reviews/review-photos.html', context)
+        else:
+            for form in formset.forms:
+                if form.cleaned_data:
+                    # Call the overriden save() method to execute the
+                    # action requested by the user.
+                    form.save(user=request.user, review=review)
+
             messages.success(
-                request, f'Your changes to review photos have been made.')
-            request.method = 'GET'
-            return edit(request, review_id)
+                request, 'Your changes to review photos have been made.')
+            return render(request, 'reviews/review-photos.html', context)
 
     else:
-        formset = ReviewPhotosEditFormSet(queryset=ReviewPhotos.objects.none())
-
-    context = {
-        'formset': formset
-    }
+        formset = ReviewPhotosEditFormSet(
+            queryset=review.reviewphotos_set.all())
+        context = {
+            'formset': formset,
+            'review': review,
+            'user': request.user,
+        }
 
     return render(request, 'reviews/review-photos.html', context)

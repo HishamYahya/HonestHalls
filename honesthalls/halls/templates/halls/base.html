@@ -21,6 +21,8 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" type="text/css"
     href="{% static 'halls/css/main.css' %}">
+  <link rel="stylesheet" type="text/css"
+    href="{% static 'reviews/css/main.css' %}">
   <!-- Google Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
     rel="stylesheet">
@@ -46,6 +48,19 @@
     {% endif %}
 
     {% block content %}{% endblock %}
+  </div>
+
+  <!-- The element used for previewing images -->
+  <div class="hh-preview-dialog-backdrop">
+    <div class="hh-preview-dialog-container mx-auto">
+      <div class="hh-preview-dialog">
+        <img class="hh-preview-dialog__image">
+        <div class="hh-preview-dialog__content"></div>
+      </div>
+      <div class="hh-preview-dialog-close" role="button">
+        <i class="material-icons">close</i>
+      </div>
+    </div>
   </div>
 
   <!-- jQuery Slim (Required by Bootstrap 4) -->

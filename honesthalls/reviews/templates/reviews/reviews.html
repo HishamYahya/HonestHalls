@@ -56,15 +56,15 @@
 						<center>
 							{% if review.anonymous == True %}
 								<h5 class="mt-3">Anonymous
-								<i class="material-icons ml-3", style="vertical-align:text-bottom;">verified_user</i></h5>
+								<i class="material-icons ml-3" style="vertical-align:text-bottom;">verified_user</i></h5>
 							{% else %}
 								<h5 class="mt-3">{{review.user.first_name}} {{review.user.last_name}}
-								<i class="material-icons ml-3", style="vertical-align:text-bottom;">verified_user</i></h5>
+								<i class="material-icons ml-3" style="vertical-align:text-bottom;">verified_user</i></h5>
 							{% endif %}
 							<p style="font-size: 12px">Date Created: {{review.date_created.date}}</p>
 						</center>
 					</div>
-					<div class="col ml-3">	
+					<div class="col ml-3">
 						<h5 class="mt-2"><h5 class="ml-2">Average Rating</h5>
 						<input class="hh-rating-input" value="{{average}}" readonly></h5>
 					</div>
@@ -88,8 +88,10 @@
 
 					</div>
 				</div>
-				<p class="mt-3 ml-3 mr-3 mb-3"><i>
-					"{{review.text}}"</i>
+				<p class="m-3" style="word-wrap: break-word;">
+					<i class="material-icons small">format_quote</i>
+					{{review.text}}
+					<i class="material-icons small">format_quote</i>
 				</p>
 			</div>
 		</div>
@@ -99,10 +101,25 @@
 				<!-- SHOW PHOTOS FOR REVIEW- POP UP OPTION?? -->
 				{% for photo in reviewphotos %}
 					{% if photo.review.id == review.id %}
-						<div class="col mt-3 mb-3" style="max-width: 400px;">
-							<center>
-								<img class="hh-image-supports-preview" style="max-height:180px; max-width: 320px;" src="{{ photo.photo_path.url }}" alt="{{ photo.photo_desc }}" />
-							</center>
+						<div class="col-sm-3 my-3 text-center" style="max-width: 400px;">
+							<img class="border rounded"
+								data-hh-image-preview="photo-desc-{{photo.id}}"
+								data-hh-image-src="{{ photo.photo_url }}"
+								src="{{ photo.thumbnail_url }}"
+								alt="{{ photo.photo_desc }}"
+								style="height: 150px; max-width: 320px;"
+							/>
+							<div id="photo-desc-{{photo.id}}" class="d-none">
+								<h5 class="mb-3">
+									{% if review.anonymous == True %}
+										Anonymous
+									{% else %}
+										{{review.user.first_name}} {{review.user.last_name}}
+									{% endif %}
+									<i class="material-icons align-bottom">account_circle</i>
+								</h5>
+								{{ photo.photo_desc }}
+							</div>
 						</div>
 					{% endif %}
 				{% endfor %}

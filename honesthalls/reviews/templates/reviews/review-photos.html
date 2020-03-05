@@ -1,26 +1,67 @@
 {% extends "halls/base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Add Photos{% endblock %}
+{% block title %}Edit Review Photos{% endblock %}
 
 {% block content %}
 
-	<p class="display-4">Review Photos</p>
+<p class="display-4">Review Photos</p>
 
-
-
-	<form id="post_form" method="post" action="" enctype="multipart/form-data">
+<form id="post_form" method="post" action="" enctype="multipart/form-data">
 
     {% csrf_token %}
-  
+
     {{ formset.management_form }}
     {% for form in formset %}
-        {{ form | crispy}}
+        <div class="border row bg-white p-3">
+            <div class="col-md-4 pl-0">
+                <input class="hh-image-input w-100" type="file"
+                    id="id_{{form.prefix}}-{{form.photo_path.name}}"
+                    name="{{form.prefix}}-{{form.photo_path.name}}"
+                    accept="image/*">
+                <label class="d-block border shadow-sm rounded mt-2" for="id_{{form.prefix}}-{{form.photo_path.name}}">
+                    {% if form.photo_path.value %}
+                    <img class="w-100 d-block" src="{{ form.photo_path.value.url }}">
+                    {% else %}
+                    <img class="w-100 d-block" src="https://via.placeholder.com/320x240.png/FAFAFA?text=No%20file%20selected">
+                    {% endif %}
+                </label>
+            </div>
+
+            <div class="col-md-8">
+                {{ form.photo_desc | as_crispy_field }}
+                {% if form.photo_path.value %}
+                    {{ form.DELETE | as_crispy_field }}
+                    {{ form.id }}
+                {% endif %}
+            </div>
+        </div>
     {% endfor %}
 
-    <div class="form-group">
-	        <button class="btn btn-outline-info" type="submit">Add Photos</button>
-	</div>    
-	</form>
+    <div class="form-group text-right mt-3">
+        <a href="{% url 'review-edit' review.id %}" class="btn btn-secondary">
+            Skip
+            <i class="material-icons align-bottom">navigate_next</i>
+        </a>
+        <button class="btn btn-primary ml-2" type="submit">
+            Save Changes
+            <i class="material-icons align-bottom">save</i>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $('.hh-image-input').on('change', function(event) {
+                const files = event.target.files;
+                const img = $('[for="' + this.id + '"] img')[0];
+                const fr = new FileReader();
+                fr.onload = function() {
+                    img.src = fr.result;
+                };
+                fr.readAsDataURL(files[0]);
+            });
+        });
+    </script>
+</form>
 
 {% endblock content %}

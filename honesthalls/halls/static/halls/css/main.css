@@ -11,6 +11,12 @@ body {
 	align-items: center;
 }
 
+.hh-image-cover {
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
 /* Creates a dummy 4:3 gray block with text */
 .hh-no-image-placeholder {
 	/* Effectively sets 4:3 aspect ratio for the block */

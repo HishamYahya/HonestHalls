@@ -283,4 +283,4 @@ tags
 [._]*.un~
 
 # Project specific
-media/uploads/
+media/*uploads/
