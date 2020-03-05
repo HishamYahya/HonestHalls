@@ -1,6 +1,15 @@
 (function () {
   "use strict";
 
+  function initGlobalPlugins() {
+    /**
+     * Runs all the initializers for all the global plugins.
+     */
+    // $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover(); 
+  }
+
+>>>>>>> Stashed changes
   function initRatingInputs() {
     /**
      * Transforms all <input class="hh-rating-input"> into
