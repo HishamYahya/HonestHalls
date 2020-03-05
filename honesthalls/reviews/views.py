@@ -152,7 +152,6 @@ def review_photos(request, review_id):
 
     return render(request, 'reviews/review-photos.html', context)
 
-<<<<<<< HEAD
 # function takes a list of reviews and a list of review ratings and 
 # returns a dictionary of review ids and their associated ratings
 def display_ratings(reviews, ratings):
@@ -184,9 +183,6 @@ def user_ratings(request, ratings):
     return {}
 
 
-
-=======
-
 @login_required
 def report(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
@@ -194,4 +190,4 @@ def report(request, review_id):
         # The review is by the reporter.
         messages.error(
             request, "You cannot report your own reviews.")
->>>>>>> a59c3cc045b0e36a18ae74cbedd04e3c179d0b5a
+
