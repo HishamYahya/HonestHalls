@@ -21,18 +21,13 @@ def filter_view(request):
         results_rooms = RoomType.objects.all()
     else:
 
-        '''
-        hall_data records the name of all the halls
-        matcher records the ratio of similarity of the search function
-         num refers to number which count the number all halls in database
-         '''
+        '''Here is the matching.'''
 
         results_rooms = RoomType.objects.filter(Q(hall__name__icontains=search_string))
         search_words = search_string.split()
         all_rooms = Hall.objects.all()
-        hall_data = []
-        matcher = [[]]
-        result_matcher = [[]]
+        matcher = []
+        result_matcher = []
         num = 0
         for hall in all_rooms:
             matcher.append([])
@@ -80,27 +75,45 @@ def filter_view(request):
                 campus_ratio = SequenceMatcher(None, search_word, campus).ratio()
                 if campus_ratio > matcher[num][2]:
                     matcher[num][2] = campus_ratio
-                print(search_word)
-                print(matcher[num][0], matcher[num][1], matcher[num][2])
                 if matcher[num][0] > 0.6 or matcher[num][1] > 0.8 or matcher[num][2] > 0.5 or record:
-                    record = True
-                    result_matcher.append([])
-                    result_matcher[count].append(hall.name)
-                    for j in range(3):
+                    if not record:
+                        record = True
+                        result_matcher.append([])
+                        result_matcher[count].append(hall.name)
                         result_matcher[count].append(1)
+                        result_matcher[count].append(0)
+                        result_matcher[count].append(0)
                     result_matcher[count][1] *= matcher[num][0]
                     result_matcher[count][2] += matcher[num][1]
-                    result_matcher[count][3] = matcher[num][2]
-                    count += 1
+                    result_matcher[count][3] = max(result_matcher[count][3], matcher[num][2])
                 num += 1
+            if record:
+                count += 1
 
-        """for c in range(num):
-            if matcher[c][0] >= 0.8 or matcher[c][2] >= 0.5:
-                results_rooms = RoomType.objects.filter(Q(hall__name__icontains = hall_data[c]))
-                for i in results_rooms:
-                    unique_halls.add(i.hall)
-                for hall in unique_halls:
-                    hall.photos = list(HallPhotos.objects.filter(hall=hall))"""
+        """from here is the sorting"""
+        sorting_data = []
+        for i in range(len(result_matcher)):
+            sorting_data.append([])
+            print(result_matcher[i][0])
+            sorting_data[i].append(result_matcher[i][0])
+            sorting_data[i].append(max(result_matcher[i][1] * 100, result_matcher[i][2], result_matcher[i][3] * 10))
+
+        for i in range(len(sorting_data)):
+            for j in range(i+1, len(sorting_data)):
+                if sorting_data[j][1] > sorting_data[i][1]:
+                    tem = sorting_data[i][0]
+                    sorting_data[i][0] = sorting_data[j][0]
+                    sorting_data[j][0] = tem
+                    tem = sorting_data[i][1]
+                    sorting_data[i][1] = sorting_data[j][1]
+                    sorting_data[j][1] = tem
+
+        for c in range(count):
+            results_rooms = RoomType.objects.filter(Q(hall__name__icontains = sorting_data[c][0]))
+            for i in results_rooms:
+                unique_halls.add(i.hall)
+            for hall in unique_halls:
+                hall.photos = list(HallPhotos.objects.filter(hall=hall))
         # TODO: Change so it only queries search results
 
     # A set is being used so it does not/cannot have duplicate halls
