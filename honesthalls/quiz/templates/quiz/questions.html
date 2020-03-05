@@ -44,22 +44,19 @@
         <div class="col-md-12">
           <h3 class="font-weight-bold pl-0 my-4"><strong>Step 1</strong></h3>
           <div class="form-group md-form">
-            <label for="yourName" data-error="wrong" data-success="right">First
-              Name</label>
-            <input id="yourName" type="text" required="required"
-              class="form-control validate">
-          </div>
-          <div class="form-group md-form mt-3">
-            <label for="yourLastName" data-error="wrong"
-              data-success="right">Last Name</label>
-            <input id="yourLastName" type="text" required="required"
-              class="form-control validate">
-          </div>
-          <div class="form-group md-form mt-3">
-            <label for="yourAddress" data-error="wrong"
-              data-success="right">Address</label>
-            <textarea id="yourAddress" type="text" required="required" rows="2"
-              class="md-textarea validate form-control"></textarea>
+            <h3>How important is cleanliness for you?</h3>
+            <div class="radio">
+              <label><input type="radio" name="optradio" value=1>Very
+                important</label>
+            </div>
+            <div class="radio">
+              <label><input type="radio" name="optradio" value=2 checked>A
+                bit</label>
+            </div>
+            <div class="radio disabled">
+              <label><input type="radio" name="optradio" value=3>Don't
+                care</label>
+            </div>
           </div>
           <button class="btn btn-indigo btn-rounded nextBtn float-right"
             type="button">Next</button>
@@ -71,16 +68,19 @@
         <div class="col-md-12">
           <h3 class="font-weight-bold pl-0 my-4"><strong>Step 2</strong></h3>
           <div class="form-group md-form">
-            <label for="companyName" data-error="wrong"
-              data-success="right">Company Name</label>
-            <input id="companyName" type="text" required="required"
-              class="form-control validate">
-          </div>
-          <div class="form-group md-form mt-3">
-            <label for="companyAddress" data-error="wrong"
-              data-success="right">Company Address</label>
-            <input id="companyAddress" type="text" required="required"
-              class="form-control validate">
+            <h3>How important is cleanliness for you?</h3>
+            <div class="radio">
+              <label><input type="radio" name="optradio2" value=1>Very
+                important</label>
+            </div>
+            <div class="radio">
+              <label><input type="radio" name="optradio2" value=2 checked>A
+                bit</label>
+            </div>
+            <div class="radio disabled">
+              <label><input type="radio" name="optradio2" value=3>Don't
+                care</label>
+            </div>
           </div>
           <button class="btn btn-indigo btn-rounded prevBtn float-left"
             type="button">Previous</button>

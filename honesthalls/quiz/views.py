@@ -6,6 +6,7 @@ def quiz_view(request):
     return render(request, 'quiz/questions.html')
 
 def results_view(request):
+    print(request.GET)
     # answers = [form.cleaned_data for form in form_list]
     # answers = [int(d["answer"]) for d in answers]
     answers = [1, 1, 3]
