@@ -25,8 +25,8 @@ class ReviewPhotosEditForm(forms.ModelForm):
 
 
 class ReportForm(forms.ModelForm):
-    title = forms.CharField(min_length=5, max_length=50)
-    explanation = forms.CharField(min_length=50, max_length=2500)
+    title = forms.CharField(min_length=5, max_length=75)
+    explanation = forms.CharField(min_length=10, max_length=2500)
 
     class Meta:
         model = Report

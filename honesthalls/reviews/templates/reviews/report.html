@@ -11,15 +11,11 @@
   <form method="POST">
     {% csrf_token %}
     <div class="form-group">
-
+      <h1>Report form</h1>
       {{ form.title|as_crispy_field }}
       {{ form.explanation|as_crispy_field }}
-
-      <label for="reportTitle">Report title</label>
-      <label for="reportText">Tell us why you are reporting this review</label>
-
-      <small id="reportHelp" class="form-text text-muted">
-        <span id="reviewCharCount"></span> out of 2500 characters
+      <small class="form-text text-muted">
+        Tell us why you are reporting this review. <br>
       </small>
     </div>
     <button class="btn btn-outline-info" type="submit">
