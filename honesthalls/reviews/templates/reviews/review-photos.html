@@ -1,0 +1,26 @@
+{% extends "halls/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Add Photos{% endblock %}
+
+{% block content %}
+
+	<p class="display-4">Review Photos</p>
+
+
+
+	<form id="post_form" method="post" action="" enctype="multipart/form-data">
+
+    {% csrf_token %}
+  
+    {{ formset.management_form }}
+    {% for form in formset %}
+        {{ form | crispy}}
+    {% endfor %}
+
+    <div class="form-group">
+	        <button class="btn btn-outline-info" type="submit">Add Photos</button>
+	</div>    
+	</form>
+
+{% endblock content %}

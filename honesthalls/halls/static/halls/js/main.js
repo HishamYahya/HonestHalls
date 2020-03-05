@@ -5,11 +5,10 @@
     /**
      * Runs all the initializers for all the global plugins.
      */
-    // $('[data-toggle="tooltip"]').tooltip();
-    $('[data-toggle="popover"]').popover(); 
+
+    $('[data-toggle="tooltip"]').tooltip();
   }
 
->>>>>>> Stashed changes
   function initRatingInputs() {
     /**
      * Transforms all <input class="hh-rating-input"> into
@@ -96,24 +95,40 @@
    * Initialize the image preview feature.
    */
   function initImagePreview() {
-    const $imagePreviewBackdrop = $('.hh-image-preview-backdrop');
-    const $imagePreviewElement = $('.hh-image-preview__image');
-    const $imagePreviewClose = $('.hh-image-preview__close');
+    const $previewBackdrop = $('.hh-preview-dialog-backdrop');
+    const $previewBackdropImage = $('.hh-preview-dialog__image');
+    const $previewBackdropContent = $('.hh-preview-dialog__content');
+    const $previewClose = $('.hh-preview-dialog-close');
 
-    $imagePreviewClose.on('click', function () {
-      $imagePreviewBackdrop.removeClass('active');
+    $previewClose.on('click', function () {
+      $previewBackdrop.removeClass('active');
+      $previewBackdrop.addClass('inactive');
+    });
+
+    $previewBackdrop.on('click', function (event) {
+      if (event.target === $previewBackdrop[0]) {
+        $previewBackdrop.removeClass('active');
+        $previewBackdrop.addClass('inactive');
+      }
     });
 
     function enableImagePreview($image) {
       $image.on('click', function () {
-        $imagePreviewBackdrop.addClass('active');
+        $previewBackdrop.addClass('active');
 
-        const imageUrl = $image.attr('src');
-        $imagePreviewElement.css('background-image', 'url("' + imageUrl + '")');
+        const contentId = $image.attr('data-hh-image-preview');
+        if (contentId) {
+          const $content = $(document.getElementById(contentId));
+          $previewBackdropContent.html($content.html());
+          // Init any JS plugins that were injected into the dialog.
+          initGlobalPlugins();
+        }
+
+        $previewBackdropImage.attr('src', $image.attr('src'));
       });
     }
 
-    $('.hh-image-supports-preview').each(function (i, elem) {
+    $('[data-hh-image-preview]').each(function (i, elem) {
       enableImagePreview($(elem));
     });
   }
