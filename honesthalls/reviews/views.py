@@ -152,32 +152,35 @@ def review_photos(request, review_id):
 
     return render(request, 'reviews/review-photos.html', context)
 
-# function takes a list of reviews and a list of review ratings and 
-# returns a dictionary of review ids and their associated ratings
+# function takes a list of reviews and a list of ratings for those reviews 
+# and returns a dictionary of review ids and their associated ratings
 def display_ratings(reviews, ratings):
-    reviews_dic = {review.id: 0 for review in reviews}
-    for rating in ratings:
-        if (rating.vote):
-            reviews_dic[rating.review.id] += 1
+    reviews_dic = {review.id: 0 for review in reviews} # set initial rating
+    for rating in ratings:                           # for all reviews to 0
+        if (rating.vote): # if rating is an upvote
+            reviews_dic[rating.review.id] += 1 # add 1 to rating of that review
         else:
-            reviews_dic[rating.review.id] -= 1
+            reviews_dic[rating.review.id] -= 1 # sub 1 from rating of that review
     return reviews_dic
 
 # function takes a list of reviews and a dictionary of review ids and their
 # associated ratings and returns a list of sorted reviews based off of ratings
 def sort_reviews(reviews, reviews_dic):
+    # sort the dictionary of review ids based off of their ranking, highest to lowest
     sorted_review_ids = sorted(reviews_dic, key=reviews_dic.get, reverse=True)
+    # create a dictionary so reviews can be obtained from their id
     reviews_with_ids = {review.id: review for review in reviews}
     sorted_reviews = []
-    for review_id in sorted_review_ids:
-        sorted_reviews.append(reviews_with_ids[review_id])
-    return sorted_reviews
+    for review_id in sorted_review_ids: # iterate through sorted review ids
+        sorted_reviews.append(reviews_with_ids[review_id]) # add the related review
+    return sorted_reviews                                  # to sorted list
 
 # function takes a request object and a list of review ratings and 
 # returns a dictionary of review ids and the users ratings
 def user_ratings(request, ratings):
-    if request.user.is_authenticated:
-        reviews_rated = ratings.filter(user=request.user)
+    if request.user.is_authenticated: # check if a user is logged on
+        reviews_rated = ratings.filter(user=request.user) # get users reviews
+        # create a dictionary of review ids and how the user voted
         users_ratings = {rating.review.id: rating.vote for rating in reviews_rated}
         return users_ratings
     return {}
