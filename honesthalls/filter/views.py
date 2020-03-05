@@ -28,27 +28,43 @@ def filter_view(request):
          '''
 
         results_rooms = RoomType.objects.filter(Q(hall__name__icontains = search_string))
+        search_words = search_string.split()
         all_rooms = Hall.objects.all()
         hall_data = []
         matcher = [[]]
         num = 0
-        name_ratio = 0
-        text_ratio = 0
-        campus_ratio = 0
-        search_string.lower()
         for hall in all_rooms:
-            word_ratio = 0
             matcher.append([])
             hall_data.append(hall.name)
-            name_ratio = SequenceMatcher(None,search_string,hall.name).ratio()
-            text_ratio = SequenceMatcher(None, search_string, hall.text.lower()).ratio()
-            campus_ratio = SequenceMatcher(None,search_string,hall.campus).ratio()
-            matcher[num].append(name_ratio)
-            matcher[num].append(text_ratio)
-            matcher[num].append(campus_ratio)
+            for i in range(3):
+                matcher[num].append(0)
             num += 1
+        for i in range(len(search_words)):
+            num = 0
+            for hall in all_rooms:
+                search_word = search_words[i]
+                name = hall.name.split()
+                text = hall.text.split()
+                campus = hall.campus
+                ratio = 0
+                for j in range(len(name)):
+                    word = name[j]
+                    ratio = SequenceMatcher(None, search_word, word).ratio()
+                    if ratio > matcher[num][0]:
+                        matcher[num][0] = ratio
+                ratio = 0
+                for j in range(len(text)):
+                    word = text[j]
+                    ratio = SequenceMatcher(None, search_word, word).ratio()
+                    if ratio > matcher[num][1]:
+                        matcher[num][1] = ratio
+                campus_ratio = SequenceMatcher(None, search_word, campus).ratio()
+                if campus_ratio > matcher[num][2]: matcher[num][2] = ratio
+                print(search_word)
+                print(matcher[num][0], matcher[num][1], matcher[num][2])
+                num += 1
         for c in range(num):
-            if matcher[c][0] >= 0.8 or matcher[c][2] > 0.5:
+            if matcher[c][0] >= 0.8 or matcher[c][2] >= 0.5:
                 results_rooms = RoomType.objects.filter(Q(hall__name__icontains = hall_data[c]))
                 for i in results_rooms:
                     unique_halls.add(i.hall)
