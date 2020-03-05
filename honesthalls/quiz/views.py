@@ -62,6 +62,6 @@ def quiz_view(request):
     
 
 
-    return render(request, 'quiz/results.html', {
+    return render(request, 'quiz/questions.html', {
         'form_data': form_halls,
     })
