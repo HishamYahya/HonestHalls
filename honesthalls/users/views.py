@@ -3,7 +3,7 @@ from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm
-from reviews.models import Review
+from reviews.models import Review, ReviewPhotos, ReviewRating
 from .models import Profile
 
 from django.contrib.sites.shortcuts import get_current_site
@@ -13,6 +13,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .tokens import verification_token
 from django.core.mail import EmailMessage
 
+from reviews.views import display_ratings, sort_reviews, user_ratings
 
 def register(request):
     if request.method == 'POST':
@@ -39,11 +40,18 @@ def profile(request):
             return redirect('profile')
     else:
         form = UserUpdateForm(instance=request.user)
+    user = request.user
+    reviews = Review.objects.all().filter(user=user)
+    ratings = ReviewRating.objects.filter(review__user = user)
+    reviewratings = display_ratings(reviews, ratings)
     context = {
         'currentuser': request.user,
         'form': form,
-        'profile': Profile.objects.get(user=request.user),
-        'reviews': Review.objects.all().filter(user=request.user)
+        'profile': Profile.objects.get(user=user),
+        'reviews': sort_reviews(reviews, reviewratings),
+        'reviewphotos': ReviewPhotos.objects.filter(user=user),
+        'reviewratings': reviewratings,
+        'userratings': user_ratings(request, ratings)
     }
     return render(request, 'users/profile.html', context)
 
