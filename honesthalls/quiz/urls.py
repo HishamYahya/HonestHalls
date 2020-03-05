@@ -3,5 +3,5 @@ from . import views
 from .forms import FormStepOne, FormStepTwo, FormStepThree
 
 urlpatterns = [
-    path('', views.FormWizardView.as_view([FormStepOne, FormStepTwo, FormStepThree]), name="quiz")
+    path('', views.quiz_view, name="quiz")
 ]
