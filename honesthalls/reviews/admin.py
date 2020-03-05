@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Review, ReviewPhotos
+from .models import Review, ReviewPhotos, Report
 
 
 class ReviewPhotosInline(admin.TabularInline):
@@ -24,3 +24,4 @@ class ReviewAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Review, ReviewAdmin)
+admin.site.register(Report)

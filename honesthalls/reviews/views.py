@@ -152,7 +152,7 @@ def review_photos(request, review_id):
 
     return render(request, 'reviews/review-photos.html', context)
 
-# function takes a list of reviews and a list of ratings for those reviews 
+# function takes a list of reviews and a list of ratings for those reviews
 # and returns a dictionary of review ids and their associated ratings
 def display_ratings(reviews, ratings):
     reviews_dic = {review.id: 0 for review in reviews} # set initial rating
@@ -175,7 +175,7 @@ def sort_reviews(reviews, reviews_dic):
         sorted_reviews.append(reviews_with_ids[review_id]) # add the related review
     return sorted_reviews                                  # to sorted list
 
-# function takes a request object and a list of review ratings and 
+# function takes a request object and a list of review ratings and
 # returns a dictionary of review ids and the users ratings
 def user_ratings(request, ratings):
     if request.user.is_authenticated: # check if a user is logged on
@@ -189,8 +189,24 @@ def user_ratings(request, ratings):
 @login_required
 def report(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
-    if review.user_id == request.user.id:
-        # The review is by the reporter.
-        messages.error(
-            request, "You cannot report your own reviews.")
 
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+
+        # Check email address
+        email_entered = form.cleaned_data.get('email')
+        if request.user.email != email_entered:
+            messages.error(
+                request, "Please enter the email address linked to your profile.")
+
+        if form.is_valid():
+            # TODO: Add the needed references to the other models?
+            # Save to DB and print message.
+            form.save()
+            messages.success(
+                request, "Your report was saved successfully!")
+            return HttpResponseRedirect(reverse('report', kwargs={'review_id': review.id}))
+
+        else:
+            messages.error(
+                request, "Please, correct any errors in the report form.")

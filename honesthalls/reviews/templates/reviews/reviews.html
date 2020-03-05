@@ -95,7 +95,7 @@
 							<p style="font-size: 12px">Date Created: {{review.date_created.date}}</p>
 						</center>
 					</div>
-					<div class="col ml-3">	
+					<div class="col ml-3">
 						<h5 class="mt-2"><h5 class="ml-2">Average Rating</h5>
 						<input class="hh-rating-input" value="{{average}}" readonly></h5>
 					</div>
@@ -111,7 +111,7 @@
 								</button>
 							</form>
 						{% else %}
-							<a class="btn btn-xs btn-danger float-right mr-4 mt-1" href="#">
+							<a class="btn btn-xs btn-danger float-right mr-4 mt-1" href="{% url 'report' review.id %}">
 								REPORT
 								<i class="material-icons ml-2">new_releases</i>
 							</a>

@@ -1,0 +1,40 @@
+{% extends "halls/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Report{% endblock %}
+
+{% block content %}
+
+
+<div class="col-8 mt-3">
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="reportEmail">Enter your email address</label>
+      <textarea name="email" id="reportEmail" minlength="5"
+        maxlength="75" required aria-describedby="reportEmailHelp">
+      </textarea>
+      <small id="reportEmailHelp" class="form-text text-muted">
+        You will receive updates about this report.
+      </small>
+
+      <label for="reportTitle">Report title</label>
+      <textarea name="title" id="reportTitle" minlength="5"
+        maxlength="75" required>
+      </textarea>
+
+      <label for="reportText">Tell us why you are reporting this review</label>
+      <textarea name="explanation" id="reportText" rows="6" minlength="50"
+        maxlength="2500" required aria-describedby="reportHelp">
+      </textarea>
+      <small id="reportHelp" class="form-text text-muted">
+        <span id="reviewCharCount"></span> out of 2500 characters
+      </small>
+    </div>
+    <button class="btn btn-outline-info" type="submit">
+      Submit
+    </button>
+  </div>
+
+{% endblock content %}
