@@ -151,3 +151,36 @@ def review_photos(request, review_id):
     }
 
     return render(request, 'reviews/review-photos.html', context)
+
+# function takes a list of reviews and a list of review ratings and 
+# returns a dictionary of review ids and their associated ratings
+def display_ratings(reviews, ratings):
+    reviews_dic = {review.id: 0 for review in reviews}
+    for rating in ratings:
+        if (rating.vote):
+            reviews_dic[rating.review.id] += 1
+        else:
+            reviews_dic[rating.review.id] -= 1
+    return reviews_dic
+
+# function takes a list of reviews and a dictionary of review ids and their
+# associated ratings and returns a list of sorted reviews based off of ratings
+def sort_reviews(reviews, reviews_dic):
+    sorted_review_ids = sorted(reviews_dic, key=reviews_dic.get, reverse=True)
+    reviews_with_ids = {review.id: review for review in reviews}
+    sorted_reviews = []
+    for review_id in sorted_review_ids:
+        sorted_reviews.append(reviews_with_ids[review_id])
+    return sorted_reviews
+
+# function takes a request object and a list of review ratings and 
+# returns a dictionary of review ids and the users ratings
+def user_ratings(request, ratings):
+    if request.user.is_authenticated:
+        reviews_rated = ratings.filter(user=request.user)
+        users_ratings = {rating.review.id: rating.vote for rating in reviews_rated}
+        return users_ratings
+    return {}
+
+
+

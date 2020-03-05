@@ -76,3 +76,8 @@ class ReviewPhotos(models.Model):
                     and old_photo.path != filename):
                 # And delete it to save space
                 remove_unused_image(old_photo.path)
+
+class ReviewRating(models.Model):
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    vote = models.BooleanField() # false is a downvote, true is an upvote
