@@ -1,5 +1,5 @@
 from django.shortcuts import (
-    render, reverse,
+    render, reverse, redirect,
     Http404, HttpResponse, HttpResponseRedirect
 )
 from django.utils import timezone
@@ -9,9 +9,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from halls.utils import render_form_errors
-from halls.models import Review, RoomType, Hall
+from users.models import Profile
+from halls.models import Hall, RoomType
+from reviews.models import Review, ReviewPhotos
 
-from .forms import ReviewEditForm
+from .forms import ReviewEditForm, ReviewPhotosEditForm
+from django.forms import modelformset_factory
 
 # Passed to the template to specify
 # whether an existing review is being edited or a new one is being created.
@@ -26,8 +29,6 @@ def write(request, hall_id):
     # get_card_data mainly adds main_photo
     hall = get_object_or_404(Hall, pk=hall_id)
     hall_data = hall.get_card_data()
-    # TODO: Verify whether the user is allowed to post this review.
-
     if request.method == 'POST':
         form = ReviewEditForm(request.POST)
         if form.is_valid():
@@ -37,12 +38,8 @@ def write(request, hall_id):
             # Save to DB and print message.
             form.save()
             messages.success(
-                request, "Your review was saved successfully!")
-            # We then allow the user to edit the review futher.
-            return HttpResponseRedirect(reverse(
-                'review-edit',
-                kwargs={'review_id': form.instance.id}
-            ))
+                request, "Your review was saved successfully. You can now add photos to it!")
+            return redirect(reverse('review-edit', kwargs={'review_id': form.instance.id}))
         else:
             messages.error(
                 request, "Please, correct any errors in the review form!")
@@ -55,7 +52,7 @@ def write(request, hall_id):
         'form': form,
         'hall': hall_data,
         'roomtypes': roomtypes,
-        'user': request.user,
+        'profile': Profile.objects.get(user=request.user),
         'mode': REVIEW_WRITE_NEW
     })
 
@@ -91,10 +88,11 @@ def edit(request, review_id):
     # Get the room types from the DB
     roomtypes = RoomType.objects.filter(hall_id=hall.get('id'))
     return render(request, 'reviews/review-edit.html', {
+        'review': review,
         'form': form,
         'hall': hall,
         'roomtypes': roomtypes,
-        'user': request.user,
+        'profile': Profile.objects.get(user=request.user),
         'date_created': review.date_created,
         'date_modified': review.date_modified,
         'mode': REVIEW_CHANGE_EXISTING
@@ -116,3 +114,40 @@ def delete(request, review_id):
     messages.success(
         request, "Review deleted successfully!")
     return HttpResponseRedirect(reverse('profile'))
+
+
+@login_required
+def review_photos(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+    if review.user_id != request.user.id:
+        # The review is by a different user. Return to profile page.
+        messages.error(
+            request, "You can only delete reviews posted by yourself!")
+        return HttpResponseRedirect(reverse('profile'))
+
+    ReviewPhotosEditFormSet = modelformset_factory(
+        ReviewPhotos, form=ReviewPhotosEditForm, extra=3)
+
+    if request.method == 'POST':
+        formset = ReviewPhotosEditFormSet(request.POST, request.FILES,
+                                          queryset=ReviewPhotos.objects.none())
+        if formset.is_valid():
+            for form in formset.cleaned_data:
+                if form:
+                    image = form['photo_path']
+                    reviewPhoto = ReviewPhotos(photo_path=image, photo_desc=form['photo_desc'],
+                                               review=review, user=review.user)
+                    reviewPhoto.save()
+            messages.success(
+                request, f'Your changes to review photos have been made.')
+            request.method = 'GET'
+            return edit(request, review_id)
+
+    else:
+        formset = ReviewPhotosEditFormSet(queryset=ReviewPhotos.objects.none())
+
+    context = {
+        'formset': formset
+    }
+
+    return render(request, 'reviews/review-photos.html', context)

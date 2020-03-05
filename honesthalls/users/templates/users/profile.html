@@ -14,11 +14,18 @@
             <i class="material-icons ml-3", style="vertical-align:text-bottom;">check</i>
           {% else %}
             <i class="material-icons ml-3", style="vertical-align:text-bottom;">cancel</i>
-            <a href="{% url 'verify' %}" class="btn btn-outline-info ml-4">Verify</a>
+            <a href="{% url 'verify' %}" class="btn btn-outline-info ml-4">
+              Verify
+            </a><br>
+            <a href="#" data-toggle="tooltip" title="Verification lets other users know that you are a current or past student at the University of Manchester, and that your reviews are therefore authentic.">
+              What is verification?
+            </a>
+
           {% endif %}
         </div>
       </div>
       <div class="col-8 mt-3">
+
         <form method="POST">
           {% csrf_token %}
           <fieldset class="form-group">
@@ -33,12 +40,18 @@
             </button>
           </div>
         </form>
+
+        <div class="form-group">
+          <legend class="border-bottom mb-4">
+              Change password
+          </legend>
+          <a href="{% url 'password-change' %}">Update password</a>
+        </div>
       </div>
     </div>
     <div class="container">
-      <h2 class="pl-6">My Reviews:</h2>
+      <p class="display-4">My Reviews</p>
     </div>
     {% include 'reviews/reviews.html' %}
   </div>
 {% endblock content %}
-

@@ -6,3 +6,8 @@ def render_form_errors(request, form):
     for field, errors in form.errors.items():
         for error in errors:
             messages.error(request, error)
+
+
+def yesno(condition, yes_value, no_value):
+    """ Returns yes_value if condition is True, no_value otherwise. """
+    return yes_value if condition else no_value

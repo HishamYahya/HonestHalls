@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'filter.apps.FilterConfig',
     'reviews.apps.ReviewsConfig',
     'misc.apps.MiscConfig',
-    'search.apps.SearchConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -90,6 +89,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'users.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -137,6 +137,7 @@ STATICFILES_DIRS = [
 ]
 
 # The maximum size for user-uploaded images
+MEDIA_THUMB_MAX_SIZE = 512
 MEDIA_IMAGE_MAX_SIZE = 2048
 MEDIA_IMAGE_ASPECT_RATIO = 4/3
 MEDIA_IMAGE_QUALITY = 90
@@ -168,3 +169,5 @@ EMAIL_USE_TLS = True
 # -- don't forget to hide in environment variables when deploying!!! --
 EMAIL_HOST_USER = 'honesthalls@gmail.com'
 EMAIL_HOST_PASSWORD = 'F1rstPr0ject!'
+
+
