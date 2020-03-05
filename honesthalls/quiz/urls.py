@@ -4,5 +4,5 @@ from .forms import FormStepOne, FormStepTwo, FormStepThree
 
 urlpatterns = [
     path('', views.quiz_view, name="quiz"),
-    path('/results', views.results_view, name="results")
+    path('results/', views.results_view, name="results")
 ]
