@@ -8,6 +8,12 @@ class FormWizardView(SessionWizardView):
     template_name = "quiz/questions.html"
     form_list = [FormStepOne, FormStepTwo, FormStepThree]
 
+    def get(self, request, *args, **kwargs):
+        try:
+            return self.render(self.get_form())
+        except KeyError:
+            return super().get(request, *args, **kwargs)
+
     def done(self, form_list, **kwargs):
         answers = [form.cleaned_data for form in form_list]
         answers = [int(d["answer"]) for d in answers]
@@ -64,8 +70,7 @@ class FormWizardView(SessionWizardView):
                 if (key == hall.name):
                     form_halls.append(hall)
                     continue
-        
-        print(form_halls)
+       
 
 
         return render(self.request, 'quiz/results.html', {

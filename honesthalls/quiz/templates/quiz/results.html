@@ -23,11 +23,22 @@
           <h3 class="col mt-3">
             {{ hall.name }}
           </h3>
+          {% if forloop.counter == 1 %}
+          <h4><span class="badge badge-secondary">#1 Choice</span></h4>
+          {% else %}
+          {% if forloop.counter == 2 %}
+          <h4><span class="badge badge-secondary">#2 Choice</span></h4>
+          {% else %}
+          {% if forloop.counter == 3 %}
+          <h4><span class="badge badge-secondary">#3 Choice</span></h4>
+          {% endif %}
+          {% endif %}
+          {% endif %}
         </a>
       </div>
 
       <div class="row">
-        <div class="col-md-5">
+        <!-- <div class="col-md-5">
           <div id="hh-hall-slider">
             {% for photo in hall.photos %}
             <li class="hh-flex-center h-100"
@@ -36,7 +47,6 @@
                 src="{{ photo.photo_path.url }}" alt="{{ photo.photo_desc }}" />
             </li>
             {% empty %}
-            <!-- No images are available -->
             <li data-thumb="">
               <div class="hh-no-image-placeholder">
                 <h3 class="font-weight-normal hh-no-image-placeholder__content">
@@ -46,22 +56,13 @@
             </li>
             {% endfor %}
           </div>
-        </div>
+        </div> -->
 
         <div class="container">
           <div class="card-body">
             {{ hall.text }}
-
-            <h5 class="mt-3">Room Types:</h5>
-            <ul class="list-group list-group-flush mb-3">
-              {% for room in results_rooms %}
-              {% if room.hall.id == hall.id %}
-              <li class="list-group-item"> Room {{ room.id }}</li>
-              <!-- TODO : FORMAT HALLS/ROOM INFORMATION-->
-              {% endif %}
-              {% endfor %}
-            </ul>
-
+            <br />
+            <br />
             <a type="button" class="btn btn-primary"
               href="{% url 'hallpage' hall.id %}">
               Go to hall page
