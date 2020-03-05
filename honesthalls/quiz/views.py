@@ -3,8 +3,9 @@ from halls.models import Hall
 from reviews.models import Review
 
 def quiz_view(request):
-    answers = [form.cleaned_data for form in form_list]
-    answers = [int(d["answer"]) for d in answers]
+    # answers = [form.cleaned_data for form in form_list]
+    # answers = [int(d["answer"]) for d in answers]
+    answers = [1, 1, 3]
     # cleaning data
     
     # generating average for each hall (need to replace)
@@ -61,6 +62,6 @@ def quiz_view(request):
     
 
 
-    return render(self.request, 'quiz/results.html', {
+    return render(request, 'quiz/results.html', {
         'form_data': form_halls,
     })
