@@ -11,9 +11,9 @@ from django.contrib.auth.decorators import login_required
 from halls.utils import render_form_errors
 from users.models import Profile
 from halls.models import Hall, RoomType
-from reviews.models import Review, ReviewPhotos
+from reviews.models import Review, ReviewPhotos, Report
 
-from .forms import ReviewEditForm, ReviewPhotosEditForm
+from .forms import ReviewEditForm, ReviewPhotosEditForm, ReportForm
 from django.forms import modelformset_factory
 
 # Passed to the template to specify
@@ -193,16 +193,14 @@ def report(request, review_id):
     if request.method == 'POST':
         form = ReportForm(request.POST)
 
-        # Check email address
-        email_entered = form.cleaned_data.get('email')
-        if request.user.email != email_entered:
-            messages.error(
-                request, "Please enter the email address linked to your profile.")
-
         if form.is_valid():
-            # TODO: Add the needed references to the other models?
             # Save to DB and print message.
+            form.instance.review = review
+
+            form.instance.user = request.user
             form.save()
+            review.reported = True
+            review.save()
             messages.success(
                 request, "Your report was saved successfully!")
             return HttpResponseRedirect(reverse('report', kwargs={'review_id': review.id}))
@@ -210,3 +208,11 @@ def report(request, review_id):
         else:
             messages.error(
                 request, "Please, correct any errors in the report form.")
+            return render(request, 'reviews/report.html', {
+                "form": form
+            })
+    else:
+        form = ReportForm()
+        return render(request, 'reviews/report.html', {
+        "form": form
+        })

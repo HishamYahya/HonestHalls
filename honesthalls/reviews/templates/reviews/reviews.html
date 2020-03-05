@@ -111,10 +111,12 @@
 								</button>
 							</form>
 						{% else %}
+            <form>
 							<a class="btn btn-xs btn-danger float-right mr-4 mt-1" href="{% url 'report' review.id %}">
 								REPORT
 								<i class="material-icons ml-2">new_releases</i>
 							</a>
+            </form>
 						{% endif %}
 
 					</div>

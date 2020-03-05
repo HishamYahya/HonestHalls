@@ -87,5 +87,5 @@ class Report(models.Model):
     title = models.CharField(max_length=75)
     explanation = models.CharField(max_length=2500)
     date_reported = models.DateTimeField(auto_now_add=True)
-
-    # 4:27 video 5: Databases
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)

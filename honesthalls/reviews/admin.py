@@ -23,5 +23,14 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ('id', 'text', 'date_modified')
 
 
+# class ReviewInline(admin.TabularInline):
+#     model = Review
+#
+#
+# class ReportAdmin(admin.ModelAdmin):
+#     inlines = [
+#         ReviewInline,
+#     ]
+
 admin.site.register(Review, ReviewAdmin)
 admin.site.register(Report)

@@ -1,6 +1,6 @@
 from django import forms
 
-from reviews.models import Review, ReviewPhotos
+from reviews.models import Review, ReviewPhotos, Report
 
 
 class ReviewEditForm(forms.ModelForm):
@@ -25,10 +25,9 @@ class ReviewPhotosEditForm(forms.ModelForm):
 
 
 class ReportForm(forms.ModelForm):
-    email = forms.EmailField()
     title = forms.CharField(min_length=5, max_length=50)
     explanation = forms.CharField(min_length=50, max_length=2500)
 
     class Meta:
-        # model = Report
-        field_order = ['email', 'title', 'explanation']
+        model = Report
+        fields = ['title', 'explanation']
