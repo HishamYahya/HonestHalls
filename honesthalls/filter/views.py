@@ -27,49 +27,80 @@ def filter_view(request):
          num refers to number which count the number all halls in database
          '''
 
-        results_rooms = RoomType.objects.filter(Q(hall__name__icontains = search_string))
+        results_rooms = RoomType.objects.filter(Q(hall__name__icontains=search_string))
         search_words = search_string.split()
         all_rooms = Hall.objects.all()
         hall_data = []
         matcher = [[]]
+        result_matcher = [[]]
         num = 0
         for hall in all_rooms:
             matcher.append([])
-            hall_data.append(hall.name)
             for i in range(3):
                 matcher[num].append(0)
             num += 1
-        for i in range(len(search_words)):
+        count = 0
+        for hall in all_rooms:
             num = 0
-            for hall in all_rooms:
+            record = False
+            for i in range(len(search_words)):
                 search_word = search_words[i]
                 name = hall.name.split()
                 text = hall.text.split()
                 campus = hall.campus
+                matcher[num][0], matcher[num][1], matcher[num][2] = 0, 0, 0
                 ratio = 0
                 for j in range(len(name)):
                     word = name[j]
-                    ratio = SequenceMatcher(None, search_word, word).ratio()
-                    if ratio > matcher[num][0]:
-                        matcher[num][0] = ratio
+                    if len(word) <= len(search_word):
+                        ratio = SequenceMatcher(None, search_word, word).ratio()
+                        if ratio > matcher[num][0]:
+                            matcher[num][0] = ratio
+                    else:
+                        for count_1 in range(len(word) - len(search_word) + 1):
+                            name_string = ""
+                            for count_2 in range(len(search_word)):
+                                name_string += word[count_1 + count_2]
+                            ratio = SequenceMatcher(None, search_word, name_string).ratio()
+                            if ratio > matcher[num][0]: matcher[num][0] = ratio
                 ratio = 0
-                for j in range(len(text)):
+                for j in range(len(name)):
                     word = text[j]
-                    ratio = SequenceMatcher(None, search_word, word).ratio()
-                    if ratio > matcher[num][1]:
-                        matcher[num][1] = ratio
+                    if len(word) <= len(search_word):
+                        ratio = SequenceMatcher(None, search_word, word).ratio()
+                        if ratio > matcher[num][1]:
+                            matcher[num][1] = ratio
+                    else:
+                        for count_1 in range(len(word) - len(search_word) + 1):
+                            text_string = ""
+                            for count_2 in range(len(search_word)):
+                                text_string += word[count_1 + count_2]
+                            ratio = SequenceMatcher(None, search_word, text_string).ratio()
+                            if ratio > matcher[num][1]: matcher[num][1] = ratio
                 campus_ratio = SequenceMatcher(None, search_word, campus).ratio()
-                if campus_ratio > matcher[num][2]: matcher[num][2] = ratio
+                if campus_ratio > matcher[num][2]:
+                    matcher[num][2] = campus_ratio
                 print(search_word)
                 print(matcher[num][0], matcher[num][1], matcher[num][2])
+                if matcher[num][0] > 0.6 or matcher[num][1] > 0.8 or matcher[num][2] > 0.5 or record:
+                    record = True
+                    result_matcher.append([])
+                    result_matcher[count].append(hall.name)
+                    for j in range(3):
+                        result_matcher[count].append(1)
+                    result_matcher[count][1] *= matcher[num][0]
+                    result_matcher[count][2] += matcher[num][1]
+                    result_matcher[count][3] = matcher[num][2]
+                    count += 1
                 num += 1
-        for c in range(num):
+
+        """for c in range(num):
             if matcher[c][0] >= 0.8 or matcher[c][2] >= 0.5:
                 results_rooms = RoomType.objects.filter(Q(hall__name__icontains = hall_data[c]))
                 for i in results_rooms:
                     unique_halls.add(i.hall)
                 for hall in unique_halls:
-                    hall.photos = list(HallPhotos.objects.filter(hall=hall))
+                    hall.photos = list(HallPhotos.objects.filter(hall=hall))"""
         # TODO: Change so it only queries search results
 
     # A set is being used so it does not/cannot have duplicate halls
