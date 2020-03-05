@@ -34,7 +34,7 @@
 						</h3>
 					</a>
 				</div>
-
+				<div class="row ml-3"><h5>{{ hall.campus }}</h5></div>
 				<div class="row">
 					<div class="col-md-5">
 						<div id="hh-hall-slider">
@@ -67,7 +67,7 @@
 							<ul class="list-group list-group-flush mb-3">
 								{% for room in results_rooms %}
 								{% if room.hall.id == hall.id %}
-								<li class="list-group-item"> Room {{ room.id }}</li>
+								<li class="list-group-item"> Room {{ room.formatted_string }}</li>
 								<!-- TODO : FORMAT HALLS/ROOM INFORMATION-->
 								{% endif %}
 								{% endfor %}
