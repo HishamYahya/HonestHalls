@@ -1,0 +1,26 @@
+{% extends "halls/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Report{% endblock %}
+
+{% block content %}
+
+
+<div class="col-8 mt-3">
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <h1>Report form</h1>
+      {{ form.title|as_crispy_field }}
+      {{ form.explanation|as_crispy_field }}
+      <small class="form-text text-muted">
+        Tell us why you are reporting this review. <br>
+      </small>
+    </div>
+    <button class="btn btn-outline-info" type="submit">
+      Submit
+    </button>
+  </div>
+
+{% endblock content %}
