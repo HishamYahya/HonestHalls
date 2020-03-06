@@ -20,8 +20,8 @@
         <!-- Search bar -->
         <ul class="navbar-nav container-fluid">
             <div class="nav-item col-12">
-                <form class="form-inline" action="/action_page.php">
-                    <input class="form-control mr-sm-2 col-10" type="text" placeholder="Search...">
+                <form class="form-inline" method="GET" action="/filter">
+                    <input class="form-control mr-sm-2 col-10" type="text" name="searchbar" id="searchbar" placeholder="Search by hall name...">
                     <button class="btn btn-outline-info col-1" type="submit">Go</button>
                 </form>
             </div>
