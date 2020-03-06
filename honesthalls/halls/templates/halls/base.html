@@ -21,6 +21,10 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" type="text/css"
     href="{% static 'halls/css/main.css' %}">
+  <link rel="stylesheet" type="text/css"
+    href="{% static 'reviews/css/main.css' %}">
+  <link rel="stylesheet" type="text/css"
+    href="{% static 'quiz/css/main.css' %}">
   <!-- Google Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
     rel="stylesheet">
@@ -48,7 +52,21 @@
     {% block content %}{% endblock %}
   </div>
 
+  <!-- The element used for previewing images -->
+  <div class="hh-preview-dialog-backdrop">
+    <div class="hh-preview-dialog-container mx-auto">
+      <div class="hh-preview-dialog">
+        <img class="hh-preview-dialog__image">
+        <div class="hh-preview-dialog__content"></div>
+      </div>
+      <div class="hh-preview-dialog-close" role="button">
+        <i class="material-icons">close</i>
+      </div>
+    </div>
+  </div>
+
   <!-- jQuery Slim (Required by Bootstrap 4) -->
+  <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
     crossorigin="anonymous"></script>
@@ -67,6 +85,7 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/js/lightslider.min.js"></script>
   <!-- Custom JavaScript -->
   <script src="{% static 'halls/js/main.js' %}"></script>
+  <script src="{% static 'quiz/js/main.js' %}"></script>
 
 </body>
 

@@ -4,9 +4,10 @@ from django.shortcuts import (
 )
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, get_list_or_404
-from reviews.models import Review, ReviewPhotos
-from .models import Hall, RoomType, HallPhotos
 
+from reviews.models import Review, ReviewPhotos, ReviewRating
+from reviews.views import display_ratings, sort_reviews, user_ratings
+from .models import Hall, RoomType, HallPhotos
 
 def index(request):
     """ Serves the project homepage """
@@ -29,14 +30,18 @@ def hallpage(request, id):
     hall = get_object_or_404(Hall, pk=id)
     roomtypes = hall.roomtype_set.all()
     hallphotos = hall.hallphotos_set.all()
+    reviews = Review.objects.filter(roomtype__hall_id=id)
+    ratings = ReviewRating.objects.filter(review__roomtype__hall__id = id)
+    reviewratings = display_ratings(reviews, ratings)
     context = {
         'currentuser': request.user,
         'id': id,
         'hall': hall,
         'roomtypes': roomtypes,
         'hallphotos': hallphotos,
-        'reviews': Review.objects.filter(roomtype__hall_id=id),
-        'reviewphotos': ReviewPhotos.objects.filter(review__roomtype__hall_id=id)
+        'reviews': sort_reviews(reviews, reviewratings),
+        'reviewphotos': ReviewPhotos.objects.filter(review__roomtype__hall_id=id),
+        'reviewratings': reviewratings,
+        'userratings': user_ratings(request, ratings)
     }
-
     return render(request, 'halls/hallpage.html', context)

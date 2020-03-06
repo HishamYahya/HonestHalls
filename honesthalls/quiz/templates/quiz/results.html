@@ -1,0 +1,89 @@
+{% extends "halls/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block css %}
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'halls/css/main.css' %}">
+<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js">
+</script> -->
+{% endblock %}
+
+{% block title %}Quiz Results{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <div class="col-md-9">
+    <!-- Loop through the halls data and display the
+			ones that satisfy the filters -->
+    {% for hall in form_data %}
+    <div class="card m-3 container">
+      <div class="row">
+        <a type="button" class="btn btn-link"
+          href="{% url 'hallpage' hall.id %}">
+          <h3 class="col mt-3">
+            {{ hall.name }}
+          </h3>
+          {% if forloop.counter == 1 %}
+          <h4><span class="badge badge-secondary">#1 Choice</span></h4>
+          {% else %}
+          {% if forloop.counter == 2 %}
+          <h4><span class="badge badge-secondary">#2 Choice</span></h4>
+          {% else %}
+          {% if forloop.counter == 3 %}
+          <h4><span class="badge badge-secondary">#3 Choice</span></h4>
+          {% endif %}
+          {% endif %}
+          {% endif %}
+        </a>
+      </div>
+
+      <div class="row">
+        <!-- <div class="col-md-5">
+          <div id="hh-hall-slider">
+            {% for photo in hall.photos %}
+            <li class="hh-flex-center h-100"
+              data-thumb="{{ photo.photo_path.url }}">
+              <img class="w-100 hh-image-supports-preview"
+                src="{{ photo.photo_path.url }}" alt="{{ photo.photo_desc }}" />
+            </li>
+            {% empty %}
+            <li data-thumb="">
+              <div class="hh-no-image-placeholder">
+                <h3 class="font-weight-normal hh-no-image-placeholder__content">
+                  No image available
+                </h3>
+              </div>
+            </li>
+            {% endfor %}
+          </div>
+        </div> -->
+
+        <div class="container">
+          <div class="card-body">
+            {{ hall.text }}
+            <br />
+            <br />
+            <a type="button" class="btn btn-primary"
+              href="{% url 'hallpage' hall.id %}">
+              Go to hall page
+            </a>
+          </div>
+
+
+
+        </div>
+
+
+      </div>
+    </div>
+
+    {% empty %}
+    <h5>No halls fit criteria.</h5>
+    {% endfor %}
+  </div>
+</div>
+</div>
+
+
+
+{% endblock content %}
