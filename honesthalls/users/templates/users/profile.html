@@ -17,23 +17,16 @@
 
 
             <a href="{% url 'verify' %}" class="btn btn-outline-info ml-4">Verify</a>
-<!-- OG VERSION -->
-<!-- ################################################################################# -->
-            <a href="#" data-toggle="tooltip" data-placement="right" title="Verification lets other users know that you are a current or past student at the University of Manchester, and that your reviews are therefore authentic.">
-              What is verification? OG
-            </a>
-<!-- Alert version -->
-<!-- ################################################################################# -->
-            <div class="alert alert-info alert-dismissible">
+
+<!-- OG way of showing message -->
+<!--        <a href="#" data-toggle="tooltip" data-placement="right" title="Verification lets other users know that you are a current or past student at the University of Manchester, and that your reviews are therefore authentic.">What is verification?</a> -->
+
+<!-- Alert version- message shown everytime page loaded (if not verified), but can be dismissed -->
+
+            <div class="alert alert-info alert-dismissible mt-2" >
               <button type="button" class="close" data-dismiss="alert" data-toggle="tooltip">&times;</button>
               Verification lets other users know that you are a current or past student at the University of Manchester, and that your reviews are therefore authentic.
             </div>
-<!-- Popover version- needs jquery? -->
-<!-- ################################################################################# -->
-<div class="container">
-  <a href="#" data-toggle="popover" data-placement="right" title="Verification" data-content="Verification lets other users know that you are a current or past student at the University of Manchester, and that your reviews are therefore authentic.">What is verification? Popover</a>
-</div>
-<!-- ################################################################################# -->
           {% endif %}
         </div>
       </div>
@@ -68,3 +61,4 @@
     {% include 'reviews/reviews.html' %}
   </div>
 {% endblock content %}
+
