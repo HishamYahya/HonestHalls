@@ -125,7 +125,8 @@
           initGlobalPlugins();
         }
 
-        $previewBackdropImage.attr('src', $image.attr('src'));
+        const imageSrc = $image.attr('data-hh-image-src') || $image.attr('src');
+        $previewBackdropImage.attr('src', imageSrc);
       });
     }
 
