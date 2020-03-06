@@ -115,9 +115,8 @@ class RoomType(models.Model):
             str(self.contract_length) +
             " weeks at £" +
             self.formatted_price +
-            "/week " +
-            yesno(self.accessible, "w/ ", "w/o ") +
-            "accessible access"
+            "/week. Accessible? " + 
+            yesno(self.accessible, "Yes", "No")
         )
 
     def __str__(self):

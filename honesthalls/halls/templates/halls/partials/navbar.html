@@ -2,9 +2,8 @@
     <!-- Logo -->
     <a class="navbar-brand" href="{% url 'index' %}">HonestHalls</a>
     <!-- Collapsible menu -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse"
-        data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-        aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <!-- Navbar elements -->
@@ -21,11 +20,9 @@
         <!-- Search bar -->
         <ul class="navbar-nav container-fluid">
             <div class="nav-item col-12">
-                <form class="form-inline" action="/filter">
-                    <input name="searchbar" class="form-control mr-sm-2 col-10"
-                        type="text" placeholder="Search...">
-                    <button class="btn btn-outline-info col-1"
-                        type="submit">Go</button>
+                <form class="form-inline" method="GET" action="/filter">
+                    <input class="form-control mr-sm-2 col-10" type="text" name="searchbar" id="searchbar" placeholder="Search by hall name...">
+                    <button class="btn btn-outline-info col-1" type="submit">Go</button>
                 </form>
             </div>
         </ul>
