@@ -248,6 +248,9 @@ The button to close the preview.
 }
 
 .hh-rating {
+	position: relative;
+	white-space: nowrap;
+	overflow: hidden;
 	user-select: none;
 }
 
@@ -268,7 +271,21 @@ The button to close the preview.
 }
 
 .hh-rating__star .material-icons {
-	font-size: 32px;
+	font-size: 1.6em;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+	.hh-rating__star .material-icons {
+		font-size: 1.8em;
+	}
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+	.hh-rating__star .material-icons {
+		font-size: 2em;
+	}
 }
 
 .hh-rating__star :not(.hh-rating__star__bg) {
