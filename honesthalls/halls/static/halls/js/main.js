@@ -5,7 +5,9 @@
     /**
      * Runs all the initializers for all the global plugins.
      */
+
     $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
   }
 
   function initRatingInputs() {

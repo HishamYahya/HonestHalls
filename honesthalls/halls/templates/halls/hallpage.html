@@ -64,6 +64,7 @@
 					<td>Ensuite/Basin/Neither</td>
 					<td>Catered</td>
 					<td>Bedsize</td>
+					<td>Accessible</td>
 				</tr>
 				{% for room in roomtypes %}
 				<tr>
@@ -86,6 +87,12 @@
 					{% endif %}
 
 					<td>{{ room.bedsize }}</td>
+
+					{% if room.accessible %}
+					<td>Yes</td>
+					{% else %}
+					<td>No</td>
+					{% endif %}
 				</tr>
 				{% endfor %}
 			</table>
