@@ -107,7 +107,7 @@ class RoomType(models.Model):
     def formatted_string(self):
         return (
             yesno(self.catered, "Catered", "Non-catered") +
-            yesno(self.ensuite, "ensuite", "") +
+            yesno(self.ensuite, " ensuite", "") +
             " room " +
             yesno(self.basin, "with basin and ", "with ") +
             str(self.bedsize).lower() +
@@ -115,7 +115,7 @@ class RoomType(models.Model):
             str(self.contract_length) +
             " weeks at £" +
             self.formatted_price +
-            "/week " + 
+            "/week " +
             yesno(self.accessible, "w/ ", "w/o ") +
             "accessible access"
         )
