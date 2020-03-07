@@ -1,0 +1,52 @@
+.hh-container-map {
+    max-width: 1600px;
+    height: calc(100vh - 128px);
+    margin: 0 auto;
+    margin-top: 24px;
+}
+
+.hh-halls-list {
+  overflow-y: auto;
+}
+
+.hh-halls-list .card:hover {
+  background: #FAFAFA;
+  cursor: pointer;
+}
+
+.hh-halls-list .card.focused .card-body {
+  color: #007bff;
+}
+
+.hh-halls-list .card.focused .card-title {
+  font-weight: bold;
+}
+
+.hh-halls-list .card .hh-room-types {
+  overflow: hidden;
+  max-height: 0;
+  transition: 0.5s max-height cubic-bezier(0, 1, 0, 1);
+}
+
+.hh-halls-list .card.focused .hh-room-types {
+  max-height: 1024px;
+  transition: 1s max-height ease-out;
+}
+
+.hh-map-marker {
+  display: block;
+  padding: 4px 8px;
+  font-size: 1em;
+  border-radius: 2px;
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.2);
+  background-color: white;
+  transition-duration: 0.2s;
+  transition-property: color, background-color, font-size;
+  transition-timing-function: ease-in-out;
+}
+
+.hh-map-marker.focused {
+  background-color: #007bff;
+  color: white;
+  font-size: 1.25em;
+}

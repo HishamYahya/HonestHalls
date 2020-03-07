@@ -25,6 +25,8 @@
     href="{% static 'reviews/css/main.css' %}">
   <link rel="stylesheet" type="text/css"
     href="{% static 'quiz/css/main.css' %}">
+  <link rel="stylesheet" type="text/css"
+    href="{% static 'maps/css/main.css' %}">
   <!-- Google Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
     rel="stylesheet">
@@ -48,9 +50,9 @@
     </div>
     {% endfor %}
     {% endif %}
-
-    {% block content %}{% endblock %}
   </div>
+  
+  {% block content %}{% endblock %}
 
   <!-- The element used for previewing images -->
   <div class="hh-preview-dialog-backdrop">

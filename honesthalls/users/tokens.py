@@ -9,5 +9,4 @@ class TokenGenerator(PasswordResetTokenGenerator):
             six.text_type(profile.verified)
         )
 
-
 verification_token = TokenGenerator()

@@ -25,9 +25,8 @@ REVIEW_CHANGE_EXISTING = 'CHANGE_EXISTING'
 def write(request, hall_id):
     """ Allows the user to write a new review for a room. """
     # We'll pass the hall to the view, so get the data needed for that
-    # get_card_data mainly adds main_photo
     hall = get_object_or_404(Hall, pk=hall_id)
-    hall_data = hall.get_card_data()
+    hall_data = hall.get_preview_dict()
     if request.method == 'POST':
         form = ReviewEditForm(request.POST)
         if form.is_valid():
@@ -69,8 +68,8 @@ def edit(request, review_id):
         return HttpResponseRedirect(reverse('index'))
 
     # We'll pass the hall to the view, so get the data needed for that
-    # get_card_data mainly adds main_photo
-    hall = review.roomtype.hall.get_card_data()
+    # get_preview_dict mainly adds photo and thumbnail
+    hall = review.roomtype.hall.get_preview_dict()
     if request.method == 'POST':
         form = ReviewEditForm(request.POST, instance=review)
         if form.is_valid():

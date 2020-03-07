@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'filter.apps.FilterConfig',
     'reviews.apps.ReviewsConfig',
     'quiz.apps.QuizConfig',
+    'maps.apps.MapsConfig',
     'misc.apps.MiscConfig',
     'django.contrib.admin',
     'django.contrib.auth',
