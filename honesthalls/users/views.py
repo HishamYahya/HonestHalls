@@ -14,6 +14,8 @@ from .tokens import verification_token
 from django.core.mail import EmailMessage
 
 from reviews.views import display_ratings, sort_reviews, user_ratings
+import json
+
 
 def register(request):
     if request.method == 'POST':
@@ -42,6 +44,9 @@ def profile(request):
         form = UserUpdateForm(instance=request.user)
     user = request.user
     reviews = Review.objects.all().filter(user=user)
+    review_ids = []
+    for review in reviews:
+        review_ids.append(review.id)
     ratings = ReviewRating.objects.filter(review__user = user)
     reviewratings = display_ratings(reviews, ratings)
     context = {
@@ -51,7 +56,8 @@ def profile(request):
         'reviews': sort_reviews(reviews, reviewratings),
         'reviewphotos': ReviewPhotos.objects.filter(user=user),
         'reviewratings': reviewratings,
-        'userratings': user_ratings(request, ratings)
+        'userratings': user_ratings(request, ratings),
+        'review_ids': json.dumps(review_ids, separators=(',', ':'))
     }
     return render(request, 'users/profile.html', context)
 
