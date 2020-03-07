@@ -8,11 +8,9 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from reviews.models import Review, ReviewPhotos, ReviewRating
 from reviews.views import display_ratings, sort_reviews, user_ratings
 from .models import Hall, RoomType, HallPhotos
-<<<<<<< HEAD
 
 import json
-=======
->>>>>>> master
+
 
 def index(request):
     """ Serves the project homepage """
