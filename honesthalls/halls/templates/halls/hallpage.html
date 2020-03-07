@@ -2,7 +2,7 @@
 {% block title %}{{ hall.name }}{% endblock %}
 <!-- -------------------------------- -->
 {% block content %}
-<div class="container px-0">
+<div class="container">
 	<div class="row">
 		<div class="col-md-6">
 			<!-- The image gallery/slider. Currently using LigtSlider -->
@@ -57,12 +57,12 @@
 				</a>
 			</p>
 
-			<table class="table table-striped table-bordered">
+			<table class="table table-sm table-striped table-bordered text-break">
 				<tr>
-					<td>Price (£/per week)</td>
-					<td>Contract Length (weeks)</td>
-					<td>Ensuite/Basin/Neither</td>
-					<td>Catered</td>
+					<td>Price (£/wk)</td>
+					<td>Contract (wks)</td>
+					<td>Bathroom/Basin</td>
+					<td>Catering</td>
 					<td>Bedsize</td>
 					<td>Accessible</td>
 				</tr>
@@ -81,17 +81,17 @@
 
 
 					{% if room.catered %}
-					<td>&#x2611</td>
+					<td><i class="material-icons align-text-bottom">check</i></td>
 					{% else %}
-					<td>&#x2610</td>
+					<td><i class="material-icons align-text-bottom">close</i></td>
 					{% endif %}
 
 					<td>{{ room.bedsize }}</td>
 
 					{% if room.accessible %}
-					<td>Yes</td>
+					<td><i class="material-icons align-text-bottom">check</i></td>
 					{% else %}
-					<td>No</td>
+					<td><i class="material-icons align-text-bottom">close</i></td>
 					{% endif %}
 				</tr>
 				{% endfor %}
@@ -100,7 +100,7 @@
 	</div>
 </div>
 
-<div class="container px-0">
+<div class="container">
 	<div>
 		<span class="h1">Reviews</span>
 		<a href="{% url 'review-write' hall.id %}"

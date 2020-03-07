@@ -80,10 +80,10 @@
 .hh-map-marker::before {
   content: '';
   position: absolute;
-  bottom: -5px;
+  top: -5px;
   left: -1px;
   border-top: 8px solid transparent;
   border-bottom: 8px solid transparent;
   border-right: 8px solid #dc3545;
-  transform: rotate(-45deg);
+  transform: rotate(45deg);
 }

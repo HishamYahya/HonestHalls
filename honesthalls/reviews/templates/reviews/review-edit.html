@@ -51,19 +51,6 @@
             <h5 class="card-title">{{ hall.name }}</h5>
             <p class="card-text">{{ hall.text }}</p>
           </div>
-
-          <div class="form-group col-md-12 hh-not-allowed">
-            <!-- The overall rating is calculated by the script below. -->
-            <label class="h5" for="overallRating">Overall Rating (<span
-                id="overallRatingText"></span>/5.00)</label>
-            <!-- We don't want the user to be able to change this. -->
-            <input type="number" class="form-control hh-rating-input"
-              id="overallRating" readonly aria-describedby="overallHelp">
-            <small id="overallHelp" class="form-text text-muted">
-              Computed by the individual ratings.
-            </small>
-          </div>
-
         </div>
       </div>
     </div>
