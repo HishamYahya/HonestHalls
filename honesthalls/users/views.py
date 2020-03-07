@@ -98,7 +98,7 @@ def verify(request):
             token = verification_token.make_token(profile)
 
             # Do not break the following string or the email will get cut off
-            message = f"Hi,\n\n You're receiving this email because you requested to verify your HonestHalls account.\n\n Please click on the following link to do so: http://{current_site.domain}/user/verify-complete/{uid}/{token} \n\n This is an automated email, please do not reply to this directly.\n\n\n Regards,\n The HonestHalls Team."
+            message = f"Hi {profile.user.username},\n\n You're receiving this email because you requested to verify your HonestHalls account.\n\n Please click on the following link to do so: http://{current_site.domain}/user/verify-complete/{uid}/{token} \n\n This is an automated email, please do not reply to this directly.\n\n\n Regards,\n The HonestHalls Team."
 
             # Old email:
             # message = f'http://{current_site.domain}/user/verify-complete/{uid}/{token}'
@@ -108,7 +108,7 @@ def verify(request):
             )
             email.send()
 
-            messages.success(request, 'A verification email has been sent '
+            messages.success(request, 'A verification email has been sent'
                              'to your account.')
     return redirect('profile')
 

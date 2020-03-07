@@ -40,6 +40,8 @@ def process_uploaded_image(filename):
     max_size = settings.MEDIA_IMAGE_MAX_SIZE
     # thumbnail() works in-place
     im.thumbnail((max_size, max_size), Image.NEAREST)
+    # Drop the alpha channel
+    im = im.convert('RGB')
     # Overwrite the input image file.
     im.save(filename, 'JPEG', quality=settings.MEDIA_IMAGE_QUALITY)
 

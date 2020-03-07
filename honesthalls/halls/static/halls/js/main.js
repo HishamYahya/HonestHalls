@@ -5,7 +5,9 @@
     /**
      * Runs all the initializers for all the global plugins.
      */
+
     $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
   }
 
   function initRatingInputs() {
@@ -123,7 +125,8 @@
           initGlobalPlugins();
         }
 
-        $previewBackdropImage.attr('src', $image.attr('src'));
+        const imageSrc = $image.attr('data-hh-image-src') || $image.attr('src');
+        $previewBackdropImage.attr('src', imageSrc);
       });
     }
 
