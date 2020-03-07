@@ -52,24 +52,54 @@ document.addEventListener("DOMContentLoaded", function() {
       map.addObject(marker);
     }
 
+    let focusedHall = null;
+    function focusHall(id, center) {
+      const hall = halls.find(x => x.id == id);
+      if (!hall) {
+        throw new Error("Cannot find hall with ID=" + id);
+      }
+
+      if (center) {
+        map.setCenter({ lat: hall.latitude, lng: hall.longitude });
+      }
+      $('[data-hall-id]').removeClass('focused');
+      $('[data-hall-id="' + id + '"]').addClass('focused');
+      focusedHall = hall;
+    }
+
+    function tryFocusAnchorHall(id) {
+      if (location.hash.indexOf('#hall-') === 0) {
+        const id = location.hash.substr('#hall-'.length) | 0;
+        focusHall(id, true);
+      }
+    }
+
     $('body').on('click', function(event) {
       const $target = $(event.target).parents('[data-hall-id]');
       if ($target.length) {
-        const hallID = $target.attr('data-hall-id') | 0;
-        
-        $('[data-hall-id]').removeClass('focused');
-        $('[data-hall-id="' + hallID + '"]').addClass('focused');
+        const id = $target.attr('data-hall-id') | 0;
+        focusHall(id);
       }
     });
 
+    let areMarkersInit = false;
     function initializeMapMarkers() {
-      $(".hh-map-marker").each(function(i, elem) {
-        // Pass
-      });
+      if ($('.hh-map-marker').length) {
+        // First load of the map. Focus the map in the hash.
+        if (!areMarkersInit) {
+          areMarkersInit = true;
+          tryFocusAnchorHall();
+        }
+        // Need to re-add .focus to the marker if it
+        // wasn't onscreen when the hall was focused.
+        if (focusedHall != null) {
+          focusHall(focusedHall.id);
+        }
+      }
     }
 
-    // Call every 250 ms to initialize any new markers on the map.
-    setInterval(initializeMapMarkers, 250);
+    // Call every 50 ms to run initialization logic once the map has loaded.
+    const intervalID = setInterval(initializeMapMarkers, 50); 
   }
 
   // Get the halls data from the injected script tag.

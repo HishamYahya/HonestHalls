@@ -16,7 +16,7 @@
       -->
       <div id="hall-{{hall.id}}" class="card rounded-0" data-hall-id="{{hall.id}}">
         <div class="row no-gutters">
-          <div class="col-lg-6">
+          <div class="col-6 col-md-4 col-lg-6">
             {% if hall.photo %}
               <div class="card-img rounded-0 h-100 hh-aspect-4-3 hh-image-cover"
                 style="background-image: url('{{ hall.thumbnail }}')">
@@ -30,7 +30,7 @@
               </div>
             {% endif %}
           </div>
-          <div class="col-lg-6 overflow-auto">
+          <div class="col-6 col-md-8 col-lg-6 overflow-auto">
             <div class="card-body p-3">
               <h5 class="card-title mb-1">{{ hall.name }}</h5>
               <span class="align-text-top badge badge-secondary">{{ hall.campus  }}</span>
