@@ -14,6 +14,8 @@ from .tokens import verification_token
 from django.core.mail import EmailMessage
 
 from reviews.views import display_ratings, sort_reviews, user_ratings
+import json
+
 
 def register(request):
     if request.method == 'POST':
@@ -42,6 +44,9 @@ def profile(request):
         form = UserUpdateForm(instance=request.user)
     user = request.user
     reviews = Review.objects.all().filter(user=user)
+    review_ids = []
+    for review in reviews:
+        review_ids.append(review.id)
     ratings = ReviewRating.objects.filter(review__user = user)
     reviewratings = display_ratings(reviews, ratings)
     context = {
@@ -51,7 +56,8 @@ def profile(request):
         'reviews': sort_reviews(reviews, reviewratings),
         'reviewphotos': ReviewPhotos.objects.filter(user=user),
         'reviewratings': reviewratings,
-        'userratings': user_ratings(request, ratings)
+        'userratings': user_ratings(request, ratings),
+        'review_ids': json.dumps(review_ids, separators=(',', ':'))
     }
     return render(request, 'users/profile.html', context)
 
@@ -92,7 +98,7 @@ def verify(request):
             token = verification_token.make_token(profile)
 
             # Do not break the following string or the email will get cut off
-            message = f"Hi {profile.user.username},\n\n You're receiving this email because you requested to verify your HonestHalls account.\n\n Please click on the following link to do so: http://{current_site.domain}/user/verify-complete/{uid}/{token} \n\n This is an automated email, please do not reply to this directly.\n\n\n Regards,\n The HonestHalls Team."
+            message = f"Hi {profile.user.first_name},\n\n You're receiving this email because you requested to verify your HonestHalls account.\n\n Please click on the following link to do so: http://{current_site.domain}/user/verify-complete/{uid}/{token} \n\n This is an automated email, please do not reply to this directly.\n\n\n Regards,\n The HonestHalls Team."
 
             # Old email:
             # message = f'http://{current_site.domain}/user/verify-complete/{uid}/{token}'
@@ -102,7 +108,7 @@ def verify(request):
             )
             email.send()
 
-            messages.success(request, 'A verification email has been sent'
+            messages.success(request, 'A verification email has been sent '
                              'to your account.')
             return redirect('profile')
 

@@ -9,6 +9,9 @@ from reviews.models import Review, ReviewPhotos, ReviewRating
 from reviews.views import display_ratings, sort_reviews, user_ratings
 from .models import Hall, RoomType, HallPhotos
 
+import json
+
+
 def index(request):
     """ Serves the project homepage """
     # Get a number of halls
@@ -31,6 +34,9 @@ def hallpage(request, id):
     roomtypes = hall.roomtype_set.all()
     hallphotos = hall.hallphotos_set.all()
     reviews = Review.objects.filter(roomtype__hall_id=id)
+    review_ids = []
+    for review in reviews:
+        review_ids.append(review.id)
     ratings = ReviewRating.objects.filter(review__roomtype__hall__id = id)
     reviewratings = display_ratings(reviews, ratings)
     context = {
@@ -42,6 +48,7 @@ def hallpage(request, id):
         'reviews': sort_reviews(reviews, reviewratings),
         'reviewphotos': ReviewPhotos.objects.filter(review__roomtype__hall_id=id),
         'reviewratings': reviewratings,
-        'userratings': user_ratings(request, ratings)
+        'userratings': user_ratings(request, ratings),
+        'review_ids': json.dumps(review_ids, separators=(',', ':'))
     }
     return render(request, 'halls/hallpage.html', context)

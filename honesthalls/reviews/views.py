@@ -11,7 +11,12 @@ from django.contrib.auth.decorators import login_required
 from halls.utils import render_form_errors
 from users.models import Profile
 from halls.models import Hall, RoomType
-from reviews.models import Review, ReviewPhotos, Report
+from reviews.models import Review, ReviewPhotos, ReviewRating, Report
+
+
+from .forms import ReviewEditForm, ReviewPhotosEditForm, ReportForm
+from django.forms import modelformset_factory
+from django.http import JsonResponse
 
 from .forms import ReviewEditForm, ReviewPhotosEditFormSet, ReportForm
 
@@ -208,9 +213,64 @@ def user_ratings(request, ratings):
         return users_ratings
     return {}
 
+def up_vote(request, hall_id, review_id):
+    highlight = False
+    review = Review.objects.filter(id=review_id)
+    ratings = ReviewRating.objects.filter(review__id=review_id)
+    if request.user.is_authenticated:
+        user_rating = ratings.filter(user=request.user)
+        if len(user_rating) == 0:
+            new_rating = ReviewRating(review=review[0], user=request.user, vote=True)
+            new_rating.save()
+            highlight = True
+        elif user_rating[0].vote == True:
+            user_rating[0].delete()
+        else:
+            user_rating[0].vote = True
+            user_rating[0].save()
+            highlight = True
+    ratings = ReviewRating.objects.filter(review__id=review_id)
+    final_ratings = display_ratings(review, ratings)
+    context = {
+        'value': review_id,
+        'logged_in': request.user.is_authenticated,
+        'url': reverse("login"),
+        'rating': final_ratings[review_id],
+        'highlight_up': highlight,
+        'highlight_down': False
+    }
+    return JsonResponse(context)
+
+def down_vote(request, hall_id, review_id):
+    highlight = False
+    review = Review.objects.filter(id=review_id)
+    ratings = ReviewRating.objects.filter(review__id=review_id)
+    if request.user.is_authenticated:
+        user_rating = ratings.filter(user=request.user)
+        if len(user_rating) == 0:
+            new_rating = ReviewRating(review=review[0], user=request.user, vote=False)
+            new_rating.save()
+            highlight = True
+        elif user_rating[0].vote == False:
+            user_rating[0].delete()
+        else:
+            user_rating[0].vote = False
+            user_rating[0].save()
+            highlight = True
+    ratings = ReviewRating.objects.filter(review__id=review_id)
+    final_ratings = display_ratings(review, ratings)
+    context = {
+        'value': review_id,
+        'logged_in': request.user.is_authenticated,
+        'url': reverse("login"),
+        'rating': final_ratings[review_id],
+        'highlight_up': False,
+        'highlight_down': highlight
+    }
+    return JsonResponse(context)
 
 @login_required
-def report(request, review_id):
+def report(request):
     review = get_object_or_404(Review, pk=review_id)
 
     if request.method == 'POST':
