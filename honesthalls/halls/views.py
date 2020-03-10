@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 
 from reviews.models import Review, ReviewPhotos, ReviewRating
 from reviews.views import display_ratings, sort_reviews, user_ratings
+from FAQ.models import QuestionAnswer
 from .models import Hall, RoomType, HallPhotos
 
 import json
@@ -39,6 +40,7 @@ def hallpage(request, id):
         review_ids.append(review.id)
     ratings = ReviewRating.objects.filter(review__roomtype__hall__id = id)
     reviewratings = display_ratings(reviews, ratings)
+    faq = QuestionAnswer.objects.filter(answer__isnull=False, hall__id=id)
     context = {
         'currentuser': request.user,
         'id': id,
@@ -49,6 +51,7 @@ def hallpage(request, id):
         'reviewphotos': ReviewPhotos.objects.filter(review__roomtype__hall_id=id),
         'reviewratings': reviewratings,
         'userratings': user_ratings(request, ratings),
-        'review_ids': json.dumps(review_ids, separators=(',', ':'))
+        'review_ids': json.dumps(review_ids, separators=(',', ':')),
+        'faq': faq
     }
     return render(request, 'halls/hallpage.html', context)

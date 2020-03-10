@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>faq</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'FAQ/css/faq.css' %}">
+</head>
+<body>
+  <div class="container-fluid pt-3 my-3 border border-info bg-white text-dark shadow-sm">
+    {% for question in faq %}
+    <button class="accordion">{{ question.question }}</button>
+    <div class="panel">
+      <p>{{ question.answer }}</p>
+    </div>
+    {% empty %}
+    <h5 class="text-muted ml-3 mt-2">No questions have been asked.</h5>
+    {% endfor %}
+  </div>
+</body>
+</html>
