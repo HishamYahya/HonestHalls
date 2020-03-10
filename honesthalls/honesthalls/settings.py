@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'reviews.apps.ReviewsConfig',
     'quiz.apps.QuizConfig',
     'misc.apps.MiscConfig',
+    'FAQ.apps.FaqConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,8 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-    'formtools',
-    'FAQ'
+    'formtools'
 ]
 
 MIDDLEWARE = [
@@ -172,5 +172,4 @@ EMAIL_USE_TLS = True
 # -- don't forget to hide in environment variables when deploying!!! --
 EMAIL_HOST_USER = 'honesthalls@gmail.com'
 EMAIL_HOST_PASSWORD = 'F1rstPr0ject!'
-
 
