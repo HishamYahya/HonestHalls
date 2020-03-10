@@ -1,7 +1,7 @@
 <link href="https://fonts.googleapis.com/css?family=Calistoga&display=swap" rel="stylesheet">
 <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
     <!-- Logo -->
-    <a class="navbar-brand" style="font-family: 'Calistoga', cursive; color:white;"href="{% url 'index' %}"><h1>HonestHalls</h1></a>
+    <a class="navbar-brand" style="font-family: 'Calistoga', cursive; color:white;"href="{% url 'index' %}"><span class="nav-logo">HonestHalls</span></a>
     <!-- Collapsible menu -->
     <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,7 +23,7 @@
             <div class="nav-item col-11">
                 <form class="form-inline" method="GET" action="/filter">
                     <input class="form-control mr-sm-2 col-10" type="text" name="searchbar" id="searchbar" placeholder="Search by hall name...">
-                    <button class="btn btn-success col-1" type="submit">Go</button>
+                    <button class="btn btn-search col-1" type="submit">Go</button>
                 </form>
             </div>
         </ul>
@@ -35,16 +35,16 @@
                     <i class="material-icons align-bottom">account_circle</i>
                     {{ user.first_name }}
                 </a>
-                <div class="dropdown-menu dropdown-menu-right bg-success">
+                <div class="dropdown-menu nav-dropdown">
                     {% if user.is_authenticated %}
-                    <a class="dropdown-item text-light"
+                    <a class="dropdown-item"
                         href="{% url 'profile' %}">Profile</a>
-                    <a class="dropdown-item text-light"
+                    <a class="dropdown-item"
                         href="{% url 'logout' %}">Logout</a>
                     {% else %}
-                    <a class="dropdown-item text-light" href="{% url 'signup' %}">Sign
+                    <a class="dropdown-item" href="{% url 'signup' %}">Sign
                         Up</a>
-                    <a class="dropdown-item text-light" href="{% url 'login' %}">Login</a>
+                    <a class="dropdown-item" href="{% url 'login' %}">Login</a>
                     {% endif %}
                 </div>
             </li>

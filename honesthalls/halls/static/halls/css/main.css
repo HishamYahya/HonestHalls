@@ -325,5 +325,32 @@ The button to close the preview.
 	width: 20px;
 	margin-right: 12px;
 }
+.navbar-dark{
+	background-color: rgba(62, 67, 71, 1) !important;
+	margin-bottom: 16px;
+}
 
+.btn-search{
+	background-color: #00796B;
+	border-color: #00796B;
+	color: white;
+}
+.btn-search:hover{
+	color: white;
+}
+.nav-logo{
+	font-size: 2rem;
+}
+.btn-primary{
+	background-color: #00897B!important;
+	border-color:#00897B!important;
+}
+.nav-dropdown {
+	right: -16px;
+	left: unset;
+	border: 1px solid #ddd;
+}
+.card {
+	box-shadow: 2px 4px 8px rgba(0,0,0,0.2);
+}
 /** END Ratings **/

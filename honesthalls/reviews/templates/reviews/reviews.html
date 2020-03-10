@@ -2,20 +2,8 @@
 {% load int_filter %}
 {% load rating_filter %}
 {% load static %}
+<script src="{% static 'reviews/js/main.js' %}"></script>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Bootstrap 4 Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-  <script src="{% static 'reviews/js/main.js' %}"></script>
-</head>
-<body>
 {% for review in reviews %}
 	{% with noise=review.noise|convert_to_int %}
 	{% with social=review.social_life|convert_to_int %}
@@ -174,5 +162,4 @@
 {% empty %}
 	<h5 class="text-muted ml-3 mt-2">No Reviews Found</h5>
 {% endfor %}
-</body>
-</html>
+
