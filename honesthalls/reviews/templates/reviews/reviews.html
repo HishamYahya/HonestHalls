@@ -94,7 +94,7 @@
 						</h5>
 						{% else %}
 							<h5>
-								{{review.user.first_name}} {{review.user.last_name}}
+                                {{review.user.first_name}} {{review.user.last_name_initial}}.
 								<i class="material-icons align-bottom">verified_user</i>
 							</h5>
 						{% endif %}
@@ -130,7 +130,7 @@
 		</div>
 
 		{% if reviewphotos %}
-			<div class="row border-top">
+			<div class="row mt-2 border-top">
 				<!-- SHOW PHOTOS FOR REVIEW- POP UP OPTION?? -->
 				{% for photo in reviewphotos %}
 					{% if photo.review.id == review.id %}

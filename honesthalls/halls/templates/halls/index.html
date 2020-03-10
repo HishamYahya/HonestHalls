@@ -1,39 +1,45 @@
 {% extends "halls/base.html" %}
-
 {% block title %}Home Page{% endblock %}
-
 {% block content %}
 
-<h1>Welcome to HonestHalls!</h1>
-<div>Where halls are honest and choice is easy!</div>
-
-<div class="row">
-  <!-- Lists sample halls -->
-  {% for hall in sample_halls %}
-  <div class="col-md-4">
-    <div class="card mb-3">
-      {% if hall.main_photo %}
-      <img class="card-img-top" src="{{ hall.main_photo.thumbnail_url }}"
-        alt="{{ hall.main_photo.photo_desc }}">
-      {% else %}
-      <!-- There are no images for this hall -->
-      <div class="card-img-top h6 m-0 hh-no-image-placeholder">
-        <h6 class="font-weight-normal hh-no-image-placeholder__content">
-          No image available
-        </h6>
-      </div>
-      {% endif %}
-      <div class="card-body">
-        <h5 class="card-title">{{ hall.name }} <span
-            class="badge badge-secondary">{{ hall.campus }}</span></h5>
-        <p class="card-text">{{ hall.text }}</p>
-        <a href="{% url 'hallpage' hall.id %}" class="btn btn-primary">View</a>
-      </div>
+<div class="hh-hero-container py-5">
+    <div class="container">
+        <div class="hh-hero-title mx-3 mb-5">Welcome to HonestHalls!</div>
+        <div class="row mx-auto">
+            <!-- Lists sample halls -->
+            {% for hall in sample_halls %}
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    {% if hall.main_photo %}
+                    <img class="card-img-top" src="{{ hall.main_photo.thumbnail_url }}"
+                        alt="{{ hall.main_photo.photo_desc }}" />
+                    {% else %}
+                    <!-- There are no images for this hall -->
+                    <div class="card-img-top h6 m-0 hh-no-image-placeholder">
+                        <h6 class="font-weight-normal hh-no-image-placeholder__content">
+                            No image available
+                        </h6>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            {{ hall.name }}
+                            <span class="badge badge-secondary">
+                                {{ hall.campus }}
+                            </span>
+                        </h5>
+                        <p class="card-text hh-min-two-lines">{{ hall.text|truncatechars:52 }}</p>
+                        <a href="{% url 'hallpage' hall.id %}" class="btn btn-primary">
+                            View
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <h3>No halls in database!</h3>
+            {% endfor %}
+        </div>
     </div>
-  </div>
-  {% empty %}
-  <h3>No halls in database!</h3>
-  {% endfor %}
 </div>
 
 {% endblock content %}

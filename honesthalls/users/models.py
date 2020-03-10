@@ -60,6 +60,14 @@ class User(AbstractUser):
     # Set our custom UserManager.
     objects = UserManager()
 
+    @property
+    def first_name_initial(self):
+        return self.first_name[0]
+
+    @property
+    def last_name_initial(self):
+        return self.last_name[0]
+
     def __str__(self):
         prefix = ('[SU] ' if self.is_superuser else
                   '[STAFF] ' if self.is_staff else
