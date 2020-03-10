@@ -39,7 +39,7 @@
 }
 
 .hh-halls-list .card.focused .card-body {
-  color: #007bff;
+  color: #00897B;
 }
 
 .hh-halls-list .card.focused .card-title {
@@ -64,14 +64,19 @@
   font-size: 1em;
   border-radius: 2px;
   box-shadow: 2px 4px 8px rgba(0,0,0,0.2);
+  color: #00897B;
   background-color: white;
   transition-duration: 0.2s;
   transition-property: color, background-color, font-size;
   transition-timing-function: ease-in-out;
 }
 
+.hh-map-marker:hover {
+    color: #00695C;
+}
+
 .hh-map-marker.focused {
-  background-color: #007bff;
+  background-color: #00897B;
   color: white;
   font-size: 1.25em;
   z-index: 1000 !important;
