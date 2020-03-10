@@ -26,7 +26,7 @@
 	{% with total=noise|add:facilities|add:social|add:cleanliness %}
 	{% with average=total|divide_filter %}
 
-	<div class="container pt-3 my-3 border border-info bg-white text-dark shadow-sm">
+	<div class="container pt-3 my-3 border rounded bg-white shadow-sm">
 
 		<div class="row pt-3">
 			<div class="col-4 col-sm-2 col-md-2 col-lg-1 align-self-center mb-4">
@@ -123,16 +123,14 @@
 						{% endif %}
 					</div>
 				</div>
-				<p class="m-3" style="word-wrap: break-word;">
-					<i class="material-icons small">format_quote</i>
-					{{review.text}}
-					<i class="material-icons small">format_quote</i>
-				</p>
+				<p class="mr-3 mt-3 mb-3 pl-3 border-left" style="word-wrap: break-word;">
+                    {{review.text}}
+                </p>
 			</div>
 		</div>
 
 		{% if reviewphotos %}
-			<div class="row mb-4 border">
+			<div class="row border-top">
 				<!-- SHOW PHOTOS FOR REVIEW- POP UP OPTION?? -->
 				{% for photo in reviewphotos %}
 					{% if photo.review.id == review.id %}
