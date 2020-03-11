@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    
+
     var navListItems = $('div.setup-panel div a'),
         allWells = $('.setup-content'),
         allNextBtn = $('.nextBtn'),
@@ -49,3 +51,4 @@ $(document).ready(function () {
 
     $('div.setup-panel div a.btn-primary').trigger('click');
 });
+

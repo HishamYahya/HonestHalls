@@ -10,31 +10,36 @@
 {% block title %}Quiz Results{% endblock %}
 
 {% block content %}
-<div class="container">
-
-  <div class="col-md-9">
+<div class="container row m-3">
+  <div class="col-sm-5 col-md-4 col-lg-3">
+  {% include "quiz/form.html" %}
+  </div>
+  <div class="col-sm-7 col-md-8 col-lg-9">
     <!-- Loop through the halls data and display the
 			ones that satisfy the filters -->
     {% for hall in form_data %}
-    <div class="card m-3 container">
+    <div class="card container{% if not hall.fitsCriteria %} bg-light{% else %} border-success{% endif %} m-3">
       <div class="row">
-        <a type="button" class="btn btn-link"
-          href="{% url 'hallpage' hall.id %}">
+        <div class="col">
+
+          <a type="button" class="btn btn-link"
+          href="{% url 'hallpage' hall.hall.id %}">
           <h3 class="col mt-3">
             {{ hall.name }}
           </h3>
-          {% if forloop.counter == 1 %}
-          <h4><span class="badge badge-secondary">#1 Choice</span></h4>
-          {% else %}
-          {% if forloop.counter == 2 %}
-          <h4><span class="badge badge-secondary">#2 Choice</span></h4>
-          {% else %}
-          {% if forloop.counter == 3 %}
-          <h4><span class="badge badge-secondary">#3 Choice</span></h4>
-          {% endif %}
-          {% endif %}
-          {% endif %}
+          <h4><span class="badge badge-secondary">#{{ forloop.counter }} Choice</span></h4>
         </a>
+      </div>
+      <div class="col m-3">
+        {% for message in hall.messages %}
+        <div class="row">
+          
+          <i class="material-icons" style="color: red;">
+            clear
+          </i><p>{{ message }}</p>
+        </div>
+          {% endfor %}
+      </div>
       </div>
 
       <div class="row">
@@ -64,7 +69,7 @@
             <br />
             <br />
             <a type="button" class="btn btn-primary"
-              href="{% url 'hallpage' hall.id %}">
+              href="{% url 'hallpage' hall.hall.id %}">
               Go to hall page
             </a>
           </div>
@@ -81,8 +86,10 @@
     <h5>No halls fit criteria.</h5>
     {% endfor %}
   </div>
+  
 </div>
 </div>
+
 
 
 
