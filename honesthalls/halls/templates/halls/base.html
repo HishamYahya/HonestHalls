@@ -28,6 +28,8 @@
   <!-- Google Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
     rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Sen:400,700&display=swap"
+    rel="stylesheet"> 
   {% block css %}{% endblock %}
 </head>
 
@@ -40,17 +42,15 @@
 
   {% include 'halls/partials/navbar.html' %}
 
-  <div class="container">
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">
-      {{ message }}
-    </div>
-    {% endfor %}
-    {% endif %}
-
-    {% block content %}{% endblock %}
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }}">
+    {{ message }}
   </div>
+  {% endfor %}
+  {% endif %}
+
+  {% block content %}{% endblock %}
 
   <!-- The element used for previewing images -->
   <div class="hh-preview-dialog-backdrop">
@@ -64,6 +64,8 @@
       </div>
     </div>
   </div>
+
+  {% include 'halls/partials/footer.html' %}
 
   <!-- jQuery Slim (Required by Bootstrap 4) -->
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

@@ -2,9 +2,17 @@
 {% block title %}Home Page{% endblock %}
 {% block content %}
 
-<div class="hh-hero-container py-5">
-    <div class="container">
-        <div class="hh-hero-title mx-3 mb-5">Welcome to HonestHalls!</div>
+<div class="hh-hero-container hh-no-navbar-margin hh-image-cover"
+    style="background-image: url('/static/halls/img/hero-bg.jpg')">
+    <div class="container py-5">
+        <div class="text-light hh-text-shadow-dark mx-3 mb-5">
+            <div class="display-4">
+                Welcome to <b>HonestHalls</b>!
+            </div>
+            <div class="h1 font-weight-light my-3">
+                Find the right accommodation for <b><u>you</u></b>!
+            </div>
+        </div>
         <div class="row mx-auto">
             <!-- Lists sample halls -->
             {% for hall in sample_halls %}
@@ -40,6 +48,31 @@
             {% endfor %}
         </div>
     </div>
+</div>
+<div class="container py-5">
+    <div class="mx-3 mb-5 text-center">
+        <div class="h1 mb-5">
+            Where to start?
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="h4 font-weight-light">
+                    No idea where to start? <br>
+                    Try our <a href="{% url 'quiz' %}">Intelligent Search</a> tool!
+                </div>
+                <hr class="d-sm-none">
+            </div>
+            <div class="col-md-6">
+                <div class="h4 font-weight-light">
+                    Know what you're looking for? <br>
+                    <a href="{% url 'filter-page' %}">Browse</a> our large catalog of halls.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="hh-hero-container hh-image-cover" style="background-image: url('/static/halls/img/hero-bg-2.jpg')">
+
 </div>
 
 {% endblock content %}
