@@ -40,7 +40,7 @@ def hallpage(request, id):
         review_ids.append(review.id)
     ratings = ReviewRating.objects.filter(review__roomtype__hall__id = id)
     reviewratings = display_ratings(reviews, ratings)
-    faq = Questions.objects.filter(answer__isnull=False, hall__id=id)
+    faq = Questions.objects.filter(hall__id=id).exclude(answer__exact='')
     context = {
         'currentuser': request.user,
         'id': id,
