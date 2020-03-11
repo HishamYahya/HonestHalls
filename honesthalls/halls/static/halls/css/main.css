@@ -20,6 +20,34 @@ b {
 /** END Home Page **/
 
 /** BEGIN ReusableComponents **/
+.hh-bg-translucent-dark {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.hh-bg-dark {
+	background-color: rgba(62, 67, 71, 1);
+}
+
+.hh-text-muted-light {
+	color: rgba(255,255,255,0.67);
+}
+
+.hh-text-muted-dark {
+	color: rgba(0,0,0,0.67);
+}
+
+.hh-text-accent {
+	color:#1DE9B6;
+}
+
+.hh-text-accent:hover {
+	color:#00BFA5;
+}
+
+.hh-bg-translucent-darker {
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
 .hh-text-shadow {
 	text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
 }
@@ -284,6 +312,8 @@ The button to close the preview.
 
 .hh-rating__star {
 	vertical-align: text-bottom;
+	display: inline-block;
+    line-height: 0.75em;
 	color: #ffc100;
 	cursor: pointer;
 	-webkit-text-stroke-width: 1px;
@@ -372,6 +402,12 @@ The button to close the preview.
 .btn-primary{
 	background-color: #00897B!important;
 	border-color:#00897B!important;
+}
+.text-primary {
+	color:#00897B!important;
+}
+a.text-primary:hover {
+	color:#00695C!important;
 }
 .nav-dropdown {
 	right: -16px;
