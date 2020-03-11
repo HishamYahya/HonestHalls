@@ -17,6 +17,11 @@ b {
 	background-attachment: fixed;
 }
 
+.hh-search-input {
+	flex: 1;
+	max-width: 1024px;
+}
+
 /** END Home Page **/
 
 /** BEGIN ReusableComponents **/
