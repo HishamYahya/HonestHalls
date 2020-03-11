@@ -2,6 +2,7 @@
 # File is a model description of the database
 
 from django.db import models
+from django.db.models import Sum, Count
 from django.forms.models import model_to_dict
 
 from users.models import User
@@ -11,7 +12,7 @@ from .uploads import (
     create_thumbnail,
     get_thumbnail_filename,
 )
-from .utils import yesno
+from .utils import yesno, expiring_lru_cache
 
 # Describes the Hall table
 
@@ -27,9 +28,47 @@ class Hall(models.Model):
     # below argument ensures last modified date stored
     date_modified = models.DateTimeField(auto_now=True)
 
+    @property
+    @expiring_lru_cache(expires_in_seconds=300, maxsize=128)
+    def average_rating(self):
+        """
+        Computes the averate rating for the hall.
+        This property is cached and by default is renewed
+        if the value is older than 5 minutes (300s).
+        """
+        from reviews.models import Review
+
+        aggregate_kwargs = {
+            'count': Count('id'),
+        }
+        # We want the sum of each individual rating criteria
+        for field in Review.RATING_FIELDS:
+            aggregate_kwargs[field] = Sum(field)
+
+        # Execute the query agains the DB.
+        aggregate_results = (Review.objects
+            .filter(roomtype__hall=self)
+            .aggregate(**aggregate_kwargs))
+            
+        # No reviews have been added for this hall yet
+        if aggregate_results['count'] == 0:
+            return 0
+
+        # Here we compute the sum of all the individual ratings
+        # (cleanliness, social_life, etc.)
+        rating_sum = 0
+        for field in Review.RATING_FIELDS:
+            rating_sum += aggregate_results[field]
+
+        # The average is the total / num of fields / num of halls
+        average = rating_sum / (aggregate_results['count'] * len(Review.RATING_FIELDS))
+        return average
+
+
     def get_card_data(self):
         hall = model_to_dict(self)
         hall['main_photo'] = self.hallphotos_set.first()
+        hall['average_rating'] = self.average_rating
         return hall
 
     def __str__(self):

@@ -30,6 +30,7 @@
         <a href="{% url 'hallpage' hall.id %}" class="btn btn-primary">View</a>
       </div>
     </div>
+    Rating: {{ hall.average_rating }}
   </div>
   {% empty %}
   <h3>No halls in database!</h3>
