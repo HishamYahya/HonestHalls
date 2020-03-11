@@ -27,7 +27,7 @@ urlpatterns = [
     path('', include('halls.urls')),
     path('quiz/', include('quiz.urls')),
     path('', include("FAQ.urls"))
-]
+    ]
 
 # WARN: This work in DEBUG only.
 # Files should be served by webserver in production.
