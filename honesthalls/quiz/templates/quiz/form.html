@@ -1,0 +1,80 @@
+<form id="filter-form">
+    <div class="form-group">
+        <div class="form-row m-2">
+
+                <label for="basin_ensuite">Toilet</label>
+                <select name="basin_ensuite" class="form-control">
+                    <option selected value="">Don't care</option>
+                    <option value="basin">Basin</option>
+                    <option value="ensuite">Ensuite</option>
+                </select>
+                <label for="bed">Bedsize</label>
+                <select name="bed" class="form-control">
+                    <option selected value="">Don't care</option>
+                    <option value="single">Single</option>
+                    <option value="double">Double</option>
+                </select>
+
+
+
+                <label for="catering">Catering</label>
+                <select name="catering" class="form-control">
+                    <option selected value="">Don't care</option>
+                    <option value="catered">Catered</option>
+                    <option value="self-catered">Self-catered</option>
+                </select>
+                <label for="campus">Campus</label>
+                <select name="campus" class="form-control">
+                    <option selected value="">Don't care</option>
+                    <option value="Fallowfield">Fallowfield</option>
+                    <option value="Victoria Park">Victoria Park</option>
+                    <option value="City">City</option>
+                </select>
+            </div>
+
+        <div class="form-row ml-2 mt-3">
+            <div class="col">
+
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    document.getElementById('filter-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      
+      // get array of queries
+      var arr = $( "#filter-form" ).serialize().split('&')
+      console.log(arr)
+
+      newStr = location.href;
+
+      // loop through all key-value pairs and insert them in url. if they already exist, update them
+      arr.forEach(element => {
+          var key = element.substring(0, element.indexOf('='));
+          var value = element.indexOf('=') == element.length - 1 ? '' : element.substring(element.indexOf('=') + 1, element.length)
+          console.log(key, value)
+          if(newStr.includes(key)) {
+              beginIndex = newStr.indexOf(key) + key.length + 1;
+              endIndex = beginIndex;
+              for(var j = beginIndex; j<newStr.length; j++) {
+                if(newStr.charAt(j) == '&') {
+                    break;
+                }
+                endIndex += 1;
+              }
+              newStr = newStr.slice(0, beginIndex) + value + newStr.slice(endIndex, newStr.length);
+          }
+          else {
+              newStr += '&' + element;
+          }
+      });
+      
+        location.href = newStr;
+
+      
+  });
+  </script>

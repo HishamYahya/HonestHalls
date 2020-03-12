@@ -1,16 +1,33 @@
-from django.shortcuts import render
-from halls.models import Hall
+from django.shortcuts import render, redirect
+from halls.models import Hall, RoomType
 from reviews.models import Review
+from filter.views import build_filter
+
 
 def quiz_view(request):
     return render(request, 'quiz/questions.html')
 
 def results_view(request):
     # cleaning data
-    
-    answers = [int(request.GET[key]) for key in request.GET]
-    print(answers)
-    
+    answers=[]
+
+    for key in request.GET:
+        if len(request.GET[key]) == 1:
+            answers.append(int(request.GET[key]))
+    if(len(answers) < 3):
+        return redirect('quiz')
+
+
+
+    try:
+        basin_ensuite = request.GET.get('basin_ensuite')
+        catering = request.GET.get('catering')
+        campus = request.GET.get('campus')
+        bed = request.GET.get('bed')
+    except:
+        return redirect('quiz')
+
+
     # generating average for each hall (need to replace)
     all_halls = Hall.objects.all()
     all_reviews = Review.objects.all()
@@ -33,8 +50,8 @@ def results_view(request):
                 halls_avg[hall.name]["Facilities"] += review.facilities
                 halls_avg[hall.name]["Number of reviews"] += 1
 
-    if(halls_avg[hall.name]["Number of reviews"] != 0):
-        for hall in all_halls:
+    for hall in all_halls:
+        if(halls_avg[hall.name]["Number of reviews"] != 0):
             halls_avg[hall.name]["Cleanliness"] /= halls_avg[hall.name]["Number of reviews"]
             halls_avg[hall.name]["Noise"] /= halls_avg[hall.name]["Number of reviews"]
             halls_avg[hall.name]["Social Life"] /= halls_avg[hall.name]["Number of reviews"]
@@ -55,14 +72,69 @@ def results_view(request):
 
 
     all_halls = Hall.objects.all()
+    rooms = RoomType.objects.all()
     # repeated in case top one is deleted when code is replaced
+
+    # put each hall in an object that has additional info
+    class FilteredHall:
+        def __init__(self, hall):
+            self.messages = []
+            self.fitsCriteria = True
+            self.hall = hall
+            self.name = hall.name
+            self.text = hall.text
+            self.filter()
+
+        def filter(self):
+            fitsToilet = False
+            fitsBed = False
+            fitsCatering = False
+            if(basin_ensuite == '' or basin_ensuite == None):
+                fitsToilet = True
+            if(bed == '' or bed == None):
+                fitsBed = True
+            if(catering == '' or catering == None):
+                fitsCatering = True
+            if(catering == '' or catering == None):
+                fitsCatering = True
+            if(campus != self.hall.campus and campus != '' and campus != None):
+                self.fitsCriteria = False
+                self.messages.append('Not in ' + campus + ' campus.')
+            for room in rooms:
+                if(self.hall.name == room.hall.name):
+                    if(room.catered and catering == 'catered'):
+                        fitsCatering = True
+                    if(not room.catered and catering == 'self-catered'):
+                        fitsCatering = True
+                    if(room.bedsize == bed):
+                        fitsBed = True
+                    if(room.ensuite and basin_ensuite == 'ensuite'):
+                        fitsToilet = True
+                    if(room.basin and basin_ensuite == 'basin'):
+                        fitsToilet = True
+            if(not fitsBed):
+                self.fitsCriteria = False
+                self.messages.append('No ' + bed + " beds")
+            if(not fitsToilet):
+                self.fitsCriteria = False
+                self.messages.append('No ' + basin_ensuite + " rooms")
+            if(not fitsCatering):
+                self.fitsCriteria = False
+                self.messages.append('No ' + catering + ' rooms')
+
+                    
+
     form_halls = []
     for key in results:
         for hall in all_halls:
             if (key == hall.name):
-                form_halls.append(hall)
+                form_halls.append(FilteredHall(hall))
                 continue
-
+    
+    
     return render(request, 'quiz/results.html', {
         'form_data': form_halls,
     })
+
+
+            
