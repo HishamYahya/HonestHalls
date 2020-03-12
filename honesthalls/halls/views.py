@@ -14,7 +14,7 @@ def index(request):
     # Get a number of halls
     sample_halls = Hall.objects.all()[:5]
     # Convert them to dicts and add extras (eg. main_image).
-    sample_halls = [hall.get_card_data() for hall in sample_halls]
+    sample_halls = [hall.get_preview_dict() for hall in sample_halls]
 
     context = {
         'server_time': timezone.now(),

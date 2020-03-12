@@ -27,10 +27,27 @@ class Hall(models.Model):
     # below argument ensures last modified date stored
     date_modified = models.DateTimeField(auto_now=True)
 
-    def get_card_data(self):
-        hall = model_to_dict(self)
-        hall['main_photo'] = self.hallphotos_set.first()
-        return hall
+    @property
+    def main_photo_url(self):
+        main_photo = self.hallphotos_set.first()
+        return main_photo and main_photo.photo_url
+
+    @property
+    def main_photo_thumbnail(self):
+        main_photo = self.hallphotos_set.first()
+        return main_photo and main_photo.thumbnail_url
+
+    def get_preview_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'text': self.text,
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'campus': self.campus,
+            'photo': self.main_photo_url,
+            'thumbnail': self.main_photo_thumbnail,
+        }
 
     def __str__(self):
         return f'{self.name} - {self.campus}'

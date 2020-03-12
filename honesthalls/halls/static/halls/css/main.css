@@ -17,6 +17,10 @@ body {
 	background-position: center;
 }
 
+.hh-aspect-4-3 {
+  padding-bottom: 75%;
+}
+
 /* Creates a dummy 4:3 gray block with text */
 .hh-no-image-placeholder {
 	/* Effectively sets 4:3 aspect ratio for the block */

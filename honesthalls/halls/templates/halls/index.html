@@ -4,6 +4,7 @@
 
 {% block content %}
 
+<div class="container">
 <h1>Welcome to HonestHalls!</h1>
 <div>Where halls are honest and choice is easy!</div>
 
@@ -12,9 +13,9 @@
   {% for hall in sample_halls %}
   <div class="col-md-4">
     <div class="card mb-3">
-      {% if hall.main_photo %}
-      <img class="card-img-top" src="{{ hall.main_photo.thumbnail_url }}"
-        alt="{{ hall.main_photo.photo_desc }}">
+      {% if hall.thumbnail %}
+      <img class="card-img-top" src="{{ hall.thumbnail }}"
+        alt="{{ hall.name }}">
       {% else %}
       <!-- There are no images for this hall -->
       <div class="card-img-top h6 m-0 hh-no-image-placeholder">
@@ -34,6 +35,7 @@
   {% empty %}
   <h3>No halls in database!</h3>
   {% endfor %}
+</div>
 </div>
 
 {% endblock content %}

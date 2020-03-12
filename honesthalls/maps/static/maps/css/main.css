@@ -1,0 +1,94 @@
+.hh-container-map {
+    max-width: 1600px;
+    height: calc(100vh - 96px);
+    margin: 0 auto;
+    margin-top: 24px;
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+.hh-halls-list {
+  overflow-y: auto;
+}
+
+@media (max-width: 992px) {
+  .hh-container-map {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .hh-halls-list {
+    position: relative;
+    z-index: 10;
+    max-height: calc(45vh - 32px);
+    background-color: white;
+    margin: 0 auto;
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.2);
+  }
+
+  #map-root {
+    position: relative;
+    max-height: calc(55vh - 32px);
+    margin: 0 auto;
+  }
+}
+
+.hh-halls-list .card:hover {
+  background: #FAFAFA;
+  cursor: pointer;
+}
+
+.hh-halls-list .card.focused .card-body {
+  color: #00897B;
+}
+
+.hh-halls-list .card.focused .card-title {
+  font-weight: bold;
+}
+
+.hh-halls-list .card .hh-room-types {
+  overflow: hidden;
+  max-height: 0;
+  transition: 0.5s max-height cubic-bezier(0, 1, 0, 1);
+}
+
+.hh-halls-list .card.focused .hh-room-types {
+  max-height: 1024px;
+  transition: 1s max-height ease-out;
+}
+
+.hh-map-marker {
+  display: block;
+  user-select: none;
+  padding: 4px 8px;
+  font-size: 1em;
+  border-radius: 2px;
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.2);
+  color: #00897B;
+  background-color: white;
+  transition-duration: 0.2s;
+  transition-property: color, background-color, font-size;
+  transition-timing-function: ease-in-out;
+}
+
+.hh-map-marker:hover {
+    color: #00695C;
+}
+
+.hh-map-marker.focused {
+  background-color: #00897B;
+  color: white;
+  font-size: 1.25em;
+  z-index: 1000 !important;
+}
+
+.hh-map-marker::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -1px;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid #dc3545;
+  transform: rotate(45deg);
+}
