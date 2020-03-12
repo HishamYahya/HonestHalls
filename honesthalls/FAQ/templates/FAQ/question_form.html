@@ -1,0 +1,28 @@
+{% extends "halls/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div>
+    <form method="POST">
+      {% csrf_token %}
+      <fieldset class="form-group">
+        <legend class="border-botton-mb-4">Ask your question about {{ hall_name }}</legend>
+        Please use this submission form to ask our moderation team <b>objective</b> questions about this hall.
+        <br><br>
+        We are unable to answer questions such as:
+        <ul>
+          <li>How noisy is this hall?</li>
+          <li>Which block is the most fun in this hall?</li>
+          <li>How is the food at this hall?</li>
+        </ul>
+        Answers to questions like this may be found in the <a href="#">reviews section</a> of each hall.
+
+        {{ form|crispy }}
+      </fieldset>
+       
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+{% endblock content %}

@@ -100,7 +100,18 @@
 	</div>
 </div>
 
-<div class="container">
+<div class="container px-0">
+	<!-- add button when made submission form -->
+	<div>
+		<span class="h1">FAQ</span>
+	</div>
+
+	<!-- Include the list of reviews. -->
+	{% include 'FAQ/faq_form.html' %}
+</div>
+
+
+<div class="container px-0">
 	<div>
 		<span class="h1">Reviews</span>
 		<a href="{% url 'review-write' hall.id %}"
