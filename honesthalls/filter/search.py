@@ -62,41 +62,41 @@ def searching(search_string, unique_halls):
                 if not record:
                     record = True
                     result_matcher.append([])
-                    result_matcher[count].append(hall.name)
+                    result_matcher[count].append(hall.id)
                     result_matcher[count].append(1)
                     result_matcher[count].append(0)
                     result_matcher[count].append(0)
                 result_matcher[count][1] *= matcher[num][0]
-                result_matcher[count][2] += matcher[num][1]
+                result_matcher[count][2] = max(result_matcher[count][2], matcher[num][1])
                 result_matcher[count][3] = max(result_matcher[count][3], matcher[num][2])
             num += 1
         if record:
             count += 1
 
     """from here is the sorting"""
+    id_list = []
     sorting_data = []
     for i in range(len(result_matcher)):
-        sorting_data.append([])
-        print(result_matcher[i][0])
-        sorting_data[i].append(result_matcher[i][0])
-        sorting_data[i].append(max(result_matcher[i][1] * 100, result_matcher[i][2], result_matcher[i][3] * 10))
+        id_list.append(result_matcher[i][0])
+        sorting_data.append(max(result_matcher[i][1] * 2, result_matcher[i][2], result_matcher[i][3]))
 
     for i in range(len(sorting_data)):
         for j in range(i + 1, len(sorting_data)):
-            if sorting_data[j][1] > sorting_data[i][1]:
-                tem = sorting_data[i][0]
-                sorting_data[i][0] = sorting_data[j][0]
-                sorting_data[j][0] = tem
-                tem = sorting_data[i][1]
-                sorting_data[i][1] = sorting_data[j][1]
-                sorting_data[j][1] = tem
+            if sorting_data[j] > sorting_data[i]:
+                tem = id_list[i]
+                id_list[i] = id_list[j]
+                id_list[j] = tem
+                tem = sorting_data[i]
+                sorting_data[i] = sorting_data[j]
+                sorting_data[j] = tem
 
-    for c in range(count):
-        results_rooms = RoomType.objects.filter(Q(hall__name__icontains=sorting_data[c][0]))
-        for i in results_rooms:
-            unique_halls.add(i.hall)
-        for hall in unique_halls:
-            hall.photos = list(HallPhotos.objects.filter(hall=hall))
+    results_rooms = RoomType.objects.filter(Q(hall__id__in=[i for i in id_list]))
+
     # TODO: Change so it only queries search results
+    # Make sure result_rooms is valid
+    # even if there is no data match to the search_string
+
+    if results_rooms == []:
+        results_rooms = RoomType.objects.filter(Q(hall__name__iexact=search_string))
 
     return results_rooms
