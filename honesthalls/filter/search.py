@@ -5,7 +5,7 @@ from halls.models import Hall, RoomType, HallPhotos
 from difflib import SequenceMatcher
 
 
-def searching(search_string, unique_halls):
+def searching(search_string):
     '''Here is the matching.'''
     search_words = search_string.split()
     all_rooms = Hall.objects.all()
