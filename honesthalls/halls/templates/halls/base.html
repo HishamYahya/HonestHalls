@@ -30,6 +30,8 @@
   <!-- Google Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
     rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Sen:400,700&display=swap"
+    rel="stylesheet"> 
   {% block css %}{% endblock %}
 </head>
 
@@ -42,16 +44,14 @@
 
   {% include 'halls/partials/navbar.html' %}
 
-  <div class="container">
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">
-      {{ message }}
-    </div>
-    {% endfor %}
-    {% endif %}
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }}">
+    {{ message }}
   </div>
-  
+  {% endfor %}
+  {% endif %}
+
   {% block content %}{% endblock %}
 
   <!-- The element used for previewing images -->
@@ -67,8 +67,9 @@
     </div>
   </div>
 
+  {% include 'halls/partials/footer.html' %}
+
   <!-- jQuery Slim (Required by Bootstrap 4) -->
-  <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
     crossorigin="anonymous"></script>

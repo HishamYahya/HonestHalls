@@ -8,6 +8,7 @@
 
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover();
+    $('[data-toggle="dropdown"]').dropdown();
   }
 
   function initRatingInputs() {
@@ -135,6 +136,7 @@
     });
   }
 
+  initGlobalPlugins();
   initRatingInputs();
   initImageGallery();
   initImagePreview();

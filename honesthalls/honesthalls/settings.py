@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
-    '192.168.55.2', # TODO: Remove this
+    '127.0.0.1',
+    '192.168.55.2'
 ]
 
 

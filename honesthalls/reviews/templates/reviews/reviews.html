@@ -14,7 +14,7 @@
 	{% with total=noise|add:facilities|add:social|add:cleanliness %}
 	{% with average=total|divide_filter %}
 
-	<div class="container pt-3 my-3 border border-info bg-white text-dark shadow-sm">
+	<div class="container pt-3 my-3 border rounded bg-white shadow-sm">
 
 		<div class="row pt-3">
 			<div class="col-4 col-sm-2 col-md-2 col-lg-1 align-self-center mb-4">
@@ -82,45 +82,47 @@
 						</h5>
 						{% else %}
 							<h5>
-								{{review.user.first_name}} {{review.user.last_name}}
+                                {{review.user.first_name}} {{review.user.last_name_initial}}.
 								<i class="material-icons align-bottom">verified_user</i>
 							</h5>
 						{% endif %}
-						<p style="font-size: 12px">Date Created: {{review.date_created.date}}</p>
+						<p style="font-size: 12px">Date Modified: {{review.date_modified.date}}</p>
 					</div>
 					<div class="col-sm-4 px-0 text-center">
 						<h5>Average Rating</h5>
 						<input class="hh-rating-input" value="{{average}}" readonly></h5>
 					</div>
 					<div class="col-sm-3">
-						{% if review.user == currentuser %}
-							<a class="btn btn-xs btn-outline-primary" href="{% url 'review-edit' review.id %}">
+						<div class="float-right">
+							{% if review.user == currentuser %}
+							<a class="btn btn-xs btn-outline-primary" href="{% url 'review-edit' review.id %}"
+								data-toggle="tooltip" data-placement="top" title="Edit this review">
 								<i class="material-icons align-bottom">edit</i>
 							</a>
 							<form class="d-inline" id="delete-form" action="{% url 'review-delete' review.id %}" method="POST">
 								{% csrf_token %}
-								<button class="btn btn-xs btn-outline-danger" type="button" onclick="delete_review()">
+								<button class="btn btn-xs btn-outline-danger" type="button" onclick="delete_review()"
+									data-toggle="tooltip" data-placement="top" title="Permanently delete this review">
 									<i class="material-icons align-bottom">delete</i>
 								</button>
 							</form>
-						{% else %}
-						<a class="btn btn-sm text-truncate btn-outline-danger float-right" href="{% url 'report' review.id %}">
-							REPORT
-							<i class="material-icons align-bottom">new_releases</i>
-						</a>
-						{% endif %}
+							{% else %}
+							<a class="btn btn-sm text-truncate btn-outline-danger float-right" href="{% url 'report' review.id %}">
+								REPORT
+								<i class="material-icons align-bottom">new_releases</i>
+							</a>
+							{% endif %}
+						</div>
 					</div>
 				</div>
-				<p class="m-3" style="word-wrap: break-word;">
-					<i class="material-icons small">format_quote</i>
-					{{review.text}}
-					<i class="material-icons small">format_quote</i>
-				</p>
+				<p class="mr-3 mt-3 mb-3 pl-3 border-left" style="word-wrap: break-word;">
+                    {{review.text}}
+                </p>
 			</div>
 		</div>
 
 		{% if reviewphotos %}
-			<div class="row mb-4 border">
+			<div class="row mt-2 border-top">
 				<!-- SHOW PHOTOS FOR REVIEW- POP UP OPTION?? -->
 				{% for photo in reviewphotos %}
 					{% if photo.review.id == review.id %}

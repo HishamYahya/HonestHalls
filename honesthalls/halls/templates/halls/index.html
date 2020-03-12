@@ -1,41 +1,84 @@
 {% extends "halls/base.html" %}
-
 {% block title %}Home Page{% endblock %}
-
 {% block content %}
 
-<div class="container">
-<h1>Welcome to HonestHalls!</h1>
-<div>Where halls are honest and choice is easy!</div>
-
-<div class="row">
-  <!-- Lists sample halls -->
-  {% for hall in sample_halls %}
-  <div class="col-md-4">
-    <div class="card mb-3">
-      {% if hall.thumbnail %}
-      <img class="card-img-top" src="{{ hall.thumbnail }}"
-        alt="{{ hall.name }}">
-      {% else %}
-      <!-- There are no images for this hall -->
-      <div class="card-img-top h6 m-0 hh-no-image-placeholder">
-        <h6 class="font-weight-normal hh-no-image-placeholder__content">
-          No image available
-        </h6>
-      </div>
-      {% endif %}
-      <div class="card-body">
-        <h5 class="card-title">{{ hall.name }} <span
-            class="badge badge-secondary">{{ hall.campus }}</span></h5>
-        <p class="card-text">{{ hall.text }}</p>
-        <a href="{% url 'hallpage' hall.id %}" class="btn btn-primary">View</a>
-      </div>
+<div class="hh-hero-container hh-no-navbar-margin hh-image-cover"
+    style="background-image: url('/static/halls/img/hero-bg.jpg')">
+    <div class="container text-light hh-text-shadow-dark  py-5">
+        <div class="mx-3 mb-5">
+            <div class="display-4">
+                Welcome to <b>HonestHalls</b>!
+            </div>
+            <div class="h1 font-weight-light my-3">
+                Find the right accommodation for <b><u>you</u></b>!
+            </div>
+        </div>
+        <div class="row py-3 hh-bg-translucent-darker rounded mx-auto">
+            <div class="col-md-6">
+                <div class="h4 font-weight-light">
+                    No idea where to start? <br>
+                    Try our <a class="hh-text-accent" href="{% url 'quiz' %}" data-toggle="tooltip" data-placement="bottom" title="Customized search results">
+                        Intelligent Search
+                    </a> tool!
+                </div>
+                <hr class="d-sm-none">
+            </div>
+            <div class="col-md-6">
+                <div class="h4 font-weight-light">
+                    Know what you're looking for? <br>
+                    <a class="hh-text-accent" href="{% url 'filter-page' %}" data-toggle="tooltip" data-placement="bottom" title="Search out database of halls">
+                        Browse
+                    </a> our large catalog of halls.
+                </div>
+            </div>
+        </div>
     </div>
-    Rating: {{ hall.average_rating }}
-  </div>
-  {% empty %}
-  <h3>No halls in database!</h3>
-  {% endfor %}
+</div>
+<div class="container py-5">
+    <div class="mx-3 mb-3">
+        <div class="h1 mb-3">
+            Overall Best Halls
+        </div>
+        <div class="row">
+            <!-- Lists sample halls -->
+            {% for hall in sample_halls %}
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    {% if hall.main_photo %}
+                    <img class="card-img-top" src="{{ hall.main_photo.thumbnail_url }}"
+                        alt="{{ hall.main_photo.photo_desc }}" />
+                    {% else %}
+                    <!-- There are no images for this hall -->
+                    <div class="card-img-top h6 m-0 hh-no-image-placeholder">
+                        <h6 class="font-weight-normal hh-no-image-placeholder__content">
+                            No image available
+                        </h6>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'hallpage' hall.id %}" class="card-link stretched-link font-bold text-primary">
+                                {{ hall.name }}
+                            </a>
+                            <span class="badge badge-secondary">
+                                {{ hall.campus }}
+                            </span>
+                        </h5>
+                        <p class="card-text hh-min-two-lines">{{ hall.text|truncatechars:52 }}</p>
+                    </div>
+                    <div data-toggle="tooltip" data-placement="top" title="Overall rating is 3.00" class="card-footer text-center">
+                        <input type="number" class="hh-rating-input" value="3" readonly>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <h3>No halls in database!</h3>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="hh-hero-container hh-image-cover" style="background-image: url('/static/halls/img/hero-bg-2.jpg')">
+
 </div>
 </div>
 
