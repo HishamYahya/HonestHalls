@@ -32,7 +32,8 @@ CAMPUSES = [
 
 ACCESSIBLE = [
     ('na', 'Show all results'),
-    ('accessible', 'Only search for accessible halls'),
+    ('accessible', 'Search for accessible halls'),
+    ('available', 'Only Search the available halls')
 ]
 
 
