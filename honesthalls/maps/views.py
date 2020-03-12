@@ -6,7 +6,7 @@ from halls.models import Hall
 
 def map(request):
     halls = Hall.objects.all()
-    hall_data = [hall.get_card_data() for hall in halls]
+    hall_data = [hall.get_preview_dict() for hall in halls]
     for hall in hall_data:
         # Get the actual Django instance
         hall_instance = halls.get(pk=hall.get('id'))

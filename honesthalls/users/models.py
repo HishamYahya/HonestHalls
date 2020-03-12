@@ -62,11 +62,11 @@ class User(AbstractUser):
 
     @property
     def first_name_initial(self):
-        return self.first_name[0]
+        return self.first_name and self.first_name[0]
 
     @property
     def last_name_initial(self):
-        return self.last_name[0]
+        return self.last_name and self.last_name[0]
 
     def __str__(self):
         prefix = ('[SU] ' if self.is_superuser else
