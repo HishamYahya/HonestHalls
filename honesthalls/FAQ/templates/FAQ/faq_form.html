@@ -1,15 +1,6 @@
 {% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>faq</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="{% static 'FAQ/css/faq.css' %}">
-</head>
-<body>
+
   <div class="faq-container container-fluid py-3 my-3 border border-info bg-light text-dark shadow-sm">
     {% for question in faq %}
     <button class="accordion"><span class="font-italic">{{ question.question }}</span></button>
@@ -21,5 +12,3 @@
     {% endfor %}
   </div>
   <script src="{% static 'FAQ/js/faq.js' %}"></script>
-</body>
-</html>
