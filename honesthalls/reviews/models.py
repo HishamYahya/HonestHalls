@@ -14,6 +14,8 @@ from halls.uploads import (
 
 
 class Review(models.Model):
+    RATING_FIELDS = ['cleanliness', 'social_life', 'noise', 'facilities']
+
     text = models.TextField()
     # below argument ensures only creation date stored
     date_created = models.DateTimeField(auto_now_add=True)
