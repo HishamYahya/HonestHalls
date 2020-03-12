@@ -30,7 +30,7 @@
                     id="navbardrop" data-toggle="dropdown">
                     <i class="material-icons align-bottom">account_circle</i>
                     {% if user.is_authenticated %}
-                    {{ user.first_name }} {{ user.last_name_initial }}.
+                    {{ user.first_name }} {{ user.last_name_initial }}
                     {% else %}
                     <span data-toggle="tooltip" data-placement="top" title="You are not logged in">
                         Anonymous
