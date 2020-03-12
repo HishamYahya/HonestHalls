@@ -29,10 +29,9 @@ def filter_view(request):
             basin_ensuite = form.cleaned_data.get('toilet_options')
             bedsize = form.cleaned_data.get('bed_options')
             campus = form.cleaned_data.get('campus_options')
-
+            accessible = form.cleaned_data.get('accessible_options')
             min_price = submitted.get('price1')
             max_price = submitted.get('price2')
-            # Campus = submitted.get('Campus')
 
             # tries need to be seperate to allow only min price or only
             # max price to be used
@@ -47,9 +46,8 @@ def filter_view(request):
                 max_price = None
 
             query = build_filter(catered, basin_ensuite, bedsize, campus,
-                                 min_price, max_price)
+                                 accessible, min_price, max_price)
             results_rooms = results_rooms.filter(*query)
-
     else:
         form = FilterForm()
 
@@ -72,7 +70,7 @@ def filter_view(request):
 
 
 def build_filter(catered, basin_ensuite, bedsize, campus,
-                 min_price, max_price):
+                 accessible, min_price, max_price):
     # ------- BUILDING THE QUERY ----------
     query = []
     # we use this to build up a query
@@ -116,4 +114,7 @@ def build_filter(catered, basin_ensuite, bedsize, campus,
     else:
         pass
     # ---------------------------------------------------------------
+    if accessible == "accessible":
+        query.append(Q(accessible=False))
+
     return query

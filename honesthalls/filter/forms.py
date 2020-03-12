@@ -30,6 +30,11 @@ CAMPUSES = [
     ('city', 'City')
 ]
 
+ACCESSIBLE = [
+    ('na', 'Show all results'),
+    ('accessible', 'Only search for accessible halls'),
+]
+
 
 class FilterForm(forms.Form):
     # TODO: Add fields here
@@ -38,6 +43,7 @@ class FilterForm(forms.Form):
     bed_options = forms.ChoiceField(choices=BEDSIZE_OPTIONS, label="Bedsize: ")
     eat_options = forms.ChoiceField(choices=CATERED, label="Catering: ")
     campus_options = forms.ChoiceField(choices=CAMPUSES, label="Campus: ")
+    accessible_options = forms.ChoiceField(choices=ACCESSIBLE, label="Results: ")
     min_price = forms.IntegerField(initial=None, required=False)
     max_price = forms.IntegerField(initial=None, required=False)
 
@@ -49,6 +55,7 @@ class FilterForm(forms.Form):
             'bed_options',
             'eat_options',
             'campus_options',
+            'accessible_options',
             Row(
                 Column('min_price', css_class='form-group col-md-6 mb-0'),
                 Column('max_price', css_class='form-group col-md-6 mb-0'),
