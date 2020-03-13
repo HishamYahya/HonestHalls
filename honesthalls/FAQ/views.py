@@ -36,10 +36,12 @@ def question_form(request, hall_id):
 			messages.error(
 			request, "Questions must be no more than 200 characters.")
 			return render(request, 'FAQ/question_form.html', {
-			"form": form
-			})
+			"form": form,
+			"hall": hall
+		})
 	else:
 		form = QuestionForm()
 		return render(request, 'FAQ/question_form.html', {
-		"form": form
+		"form": form,
+		"hall": hall
 		})
