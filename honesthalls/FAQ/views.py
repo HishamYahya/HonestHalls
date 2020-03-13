@@ -20,7 +20,7 @@ from halls.models import Hall
 
 @login_required
 def question_form(request, hall_id):
-	hall = Hall.objects.filter(id=hall_id).first()
+	hall = get_object_or_404(Hall, pk=hall_id)
 
 	if request.method == 'POST':
 		form = QuestionForm(request.POST)
@@ -31,7 +31,7 @@ def question_form(request, hall_id):
 			form.save()
 			messages.success(
 			request, "Your question was submitted.")
-			return HttpResponseRedirect(reverse('FAQ:question_form/', kwargs={'hall_id': hall.id}))
+			return HttpResponseRedirect(reverse('question', kwargs={'hall_id': hall.id}))
 		else:
 			messages.error(
 			request, "Questions must be no more than 200 characters.")
