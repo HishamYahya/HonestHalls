@@ -158,7 +158,7 @@ class RoomType(models.Model):
     basin = models.BooleanField()
     bedsize = models.CharField(max_length=30)
     catered = models.BooleanField()
-    accessible = models.BooleanField()
+    accessible = models.BooleanField(default=None, null=True)
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
 
     @property

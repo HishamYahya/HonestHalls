@@ -115,6 +115,6 @@ def build_filter(catered, basin_ensuite, bedsize, campus,
         pass
     # ---------------------------------------------------------------
     if accessible == "accessible":
-        query.append(Q(accessible=False))
+        query.append(Q(accessible=True))
 
     return query
