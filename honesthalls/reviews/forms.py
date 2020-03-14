@@ -5,7 +5,7 @@ from reviews.models import Review, ReviewPhotos, Report
 
 
 class ReviewEditForm(forms.ModelForm):
-    text = forms.CharField(min_length=50, max_length=2500)
+    text = forms.CharField(min_length=50, max_length=500)
     anonymous = forms.BooleanField(required=False)
     cleanliness = forms.IntegerField(initial=5, min_value=1, max_value=5)
     social_life = forms.IntegerField(initial=5, min_value=1, max_value=5)
@@ -22,7 +22,7 @@ class ReviewEditForm(forms.ModelForm):
 class ReviewPhotosEditForm(forms.ModelForm):
     photo_path = forms.ImageField(required=False)
     photo_desc = forms.CharField(
-        label='Description', min_length=10, max_length=100)
+        label='Description', min_length=5, max_length=50)
 
     class Meta:
         model = ReviewPhotos
@@ -80,8 +80,8 @@ class ReviewPhotosEditForm(forms.ModelForm):
         return instance
 
 class ReportForm(forms.ModelForm):
-    title = forms.CharField(min_length=5, max_length=75)
-    explanation = forms.CharField(min_length=10, max_length=2500)
+    title = forms.CharField(min_length=5, max_length=50)
+    explanation = forms.CharField(min_length=25, max_length=500)
 
     class Meta:
         model = Report
