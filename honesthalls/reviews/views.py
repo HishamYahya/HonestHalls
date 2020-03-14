@@ -162,6 +162,9 @@ def review_photos(request, review_id):
                     # Call the overriden save() method to execute the
                     # action requested by the user.
                     form.save(user=request.user, review=review)
+                    form.instance.refresh_from_db()
+                    form['photo_path'].value = form.instance.photo_path
+                    # form.fields['photo_path'].value = form.instance.photo_path
 
             messages.success(
                 request, 'Your changes to review photos have been made.')
