@@ -38,7 +38,7 @@ def write(request, hall_id):
     if len(conflicting_reviews) > 0:
         cr = conflicting_reviews[0]
         cr_hall = cr.roomtype.hall.name
-        cr_age = (datetime.today() - cr.date_created.replace(tzinfo=None)).days
+        cr_age = max(0, (datetime.today() - cr.date_created.replace(tzinfo=None)).days)
         messages.error(request, f"""
             Posting a second review in less than 365 days is disallowed.
             Your previous review of \"{cr_hall}\" was
