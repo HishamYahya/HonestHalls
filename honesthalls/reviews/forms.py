@@ -88,5 +88,9 @@ class ReportForm(forms.ModelForm):
         fields = ['title', 'explanation']
 
 
-class ReviewPhotosEditFormSet(modelformset_factory(ReviewPhotos, form=ReviewPhotosEditForm, extra=3, can_delete=True)):
+class ReviewPhotosEditFormSet(modelformset_factory(ReviewPhotos, form=ReviewPhotosEditForm, max_num=4, extra=4, can_delete=True)):
+    """
+    The FormSet for the review photos.
+    Maximum of 4 photos allowed per review.
+    """
     pass

@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.shortcuts import (
     render, reverse, redirect,
     Http404, HttpResponse, HttpResponseRedirect
@@ -29,6 +30,22 @@ REVIEW_CHANGE_EXISTING = 'CHANGE_EXISTING'
 @login_required
 def write(request, hall_id):
     """ Allows the user to write a new review for a room. """
+    conflicting_reviews = list(Review.objects.filter(
+        user=request.user,
+        date_created__gte=datetime.today() - timedelta(days=365),
+    )[:1])
+
+    if len(conflicting_reviews) > 0:
+        cr = conflicting_reviews[0]
+        cr_hall = cr.roomtype.hall.name
+        cr_age = (datetime.today() - cr.date_created.replace(tzinfo=None)).days
+        messages.error(request, f"""
+            Posting a second review in less than 365 days is disallowed.
+            Your previous review of \"{cr_hall}\" was
+            posted {cr_age} days ago.
+        """)
+        return redirect(f"{reverse('profile')}#review-{cr.id}")
+
     # We'll pass the hall to the view, so get the data needed for that
     hall = get_object_or_404(Hall, pk=hall_id)
     hall_data = hall.get_card_data()

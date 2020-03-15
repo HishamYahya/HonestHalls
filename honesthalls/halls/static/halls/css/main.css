@@ -24,6 +24,14 @@ b {
 
 /** END Home Page **/
 
+/** BEGIN Review **/
+
+.hh-review:target {
+	background-color: #FFEBEE !important;
+}
+
+/** END Review **/
+
 /** BEGIN ReusableComponents **/
 .hh-bg-translucent-dark {
 	background-color: rgba(0, 0, 0, 0.2);
