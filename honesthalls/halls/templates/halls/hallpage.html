@@ -2,7 +2,7 @@
 {% block title %}{{ hall.name }}{% endblock %}
 <!-- -------------------------------- -->
 {% block content %}
-<div class="container">
+<div class="container px-2">
 	<div class="row">
 		<div class="col-md-6">
 			<!-- The image gallery/slider. Currently using LigtSlider -->
@@ -40,13 +40,13 @@
 				{% endfor %}
 			</div>
 		</div>
-		<div class="col-md-6" style="display: table;">
+		<div class="col-md-6">
 			<h2>{{ hall.name }}</h2>
 			<h5>Campus: <span class="badge badge-secondary">{{ hall.campus }}</span>
 			</h5>
 
 			<div>
-				<p>{{ hall.text }}</p>
+				<p class="text-justify">{{ hall.text }}</p>
 			</div>
 
 			<p>
@@ -56,51 +56,52 @@
 					Show on map
 				</a>
 			</p>
-
-			<table class="table table-sm table-striped table-bordered">
-				<tr>
-					<td>Price (£/wk)</td>
-					<td>Contract (wks)</td>
-					<td>Bathroom/Basin</td>
-					<td>Catering</td>
-					<td>Bedsize</td>
-					<td>Accessible</td>
-				</tr>
-				{% for room in roomtypes %}
-				<tr>
-					<td>{{ room.formatted_price }}</td>
-					<td>{{ room.contract_length }}</td>
-
-					{% if room.ensuite %}
-					<td>Ensuite</td>
-					{% elif room.basin %}
-					<td>Basin</td>
-					{% else %}
-					<td>Neither</td>
-					{% endif %}
-
-
-					{% if room.catered %}
-					<td><i class="material-icons align-text-bottom">check</i></td>
-					{% else %}
-					<td><i class="material-icons align-text-bottom">close</i></td>
-					{% endif %}
-
-					<td>{{ room.bedsize }}</td>
-
-					{% if room.accessible %}
-					<td><i class="material-icons align-text-bottom">check</i></td>
-					{% else %}
-					<td><i class="material-icons align-text-bottom">close</i></td>
-					{% endif %}
-				</tr>
-				{% endfor %}
-			</table>
+			<div class="table-responsive">
+				<table class="table table-sm table-striped table-bordered">
+					<tr>
+						<td>Price (£/wk)</td>
+						<td>Contract (wks)</td>
+						<td>Bathroom/Basin</td>
+						<td>Catering</td>
+						<td>Bedsize</td>
+						<td>Accessible</td>
+					</tr>
+					{% for room in roomtypes %}
+					<tr>
+						<td>{{ room.formatted_price }}</td>
+						<td>{{ room.contract_length }}</td>
+	
+						{% if room.ensuite %}
+						<td>Ensuite</td>
+						{% elif room.basin %}
+						<td>Basin</td>
+						{% else %}
+						<td>Neither</td>
+						{% endif %}
+	
+	
+						{% if room.catered %}
+						<td><i class="material-icons align-text-bottom">check</i></td>
+						{% else %}
+						<td><i class="material-icons align-text-bottom">close</i></td>
+						{% endif %}
+	
+						<td>{{ room.bedsize }}</td>
+	
+						{% if room.accessible %}
+						<td><i class="material-icons align-text-bottom">check</i></td>
+						{% else %}
+						<td><i class="material-icons align-text-bottom">close</i></td>
+						{% endif %}
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
 
-<div class="container px-0">
+<div class="container px-2">
 	<!-- add button when made submission form -->
 	<div>
 		<span class="h1">FAQ</span>
@@ -111,7 +112,7 @@
 </div>
 
 
-<div class="container px-0">
+<div class="container px-2">
 	<div>
 		<span class="h1">Reviews</span>
 		<a href="{% url 'review-write' hall.id %}"
