@@ -52,7 +52,11 @@ def write(request, hall_id):
 
     if request.method == 'GET':
         form = ReviewEditForm()
-
+        users_reviews = Review.objects.filter(user=request.user)
+        if len(users_reviews) > 4:
+            messages.error(
+                request, "You have exceeded the number of reviews an account can make. Please delete one of your reviews in order to make a new one.")
+            return HttpResponseRedirect(reverse('hallpage', kwargs={'id': hall_id}))
     roomtypes = hall.roomtype_set.all()
     return render(request, 'reviews/review-edit.html', {
         'form': form,

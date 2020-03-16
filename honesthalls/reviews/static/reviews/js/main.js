@@ -47,7 +47,6 @@ function on_body_load(review_ids_list){
 		up_button_set[id] = false;
 		down_button_set[id] = false;
 		user_rating_changed[id] = false;
-		console.log(up_button_set);
 	};
 };
 
