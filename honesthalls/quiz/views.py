@@ -68,7 +68,7 @@ def results_view(request):
         score = (cleanliness + noise + social_life + facilities) / 4
         scores[key] = score
 
-    results = {k: v for k, v in sorted(scores.items(), key=lambda item: item[1])}
+    
 
 
     all_halls = Hall.objects.all()
@@ -89,46 +89,53 @@ def results_view(request):
             fitsToilet = False
             fitsBed = False
             fitsCatering = False
-            if(basin_ensuite == '' or basin_ensuite == None):
-                fitsToilet = True
-            if(bed == '' or bed == None):
-                fitsBed = True
-            if(catering == '' or catering == None):
-                fitsCatering = True
-            if(catering == '' or catering == None):
-                fitsCatering = True
-            if(campus != self.hall.campus and campus != '' and campus != None):
-                self.fitsCriteria = False
-                self.messages.append('Not in ' + campus + ' campus.')
+
             for room in rooms:
                 if(self.hall.name == room.hall.name):
                     if(room.catered and catering == 'catered'):
                         fitsCatering = True
                     if(not room.catered and catering == 'self-catered'):
                         fitsCatering = True
-                    if(room.bedsize == bed):
+
+                    if(room.bedsize.lower() == bed):
                         fitsBed = True
                     if(room.ensuite and basin_ensuite == 'ensuite'):
                         fitsToilet = True
                     if(room.basin and basin_ensuite == 'basin'):
                         fitsToilet = True
-            if(not fitsBed):
+            if(fitsBed):
+                self.messages.append([True, bed.capitalize() + " beds"])
+                # Give higher score if it fits criteria
+                scores[self.name] = ((scores[self.name] * 4) + (scores[self.name] *2)) / 5
+            else:
                 self.fitsCriteria = False
-                self.messages.append('No ' + bed + " beds")
-            if(not fitsToilet):
-                self.fitsCriteria = False
-                self.messages.append('No ' + basin_ensuite + " rooms")
-            if(not fitsCatering):
-                self.fitsCriteria = False
-                self.messages.append('No ' + catering + ' rooms')
+                self.messages.append([False, 'No ' + bed + " beds"])
 
-                    
+            if(fitsToilet):
+                self.messages.append([True, basin_ensuite.capitalize() + " rooms"])
+                # Give higher score if it fits criteria
+                scores[self.name] = ((scores[self.name] * 4) + (scores[self.name] *2)) / 5
+            else:
+                self.fitsCriteria = False
+                self.messages.append([False, 'No ' + basin_ensuite + " rooms"])
+            if(fitsCatering):
+                self.messages.append([True, catering.capitalize() + ' rooms'])
+                scores[self.name] = ((scores[self.name] * 4) + (scores[self.name] *2)) / 5
+            else:
+                self.fitsCriteria = False
+                self.messages.append([False, 'No ' + catering + ' rooms'])
+
+    filtered_halls = {}
+    for hall in all_halls:
+        filtered_halls[hall.name] = FilteredHall(hall)
+
+    results = {k: v for k, v in sorted(scores.items(), key=lambda item: item[1])}
 
     form_halls = []
     for key in results:
         for hall in all_halls:
             if (key == hall.name):
-                form_halls.append(FilteredHall(hall))
+                form_halls.append(filtered_halls[key])
                 continue
     
     
