@@ -5,58 +5,60 @@
 <!-- Steps form -->
 <div class="card">
   <div class="card-body mb-4">
-
-    <h2 class="text-center font-weight-bold pt-4 pb-5"><strong>Steps form
-        example</strong></h2>
-
-    <p>
-      <strong>Detailed documentation and more examples you can find in our
-        <a href="https://mdbootstrap.com/docs/jquery/components/stepper/"
-          target="_blank">Bootstrap Stepper Docs</a>
-      </strong>
-    </p>
-
-    <hr class="my-5">
     <!-- Stepper -->
     <div class="steps-form">
       <div class="steps-row setup-panel">
         <div class="steps-step">
           <a href="#step-9" type="button"
             class="btn btn-primary btn-circle">1</a>
-          <p>Step 1</p>
+          <p>Question 1</p>
         </div>
         <div class="steps-step">
           <a href="#step-10" type="button" class="btn btn-secondary btn-circle"
             disabled="disabled">2</a>
-          <p>Step 2</p>
+          <p>Question 2</p>
         </div>
         <div class="steps-step">
           <a href="#step-11" type="button" class="btn btn-secondary btn-circle"
             disabled="disabled">3</a>
-          <p>Step 3</p>
+          <p>Question 3</p>
+        </div>
+        <div class="steps-step">
+          <a href="#step-12" type="button" class="btn btn-secondary btn-circle"
+            disabled="disabled">4</a>
+          <p>Question 4</p>
+        </div>
+        <div class="steps-step">
+          <a href="#step-13" type="button" class="btn btn-secondary btn-circle"
+            disabled="disabled">5</a>
+          <p>Question 5</p>
+        </div>
+        <div class="steps-step">
+          <a href="#step-14" type="button" class="btn btn-secondary btn-circle"
+            disabled="disabled">6</a>
+          <p>Question 6</p>
         </div>
       </div>
     </div>
 
     <form role="form" action="/quiz/results" method="get">
-
+      <input type="text" autofocus="autofocus" style="display:none" />
       <!-- First Step -->
       <div class="row setup-content" id="step-9">
         <div class="col-md-12">
           <h3 class="font-weight-bold pl-0 my-4"><strong>Step 1</strong></h3>
           <div class="form-group md-form">
             <h3>How important is cleanliness for you?</h3>
+            <input type="text" autofocus="autofocus" style="display:none" />
             <div class="radio">
-              <label><input type="radio" name="first" value=1>Very
-                important</label>
+              <label><input type="radio" name="first" value=1>Don't care</label>
             </div>
             <div class="radio">
               <label><input type="radio" name="first" value=2 checked>A
                 bit</label>
             </div>
             <div class="radio disabled">
-              <label><input type="radio" name="first" value=3>Don't
-                care</label>
+              <label><input type="radio" name="first" value=3>Very important</label>
             </div>
           </div>
           <button class="btn btn-primary btn-rounded nextBtn float-right"
@@ -93,23 +95,81 @@
         <div class="col-md-12">
           <h3 class="font-weight-bold pl-0 my-4"><strong>Step 3</strong></h3>
           <div class="form-group md-form">
-            <h3>How important is cleanliness for you?</h3>
+            <h3>Is it important for you to have a lot of socialising opportunities around the hall?</h3>
             <div class="radio">
-              <label><input type="radio" name="third" value=1>Very
-                important</label>
+              <label><input type="radio" name="third" value=1>Not at all</label>
             </div>
             <div class="radio">
               <label><input type="radio" name="third" value=2 checked>A
                 bit</label>
             </div>
             <div class="radio disabled">
-              <label><input type="radio" name="third" value=3>Don't
-                care</label>
+              <label><input type="radio" name="third" value=3>Very important</label>
             </div>
           </div>
           <button class="btn btn-primary btn-rounded prevBtn float-left"
             type="button">Previous</button>
-          <button class="btn btn-secondary btn-rounded float-right"
+          <button class="btn btn-primary btn-rounded nextBtn float-right"
+            type="button">Next</button>
+        </div>
+      </div>
+
+      <!-- Fourth Step -->
+      <div class="row setup-content" id="step-12">
+        <div class="col-md-12">
+          <h3 class="font-weight-bold pl-0 my-4"><strong>Step 4</strong></h3>
+          <div class="form-group md-form">
+            <h3>What kind of catrering do you prefer?</h3>
+            <div class="radio">
+              <label><input type="radio" name="catering" value="catered">Catered</label>
+            </div>
+            <div class="radio disabled">
+              <label><input type="radio" name="catering" value="self-catered" checked>Self-catered</label>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-rounded prevBtn float-left"
+            type="button">Previous</button>
+          <button class="btn btn-primary btn-rounded nextBtn float-right"
+            type="button">Next</button>
+        </div>
+      </div>
+
+      <!-- Fifth Step -->
+      <div class="row setup-content" id="step-13">
+        <div class="col-md-12">
+          <h3 class="font-weight-bold pl-0 my-4"><strong>Step 5</strong></h3>
+          <div class="form-group md-form">
+            <h3>What type of bed would you prefer?</h3>
+            <div class="radio">
+              <label><input type="radio" name="bed" value="single">Single</label>
+            </div>
+            <div class="radio disabled">
+              <label><input type="radio" name="bed" value="double" checked>Double</label>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-rounded prevBtn float-left"
+            type="button">Previous</button>
+          <button class="btn btn-primary btn-rounded nextBtn float-right"
+            type="button">Next</button>
+        </div>
+      </div>
+
+      <!-- Sixth Step -->
+      <div class="row setup-content" id="step-14">
+        <div class="col-md-12">
+          <h3 class="font-weight-bold pl-0 my-4"><strong>Step 6</strong></h3>
+          <div class="form-group md-form">
+            <h3>Do you prefer an Ensuite room?</h3>
+            <div class="radio">
+              <label><input type="radio" name="basin_ensuite" value="ensuite">Yes</label>
+            </div>
+            <div class="radio disabled">
+              <label><input type="radio" name="basin_ensuite" value="basin" checked>No</label>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-rounded prevBtn float-left"
+            type="button">Previous</button>
+          <button class="btn btn-success btn-rounded float-right"
             type="submit">Submit</button>
         </div>
       </div>
