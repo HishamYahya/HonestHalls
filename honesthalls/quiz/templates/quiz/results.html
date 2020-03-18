@@ -10,7 +10,7 @@
 {% block title %}Quiz Results{% endblock %}
 
 {% block content %}
-<div class="container row m-3">
+<div class="container row my-3 d-flex">
   <!-- <div class="col-sm-5 col-md-4 col-lg-3">
   {% include "quiz/form.html" %}
   </div> -->
@@ -18,7 +18,7 @@
     <!-- Loop through the halls data and display the
 			ones that satisfy the filters -->
     {% for hall in form_data %}
-    <div class="card container{% if not hall.fitsCriteria %} bg-light{% endif %} border-success m-3">
+    <div class="card container{% if not hall.fitsCriteria %} {% endif %} border-success m-3">
       <div class="row">
         <div class="col">
 
