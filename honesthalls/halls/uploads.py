@@ -27,7 +27,6 @@ def create_thumbnail(filename):
     # Overwrite the input image file.
     im.save(dest_filename, 'JPEG', quality=settings.MEDIA_IMAGE_QUALITY)
 
-
 def process_uploaded_image(filename):
     """
     Processes a file uploaded by the user.

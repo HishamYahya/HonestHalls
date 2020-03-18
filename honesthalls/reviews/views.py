@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.shortcuts import (
     render, reverse, redirect,
     Http404, HttpResponse, HttpResponseRedirect
@@ -29,6 +30,22 @@ REVIEW_CHANGE_EXISTING = 'CHANGE_EXISTING'
 @login_required
 def write(request, hall_id):
     """ Allows the user to write a new review for a room. """
+    conflicting_reviews = list(Review.objects.filter(
+        user=request.user,
+        date_created__gte=datetime.today() - timedelta(days=365),
+    )[:1])
+
+    if len(conflicting_reviews) > 0:
+        cr = conflicting_reviews[0]
+        cr_hall = cr.roomtype.hall.name
+        cr_age = max(0, (datetime.today() - cr.date_created.replace(tzinfo=None)).days)
+        messages.error(request, f"""
+            Posting a second review in less than 365 days is disallowed.
+            Your previous review of \"{cr_hall}\" was
+            posted {cr_age} days ago.
+        """)
+        return redirect(f"{reverse('profile')}#review-{cr.id}")
+
     # We'll pass the hall to the view, so get the data needed for that
     hall = get_object_or_404(Hall, pk=hall_id)
     hall_data = hall.get_card_data()
@@ -52,7 +69,11 @@ def write(request, hall_id):
 
     if request.method == 'GET':
         form = ReviewEditForm()
-
+        users_reviews = Review.objects.filter(user=request.user)
+        if len(users_reviews) > 4:
+            messages.error(
+                request, "You have exceeded the number of reviews an account can make. Please delete one of your reviews in order to make a new one.")
+            return HttpResponseRedirect(reverse('hallpage', kwargs={'id': hall_id}))
     roomtypes = hall.roomtype_set.all()
     return render(request, 'reviews/review-edit.html', {
         'form': form,
@@ -162,6 +183,9 @@ def review_photos(request, review_id):
                     # Call the overriden save() method to execute the
                     # action requested by the user.
                     form.save(user=request.user, review=review)
+                    form.instance.refresh_from_db()
+                    form['photo_path'].value = form.instance.photo_path
+                    # form.fields['photo_path'].value = form.instance.photo_path
 
             messages.success(
                 request, 'Your changes to review photos have been made.')

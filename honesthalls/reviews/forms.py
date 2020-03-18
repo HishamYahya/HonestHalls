@@ -5,7 +5,7 @@ from reviews.models import Review, ReviewPhotos, Report
 
 
 class ReviewEditForm(forms.ModelForm):
-    text = forms.CharField(min_length=50, max_length=2500)
+    text = forms.CharField(min_length=50, max_length=500)
     anonymous = forms.BooleanField(required=False)
     cleanliness = forms.IntegerField(initial=5, min_value=1, max_value=5)
     social_life = forms.IntegerField(initial=5, min_value=1, max_value=5)
@@ -22,7 +22,7 @@ class ReviewEditForm(forms.ModelForm):
 class ReviewPhotosEditForm(forms.ModelForm):
     photo_path = forms.ImageField(required=False)
     photo_desc = forms.CharField(
-        label='Description', min_length=10, max_length=100)
+        label='Description', min_length=5, max_length=50)
 
     class Meta:
         model = ReviewPhotos
@@ -74,19 +74,24 @@ class ReviewPhotosEditForm(forms.ModelForm):
                 review=review,
             )
 
+        self.instance = instance
         # Honor the commit parameter
         if commit:
             instance.save()
         return instance
 
 class ReportForm(forms.ModelForm):
-    title = forms.CharField(min_length=5, max_length=75)
-    explanation = forms.CharField(min_length=10, max_length=2500)
+    title = forms.CharField(min_length=5, max_length=50)
+    explanation = forms.CharField(min_length=25, max_length=500)
 
     class Meta:
         model = Report
         fields = ['title', 'explanation']
 
 
-class ReviewPhotosEditFormSet(modelformset_factory(ReviewPhotos, form=ReviewPhotosEditForm, extra=3, can_delete=True)):
+class ReviewPhotosEditFormSet(modelformset_factory(ReviewPhotos, form=ReviewPhotosEditForm, max_num=4, extra=4, can_delete=True)):
+    """
+    The FormSet for the review photos.
+    Maximum of 4 photos allowed per review.
+    """
     pass

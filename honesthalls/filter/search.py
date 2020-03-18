@@ -5,7 +5,7 @@ from halls.models import Hall, RoomType, HallPhotos
 from difflib import SequenceMatcher
 
 
-def searching(search_string, unique_halls):
+def searching(search_string):
     '''Here is the matching.'''
     search_words = search_string.split()
     all_rooms = Hall.objects.all()
@@ -66,10 +66,15 @@ def searching(search_string, unique_halls):
                     result_matcher[count].append(1)
                     result_matcher[count].append(0)
                     result_matcher[count].append(0)
+                    for j in range(i):
+                        result_matcher[count][1] *= matcher[j][0]
+                        result_matcher[count][2] = max(result_matcher[count][2], matcher[j][1])
+                        result_matcher[count][3] = max(result_matcher[count][3], matcher[j][2])
                 result_matcher[count][1] *= matcher[num][0]
                 result_matcher[count][2] = max(result_matcher[count][2], matcher[num][1])
                 result_matcher[count][3] = max(result_matcher[count][3], matcher[num][2])
             num += 1
+        print(result_matcher)
         if record:
             count += 1
 

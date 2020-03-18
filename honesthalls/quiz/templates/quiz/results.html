@@ -10,15 +10,15 @@
 {% block title %}Quiz Results{% endblock %}
 
 {% block content %}
-<div class="container row m-3">
-  <div class="col-sm-5 col-md-4 col-lg-3">
+<div class="container row my-3 d-flex">
+  <!-- <div class="col-sm-5 col-md-4 col-lg-3">
   {% include "quiz/form.html" %}
-  </div>
-  <div class="col-sm-7 col-md-8 col-lg-9">
+  </div> -->
+  <div>
     <!-- Loop through the halls data and display the
 			ones that satisfy the filters -->
     {% for hall in form_data %}
-    <div class="card container{% if not hall.fitsCriteria %} bg-light{% else %} border-success{% endif %} m-3">
+    <div class="card container{% if not hall.fitsCriteria %} {% endif %} border-success m-3">
       <div class="row">
         <div class="col">
 
@@ -33,10 +33,16 @@
       <div class="col m-3">
         {% for message in hall.messages %}
         <div class="row">
-          
+          {% if message.0 %}
+          <i class="material-icons" style="color: green;">
+            check
+          </i>
+          {% else %}
           <i class="material-icons" style="color: red;">
             clear
-          </i><p>{{ message }}</p>
+          </i>
+          {% endif %}
+          <p>{{ message.1 }}</p>
         </div>
           {% endfor %}
       </div>

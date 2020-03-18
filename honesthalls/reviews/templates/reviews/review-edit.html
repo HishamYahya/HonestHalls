@@ -156,11 +156,11 @@
       <textarea name="text" class="form-control
           {{ form.text.errors|yesno:"is-invalid," }}" id="reviewText" rows="6"
         placeholder="What did you like or dislike?" minlength="50"
-        maxlength="2500" required
+        maxlength="500" required
         aria-describedby="reviewHelp">{% if form.text.value is not None %}{{ form.text.value }}{% endif %}</textarea>
       <small id="reviewHelp" class="form-text text-muted">
         How would you summarise your stay at {{ hall.name }}?
-        <span id="reviewCharCount"></span> out of 2500 characters
+        <span id="reviewCharCount"></span> out of 500 characters
         {{ form.text.errors }}
       </small>
     </div>
@@ -279,7 +279,7 @@
   </script>
   {% else %}
   <p class="mt-4">You cannot write a review as you have not verified with a
-    Univeristy of Manchester email address.</p>
+    University of Manchester email address.</p>
   <a href="{% url 'profile' %}">Click here to verify your account.</a>
   {% endif %}
 </div>

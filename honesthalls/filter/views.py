@@ -16,10 +16,10 @@ def filter_view(request):
     unique_halls = set()
 
     # TODO: results_rooms should only query the search results
-    if (search_string is None):
+    if (search_string is None) or search_string == "":
         results_rooms = RoomType.objects.all()
     else:
-        results_rooms = searching(search_string, unique_halls)
+        results_rooms = searching(search_string)
     # A set is being used so it does not/cannot have duplicate halls
 
     if(submitted):
@@ -39,11 +39,6 @@ def filter_view(request):
                 min_price = int(min_price) * 100
             except:
                 min_price = None
-
-            try:
-                max_price = int(max_price) * 100
-            except:
-                max_price = None
 
             query = build_filter(catered, basin_ensuite, bedsize, campus,
                                  accessible, min_price, max_price)
@@ -115,6 +110,6 @@ def build_filter(catered, basin_ensuite, bedsize, campus,
         pass
     # ---------------------------------------------------------------
     if accessible == "accessible":
-        query.append(Q(accessible=False))
+        query.append(Q(accessible=True))
 
     return query

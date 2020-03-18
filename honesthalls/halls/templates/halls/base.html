@@ -44,6 +44,7 @@
 
   {% include 'halls/partials/navbar.html' %}
 
+  <div class="container">
   {% if messages %}
   {% for message in messages %}
   <div class="alert alert-{{ message.tags }}">
@@ -51,6 +52,7 @@
   </div>
   {% endfor %}
   {% endif %}
+  </div>
 
   {% block content %}{% endblock %}
 
