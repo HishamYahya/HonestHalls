@@ -74,6 +74,7 @@ class ReviewPhotosEditForm(forms.ModelForm):
                 review=review,
             )
 
+        self.instance = instance
         # Honor the commit parameter
         if commit:
             instance.save()
