@@ -28,7 +28,7 @@ urlpatterns = [
     path('map/', include('maps.urls')),
     path('', include('halls.urls')),
     path('quiz/', include('quiz.urls')),
-    path('', include("FAQ.urls"))
+    path('', include("FAQ.urls"), name='question')
     ]
 
 # WARN: This work in DEBUG only.

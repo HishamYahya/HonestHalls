@@ -40,7 +40,7 @@
 				{% endfor %}
 			</div>
 		</div>
-		<div class="col-md-6" style="display: table;">
+		<div class="col-md-6">
 			<h2>{{ hall.name }}</h2>
 			<h5>Campus: <span class="badge badge-secondary">{{ hall.campus }}</span>
 			</h5>
@@ -57,7 +57,7 @@
 				</a>
 			</p>
 
-			<table class="table table-sm table-striped table-bordered">
+			<table class="table table-responsive table-sm table-striped table-bordered mb-0">
 				<tr>
 					<td>Price (£/wk)</td>
 					<td>Contract (wks)</td>
@@ -104,6 +104,10 @@
 	<!-- add button when made submission form -->
 	<div>
 		<span class="h1">FAQ</span>
+		<a href="/question_form/{{hall.id}}"
+			class="btn btn-primary btn-lg float-right" role="button">
+			Ask a Question
+		</a>
 	</div>
 
 	<!-- Include the list of reviews. -->

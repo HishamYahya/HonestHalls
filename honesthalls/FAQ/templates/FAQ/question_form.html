@@ -2,11 +2,11 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-  <div>
+  <div class="container">
     <form method="POST">
       {% csrf_token %}
       <fieldset class="form-group">
-        <legend class="border-botton-mb-4">Ask your question about {{ hall_name }}</legend>
+        <legend class="border-botton-mb-4">Ask your question about <strong>{{ hall.name }}</strong></legend>
         Please use this submission form to ask our moderation team <b>objective</b> questions about this hall.
         <br><br>
         We are unable to answer questions such as:
@@ -15,11 +15,11 @@
           <li>Which block is the most fun in this hall?</li>
           <li>How is the food at this hall?</li>
         </ul>
-        Answers to questions like this may be found in the <a href="#">reviews section</a> of each hall.
+        Answers to questions like this may be found in the <a href="/hall/{{hall.id}}">reviews section</a> of each hall.
 
         {{ form|crispy }}
+        <strong>You will be informed when your question is answered or rejected by email.</strong>
       </fieldset>
-       
       <div class="form-group">
         <button class="btn btn-primary" type="submit">Submit</button>
       </div>

@@ -6,19 +6,21 @@ from django.core.mail import EmailMessage
 
 class Questions(models.Model):
 	question = models.TextField(max_length=200)
-	answer = models.TextField()
+	answer = models.TextField(blank=True)
+	answered = models.BooleanField(default=False)
 	date_created = models.DateTimeField(auto_now_add=True)
 	hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
+
 
 	def save(self, **kwargs):
 		"""
 		Saves the model to the DB.
 		Emails the user if answer has been added.
 		"""
-		super().save(**kwargs)
-
-		if(self.answer != ""):
+		if (self.answer != ""):
+			self.answered = True
+			super().save(**kwargs)
 			mail_subject = "Your Question has been answered."
 			# Do not break the following string or the email will get cut off
 			message = f"Hi {self.user.first_name},\n\n You're receiving this email because you asked a question about {self.hall.name}. The HonestHalls team has now answered your question! Revisit the {self.hall.name} hall page to see their response.\n\n"
@@ -27,6 +29,8 @@ class Questions(models.Model):
 				mail_subject, message, to=[self.user.email]
 			)
 			email.send()
+		else:
+			super().save(**kwargs)
 
 	def delete(self, **kwargs):
 		mail_subject = "Your Question has been deleted."
