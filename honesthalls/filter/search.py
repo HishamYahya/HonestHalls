@@ -67,13 +67,14 @@ def searching(search_string):
                     result_matcher[count].append(0)
                     result_matcher[count].append(0)
                     for j in range(i):
-                        result_matcher[count][1] *= matcher[i][0]
-                        result_matcher[count][2] = max(result_matcher[count][2], matcher[i][1])
-                        result_matcher[count][3] = max(result_matcher[count][3], matcher[i][2])
+                        result_matcher[count][1] *= matcher[j][0]
+                        result_matcher[count][2] = max(result_matcher[count][2], matcher[j][1])
+                        result_matcher[count][3] = max(result_matcher[count][3], matcher[j][2])
                 result_matcher[count][1] *= matcher[num][0]
                 result_matcher[count][2] = max(result_matcher[count][2], matcher[num][1])
                 result_matcher[count][3] = max(result_matcher[count][3], matcher[num][2])
             num += 1
+        print(result_matcher)
         if record:
             count += 1
 
