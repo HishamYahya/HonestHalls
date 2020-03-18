@@ -5,7 +5,7 @@
     {% for question in faq %}
     <button class="accordion"><span class="font-italic">{{ question.question }}</span></button>
     <div class="panel">
-      <p class="pt-3">{{ question.answer }}</p>
+      <p class="pt-3 text-justify" >{{ question.answer }}</p>
     </div>
     {% empty %}
     <h5 class="text-muted ml-3 mt-2 pb-2">No questions have been asked.</h5>
