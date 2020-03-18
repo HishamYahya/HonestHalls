@@ -31,9 +31,8 @@ CAMPUSES = [
 ]
 
 ACCESSIBLE = [
-    ('na', 'Show all results'),
-    ('accessible', 'Search for accessible halls'),
-    ('available', 'Only Search the available halls')
+    ('na', 'None required'),
+    ('accessible', 'Require accessible halls'),
 ]
 
 
@@ -44,7 +43,7 @@ class FilterForm(forms.Form):
     bed_options = forms.ChoiceField(choices=BEDSIZE_OPTIONS, label="Bedsize: ")
     eat_options = forms.ChoiceField(choices=CATERED, label="Catering: ")
     campus_options = forms.ChoiceField(choices=CAMPUSES, label="Campus: ")
-    accessible_options = forms.ChoiceField(choices=ACCESSIBLE, label="Results: ")
+    accessible_options = forms.ChoiceField(choices=ACCESSIBLE, label="Accessibility: ")
     min_price = forms.IntegerField(initial=None, required=False)
     max_price = forms.IntegerField(initial=None, required=False)
 

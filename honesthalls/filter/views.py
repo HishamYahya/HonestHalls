@@ -40,11 +40,6 @@ def filter_view(request):
             except:
                 min_price = None
 
-            try:
-                max_price = int(max_price) * 100
-            except:
-                max_price = None
-
             query = build_filter(catered, basin_ensuite, bedsize, campus,
                                  accessible, min_price, max_price)
             results_rooms = results_rooms.filter(*query)
@@ -115,9 +110,6 @@ def build_filter(catered, basin_ensuite, bedsize, campus,
         pass
     # ---------------------------------------------------------------
     if accessible == "accessible":
-        query.append(Q(accessible=0))
-        query.append(Q(accessible=2))
-    elif accessible == "available":
-        query.append(Q(accessible=2))
+        query.append(Q(accessible=True))
 
     return query
