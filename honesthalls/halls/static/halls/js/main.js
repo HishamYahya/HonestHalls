@@ -1,4 +1,4 @@
-(function () {
+$(function () {
   "use strict";
 
   function initGlobalPlugins() {
@@ -89,7 +89,11 @@
       item: 1,
       loop: true,
       slideMargin: 0,
-      thumbItem: 6,
+      thumbItem: Math.max(6, $slider.children().length),
+      enableDrag: false,
+      onSliderLoad: function() {
+        $('#hh-hall-slider').removeClass('invisible')
+      }
     });
   }
 
@@ -141,4 +145,4 @@
   initImageGallery();
   initImagePreview();
 
-})();
+});

@@ -49,7 +49,7 @@ class Hall(models.Model):
         aggregate_results = (Review.objects
             .filter(roomtype__hall=self)
             .aggregate(**aggregate_kwargs))
-            
+
         # No reviews have been added for this hall yet
         if aggregate_results['count'] == 0:
             return 0
@@ -74,6 +74,9 @@ class Hall(models.Model):
         main_photo = self.hallphotos_set.first()
         return main_photo and main_photo.thumbnail_url
 
+    @expiring_lru_cache(expires_in_seconds=300, maxsize=1)
+    def get_sample_set(maxsize=6):
+        return Hall.objects.order_by('?')[:maxsize]
 
     def get_preview_dict(self):
         return {
@@ -177,7 +180,7 @@ class RoomType(models.Model):
             str(self.contract_length) +
             " weeks at £" +
             self.formatted_price +
-            "/week. Accessible? " + 
+            "/week. Accessible? " +
             yesno(self.accessible, "Yes", "No")
         )
 

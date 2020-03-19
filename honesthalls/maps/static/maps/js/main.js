@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const $target = $(event.target).parents('[data-hall-id]');
       if ($target.length) {
         const id = $target.attr('data-hall-id') | 0;
-        focusHall(id);
+        focusHall(id, true);
       }
     });
 
@@ -93,13 +93,13 @@ document.addEventListener("DOMContentLoaded", function() {
         // Need to re-add .focus to the marker if it
         // wasn't onscreen when the hall was focused.
         if (focusedHall != null) {
-          focusHall(focusedHall.id);
+          focusHall(focusedHall.id, true);
         }
       }
     }
 
     // Call every 50 ms to run initialization logic once the map has loaded.
-    const intervalID = setInterval(initializeMapMarkers, 50); 
+    const intervalID = setInterval(initializeMapMarkers, 50);
   }
 
   // Get the halls data from the injected script tag.
