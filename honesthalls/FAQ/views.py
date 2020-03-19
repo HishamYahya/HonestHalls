@@ -31,7 +31,7 @@ def question_form(request, hall_id):
 			form.save()
 			messages.success(
 			request, "Your question was submitted.")
-			return HttpResponseRedirect(reverse('FAQ:question', kwargs={'hall_id': hall.id}))
+			return HttpResponseRedirect(reverse('hallpage', kwargs={'id': hall.id}))
 		else:
 			messages.error(
 			request, "Questions must be no more than 200 characters.")
