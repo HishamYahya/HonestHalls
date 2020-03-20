@@ -1,7 +1,7 @@
 body {
-    background: #ffffff;
+  background: #ffffff;
 	color: #333333;
-	font-family: Sen, sans-serif;;
+	font-family: Sen, sans-serif;
 }
 
 b {
@@ -23,6 +23,19 @@ b {
 }
 
 /** END Home Page **/
+
+/** BEGIN Footer **/
+main {
+  min-height: calc(100vh - 300px);
+}
+
+#footer {
+    /* position:relative; */
+    padding-top: 50px;
+    width: 100%;
+    height: 50px;
+}
+/** END Footer **/
 
 /** BEGIN Review **/
 
