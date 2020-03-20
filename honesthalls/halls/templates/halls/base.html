@@ -31,7 +31,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
     rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Sen:400,700&display=swap"
-    rel="stylesheet"> 
+    rel="stylesheet">
   {% block css %}{% endblock %}
 </head>
 
@@ -54,7 +54,9 @@
   {% endif %}
   </div>
 
-  {% block content %}{% endblock %}
+  <main>
+    {% block content %}{% endblock %}
+  </main>
 
   <!-- The element used for previewing images -->
   <div class="hh-preview-dialog-backdrop">
@@ -69,7 +71,9 @@
     </div>
   </div>
 
-  {% include 'halls/partials/footer.html' %}
+  <div id="footer">
+    {% include 'halls/partials/footer.html' %}
+  </div>
 
   <!-- jQuery Slim (Required by Bootstrap 4) -->
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
