@@ -42,12 +42,10 @@ b {
 
 /** BEGIN Footer **/
 main {
-  min-height: calc(100vh - 308px);
+  min-height: calc(100vh - 258px);
 }
 
 #footer {
-    /* position:relative; */
-    padding-top: 50px;
     width: 100%;
     height: 50px;
 }
