@@ -4,27 +4,27 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 
 
 BEDSIZE_OPTIONS = [
-    ('na', 'Don\'t care'),
+    ('na', 'Not Important'),
     ('single', 'Single'),
     ('double', 'Double')
 ]
 
 # key, value shown to user
 BASIN_ENSUITE_NA = [
-    ('na', 'Don\'t care'),
+    ('na', 'Not Important'),
     ('neither', 'Neither'),
     ('ensuite', 'Ensuite'),
     ('basin', 'Basin')
     ]
 
 CATERED = [
-    ('na', 'Don\'t care'),
+    ('na', 'Not Important'),
     ('self', 'Self-catered'),
     ('catered', 'Catered')
 ]
 
 CAMPUSES = [
-    ('na', 'Don\'t care'),
+    ('na', 'Not Important'),
     ('fallowfield', 'Fallowfield'),
     ('victoria', 'Victoria Park'),
     ('city', 'City')
