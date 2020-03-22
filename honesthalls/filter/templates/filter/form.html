@@ -26,66 +26,59 @@
 			ones that satisfy the filters -->
 			{% for hall in results_halls %}
 			<div class="card my-3 m-md-3 container">
-				<div class="row">
-					<a type="button" class="btn btn-link"
-						href="{% url 'hallpage' hall.id %}">
-						<h3 class="col mt-3">
-							{{ hall.name }}
-						</h3>
-					</a>
-				</div>
-				<div class="row ml-3">
-					<h5>{{ hall.campus }}</h5>
-				</div>
-				<div class="row">
-					<div class="col-md-5">
-						<div id="hh-hall-slider">
-							{% for photo in hall.photos %}
-							<li class="hh-flex-center h-100"
-								data-thumb="{{ photo.photo_path.url }}">
-								<img class="w-100 hh-image-supports-preview"
-									src="{{ photo.photo_path.url }}"
-									alt="{{ photo.photo_desc }}" />
-							</li>
-							{% empty %}
-							<!-- No images are available -->
-							<li data-thumb="">
-								<div class="hh-no-image-placeholder">
-									<h3
-										class="font-weight-normal hh-no-image-placeholder__content">
-										No image available
-									</h3>
-								</div>
-							</li>
-							{% endfor %}
-						</div>
-					</div>
-
-					<div class="container">
-						<div class="card-body">
-							{{ hall.text }}
-
-							<h5 class="mt-3">Room Types:</h5>
-							<ul class="list-group list-group-flush mb-3">
-								{% for room in results_rooms %}
-								{% if room.hall.id == hall.id %}
-								<li class="list-group-item">{{ room.formatted_string }}</li>
-								<!-- TODO : FORMAT HALLS/ROOM INFORMATION-->
-								{% endif %}
-								{% endfor %}
-							</ul>
-
-							<a type="button" class="btn btn-primary"
+				<div class="row mt-4 mx-4">
+					<div class="col-lg-6 px-0">
+						<h3>
+							<a type="button" class="stretched-link text-primary"
+								style="font-size: inherit;"
 								href="{% url 'hallpage' hall.id %}">
-								Go to hall page
+									{{ hall.name }}
 							</a>
+						</h3>
+						<h5 class="col-12 px-0">{{ hall.campus }}</h5>
+					</div>
+					{% if hall.average_rating|stringformat:".2f" != "0.00" %}
+					<div data-toggle="tooltip" data-placement="top" title="Overall rating is {{ hall.average_rating|stringformat:".2f" }}"
+						class="h5 col-lg-6 px-0">
+							<input type="number" class="hh-rating-input" value="{{ hall.average_rating }}" readonly>
+					</div>
+					{% endif %}
+				</div>
+
+				<div class="card-body row">
+					<div class="col-lg-5">
+						{% if hall.main_photo_thumbnail %}
+						<img class="w-100 rounded shadow-sm"
+							src="{{ hall.main_photo_thumbnail }}"
+							alt="{{ photo.photo_desc }}" />
+						{% else %}
+						<!-- There are no images for this hall -->
+						<div class="card-img-top h6 m-0 hh-no-image-placeholder">
+								<h6 class="font-weight-normal hh-no-image-placeholder__content">
+										No image available
+								</h6>
 						</div>
-
-
-
+						{% endif %}
+					</div>
+					<div class="col-lg-7 mt-3 mt-lg-0">
+						{{ hall.text|truncatechars:250 }}
 					</div>
 
-
+					<div class="col-12">
+						<h5 class="mt-3">Room Types</h5>
+						<ul class="list-group list-group-flush mb-3">
+							{% for room in results_rooms %}
+							{% if room.hall.id == hall.id %}
+							<li class="list-group-item">{{ room.formatted_string }}</li>
+							<!-- TODO : FORMAT HALLS/ROOM INFORMATION-->
+							{% endif %}
+							{% endfor %}
+						</ul>
+						<a type="button" class="btn btn-primary"
+							href="{% url 'hallpage' hall.id %}">
+							Go to hall page
+						</a>
+					</div>
 				</div>
 			</div>
 
