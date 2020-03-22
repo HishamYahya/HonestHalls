@@ -30,16 +30,16 @@
         <ul class="navbar-nav">
             {% if user.is_authenticated %}
             <li class="nav-item dropdown">
-                <div class="nav-link btn dropdown-toggle text-light" href="#"
+                <a class="nav-link dropdown-toggle text-light" href="#"
                     id="navbardrop" data-toggle="dropdown">
                     <i class="material-icons align-bottom">account_circle</i>
                     {{ user.first_name }} {{ user.last_name_initial }}
-                    <div class="dropdown-menu nav-dropdown">
-                        <a class="dropdown-item"
-                            href="{% url 'profile' %}">Profile</a>
-                        <a class="dropdown-item"
-                            href="{% url 'logout' %}">Logout</a>
-                    </div>
+                </a>>
+                <div class="dropdown-menu nav-dropdown">
+                    <a class="dropdown-item"
+                        href="{% url 'profile' %}">Profile</a>
+                    <a class="dropdown-item"
+                        href="{% url 'logout' %}">Logout</a>
                 </div>
             </div>
             {% else %}
