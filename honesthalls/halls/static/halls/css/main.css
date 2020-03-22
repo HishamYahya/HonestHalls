@@ -42,7 +42,7 @@ b {
 
 /** BEGIN Footer **/
 main {
-  min-height: calc(100vh - 45vh);
+  min-height: calc(100vh - 308px);
 }
 
 #footer {
