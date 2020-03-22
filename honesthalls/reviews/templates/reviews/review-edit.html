@@ -35,8 +35,8 @@
     <div class="card mb-3" style="max-width: 720px;">
       <div class="row no-gutters">
         <div class="col-md-4">
-          {% if hall.thumbnail %}
-          <img class="card-img" src="{{ hall.thumbnail }}"
+          {% if hall.main_photo %}
+          <img class="card-img" src="{{ hall.main_photo.thumbnail_url }}"
             alt="{{ hall.name }}">
           {% else %}
           <!-- There are no images for this hall -->
