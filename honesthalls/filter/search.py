@@ -22,14 +22,14 @@ def searching(search_string):
         num = 0
         record = False
         for i in range(len(search_words)):
-            search_word = search_words[i]
+            search_word = search_words[i].lower()
             name = hall.name.split()
             text = hall.text.split()
             campus = hall.campus
             matcher[num][0], matcher[num][1], matcher[num][2] = 0, 0, 0
             ratio = 0
             for j in range(len(name)):
-                word = name[j]
+                word = name[j].lower()
                 if len(word) <= len(search_word):
                     ratio = SequenceMatcher(None, search_word, word).ratio()
                     if ratio > matcher[num][0]:
@@ -43,7 +43,7 @@ def searching(search_string):
                         if ratio > matcher[num][0]: matcher[num][0] = ratio
             ratio = 0
             for j in range(len(name)):
-                word = text[j]
+                word = text[j].lower()
                 if len(word) <= len(search_word):
                     ratio = SequenceMatcher(None, search_word, word).ratio()
                     if ratio > matcher[num][1]:
@@ -55,7 +55,7 @@ def searching(search_string):
                             text_string += word[count_1 + count_2]
                         ratio = SequenceMatcher(None, search_word, text_string).ratio()
                         if ratio > matcher[num][1]: matcher[num][1] = ratio
-            campus_ratio = SequenceMatcher(None, search_word, campus).ratio()
+            campus_ratio = SequenceMatcher(None, search_word, campus.lower()).ratio()
             if campus_ratio > matcher[num][2]:
                 matcher[num][2] = campus_ratio
             if matcher[num][0] > 0.6 or matcher[num][1] > 0.8 or matcher[num][2] > 0.5 or record:

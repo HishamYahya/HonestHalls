@@ -34,3 +34,4 @@ urlpatterns = [
 # WARN: This work in DEBUG only.
 # Files should be served by webserver in production.
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

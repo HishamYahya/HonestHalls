@@ -1,7 +1,7 @@
 {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'FAQ/css/faq.css' %}">
 
-  <div class="faq-container container-fluid py-3 my-3 border border-info bg-light text-dark shadow-sm">
+  <div class="faq-container container-fluid py-3 my-3 border rounded bg-white shadow-sm">
     {% for question in faq %}
     <button class="accordion"><span class="font-italic">{{ question.question }}</span></button>
     <div class="panel">
