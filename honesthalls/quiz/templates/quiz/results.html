@@ -10,16 +10,28 @@
 {% block title %}Quiz Results{% endblock %}
 
 {% block content %}
-<div class="container row my-3 d-flex">
+<div class="container-fluid row my-3 justify-content-center">
   <!-- <div class="col-sm-5 col-md-4 col-lg-3">
   {% include "quiz/form.html" %}
   </div> -->
-  <div>
     <!-- Loop through the halls data and display the
 			ones that satisfy the filters -->
     {% for hall in form_data %}
     <div class="card container{% if not hall.fitsCriteria %} {% endif %} border-success m-3">
-      <div class="row">
+      <div class="row align-items-center">
+        <div class="col-sm-4 m-2">
+          {% if hall.hall.main_photo_thumbnail %}
+            <img class="img-fluid"
+            data-hh-image-preview="hh-preview-content-{{ photo.id }}"
+            src="{{ hall.hall.main_photo_thumbnail }}" alt="{{ hall.hall.main_photo_thumbnail }}" />
+            {% else %}
+            <div class="card-img-top m-0 hh-no-image-placeholder w-60">
+              <h3 class="font-weight-normal hh-no-image-placeholder__content">
+                No image available
+              </h3>
+            </div>
+          {% endif %}
+        </div>
         <div class="col">
 
           <a type="button" class="btn btn-link"
@@ -91,7 +103,7 @@
     {% empty %}
     <h5>No halls fit criteria.</h5>
     {% endfor %}
-  </div>
+  
   
 </div>
 </div>

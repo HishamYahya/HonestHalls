@@ -89,36 +89,68 @@ def results_view(request):
             fitsToilet = False
             fitsBed = False
             fitsCatering = False
+            doubleBed = False
+            singleBed = False
+            isEnsuite = False
+            isBasin = False
+            isCatered = False
+            isSelfCatered = False
 
             for room in rooms:
                 if(self.hall.name == room.hall.name):
-                    if(room.catered and catering == 'catered'):
-                        fitsCatering = True
-                    if(not room.catered and catering == 'self-catered'):
-                        fitsCatering = True
-
+                    if(room.catered):
+                        isCatered = True
+                        if(catering == 'catered'):
+                            fitsCatering = True
+                    else:
+                        isSelfCatered = True
+                        if(catering == 'self-catered'):
+                            fitsCatering = True
+                    if(room.bedsize == 'Single'):
+                        singleBed = True
+                    if(room.bedsize == 'Double'):
+                        doubleBed = True
                     if(room.bedsize.lower() == bed):
                         fitsBed = True
-                    if(room.ensuite and basin_ensuite == 'ensuite'):
-                        fitsToilet = True
-                    if(room.basin and basin_ensuite == 'basin'):
-                        fitsToilet = True
-            if(fitsBed):
+                    if(room.ensuite):
+                        isEnsuite = True
+                        if(basin_ensuite == 'ensuite'):
+                            fitsToilet = True
+                    if(room.basin):
+                        isBasin = True
+                        if(basin_ensuite == 'basin'):
+                            fitsToilet = True
+            if(bed == 'na'):
+                if(singleBed):
+                    self.messages.append([True, "Single beds"])
+                if(doubleBed):
+                    self.messages.append([True, "Double beds"])
+            elif(fitsBed):
                 self.messages.append([True, bed.capitalize() + " beds"])
                 # Give higher score if it fits criteria
                 scores[self.name] = ((scores[self.name] * 4) + (scores[self.name] *2)) / 5
             else:
                 self.fitsCriteria = False
                 self.messages.append([False, 'No ' + bed + " beds"])
-
-            if(fitsToilet):
+            if(basin_ensuite == 'na'):
+                if(isEnsuite):
+                    self.messages.append([True, "Ensuite rooms"])
+                if(isBasin):
+                    self.messages.append([True, "Basin rooms"])
+            elif(fitsToilet):
                 self.messages.append([True, basin_ensuite.capitalize() + " rooms"])
                 # Give higher score if it fits criteria
                 scores[self.name] = ((scores[self.name] * 4) + (scores[self.name] *2)) / 5
             else:
                 self.fitsCriteria = False
                 self.messages.append([False, 'No ' + basin_ensuite + " rooms"])
-            if(fitsCatering):
+            
+            if(catering == 'na'):
+                if(isCatered):
+                    self.messages.append([True, 'Catered rooms'])
+                if(isSelfCatered):
+                    self.messages.append([True, 'Self-catered rooms'])
+            elif(fitsCatering):
                 self.messages.append([True, catering.capitalize() + ' rooms'])
                 scores[self.name] = ((scores[self.name] * 4) + (scores[self.name] *2)) / 5
             else:
