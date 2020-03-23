@@ -28,7 +28,7 @@
 
   #map-root {
     position: relative;
-    max-height: calc(55vh - 32px);
+    max-height: calc(55vh - 64px);
     margin: 0 auto;
   }
 }

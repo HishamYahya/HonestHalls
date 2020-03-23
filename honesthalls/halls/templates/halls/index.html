@@ -37,16 +37,18 @@
 <div class="container py-5">
     <div class="mx-3 mb-3">
         <div class="h1 mb-3">
-            Overall Best Halls
+            Meet our halls
         </div>
         <div class="row">
             <!-- Lists sample halls -->
             {% for hall in sample_halls %}
-            <div class="col-md-4">
-                <div class="card mb-3">
+            <div class="col-md-6 col-lg-4">
+                <div class="hh-hall-card card mb-3">
                     {% if hall.main_photo %}
-                    <img class="card-img-top" src="{{ hall.main_photo.thumbnail_url }}"
-                        alt="{{ hall.main_photo.photo_desc }}" />
+                    <a href="{% url 'hallpage' hall.id %}" class="card-link">
+                        <img class="card-img-top" src="{{ hall.main_photo.thumbnail_url }}"
+                            alt="{{ hall.main_photo.photo_desc }}" />
+                    </a>
                     {% else %}
                     <!-- There are no images for this hall -->
                     <div class="card-img-top h6 m-0 hh-no-image-placeholder">
@@ -55,7 +57,7 @@
                         </h6>
                     </div>
                     {% endif %}
-                    <div class="card-body">
+                    <div class="card-body position-relative">
                         <h5 class="card-title">
                             <a href="{% url 'hallpage' hall.id %}" class="card-link stretched-link font-bold text-primary">
                                 {{ hall.name }}
@@ -66,14 +68,26 @@
                         </h5>
                         <p class="card-text hh-min-two-lines">{{ hall.text|truncatechars:52 }}</p>
                     </div>
-                    <div data-toggle="tooltip" data-placement="top" title="Overall rating is 3.00" class="card-footer text-center">
-                        <input type="number" class="hh-rating-input" value="3" readonly>
+                    {% if hall.average_rating|stringformat:".2f" != "0.00" %}
+                    <div data-toggle="tooltip" data-placement="top" title="Overall rating is {{ hall.average_rating|stringformat:".2f" }}" class="hh-hall-card-footer card-footer text-center">
+                        <input type="number" class="hh-rating-input" value="{{ hall.average_rating }}" readonly>
                     </div>
+                    {% else %}
+                    <div class="hh-hall-card-footer card-footer text-center">
+                        <a href="{% url 'review-write' hall.id %}" class="btn btn-outline-primary" role="button"
+                         data-toggle="tooltip" data-placement="top" title="Leave the first review?">
+                            Write a Review
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             {% empty %}
             <h3>No halls in database!</h3>
             {% endfor %}
+            <span class="mx-3 small text-muted">
+                This selection updates every 5 minutes
+            </span>
         </div>
     </div>
 </div>

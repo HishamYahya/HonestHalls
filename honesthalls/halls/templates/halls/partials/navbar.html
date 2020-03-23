@@ -28,31 +28,23 @@
         </form>
         <!-- Drop down -->
         <ul class="navbar-nav">
+            {% if user.is_authenticated %}
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-light" href="#"
+                <a class="nav-link btn dropdown-toggle text-light" href="#"
                     id="navbardrop" data-toggle="dropdown">
                     <i class="material-icons align-bottom">account_circle</i>
-                    {% if user.is_authenticated %}
                     {{ user.first_name }} {{ user.last_name_initial }}
-                    {% else %}
-                    <span data-toggle="tooltip" data-placement="top" title="You are not logged in">
-                        Anonymous
-                    </span>
-                    {% endif %}
                 </a>
                 <div class="dropdown-menu nav-dropdown">
-                    {% if user.is_authenticated %}
                     <a class="dropdown-item"
                         href="{% url 'profile' %}">Profile</a>
                     <a class="dropdown-item"
                         href="{% url 'logout' %}">Logout</a>
-                    {% else %}
-                    <a class="dropdown-item" href="{% url 'signup' %}">Sign
-                        Up</a>
-                    <a class="dropdown-item" href="{% url 'login' %}">Login</a>
-                    {% endif %}
                 </div>
-            </div>
+            </li>
+            {% else %}
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+            {% endif %}
         </ul>
     </div>
 
