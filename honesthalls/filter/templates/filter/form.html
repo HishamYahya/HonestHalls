@@ -38,27 +38,10 @@
 					<h5>{{ hall.campus }}</h5>
 				</div>
 				<div class="row">
-					<div class="col-md-5">
-						<div id="hh-hall-slider">
-							{% for photo in hall.photos %}
-							<li class="hh-flex-center h-100"
-								data-thumb="{{ photo.photo_path.url }}">
-								<img class="w-100 hh-image-supports-preview"
-									src="{{ photo.photo_path.url }}"
-									alt="{{ photo.photo_desc }}" />
-							</li>
-							{% empty %}
-							<!-- No images are available -->
-							<li data-thumb="">
-								<div class="hh-no-image-placeholder">
-									<h3
-										class="font-weight-normal hh-no-image-placeholder__content">
-										No image available
-									</h3>
-								</div>
-							</li>
-							{% endfor %}
-						</div>
+					<div class="col-md-5 ml-3">
+						<img class="w-100 hh-image-supports-preview"
+									src="{{ hall.main_photo_url }}"
+									alt="{{ hall.main_photo.photo_desc }}" />
 					</div>
 
 					<div class="container">

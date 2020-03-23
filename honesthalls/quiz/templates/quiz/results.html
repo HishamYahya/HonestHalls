@@ -5,17 +5,22 @@
 <!-- <link rel="stylesheet" type="text/css" href="{% static 'halls/css/main.css' %}">
 <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js">
 </script> -->
+<link rel="stylesheet" type="text/css" href="{% static 'FAQ/css/faq.css' %}">
+
 {% endblock %}
 
 {% block title %}Quiz Results{% endblock %}
 
 {% block content %}
+
+
 <div class="container-fluid row my-3 justify-content-center">
+  {% include "quiz/accordion.html" %}
   <!-- <div class="col-sm-5 col-md-4 col-lg-3">
   {% include "quiz/form.html" %}
   </div> -->
     <!-- Loop through the halls data and display the
-			ones that satisfy the filters -->
+      ones that satisfy the filters -->
     {% for hall in form_data %}
     <div class="card container{% if not hall.fitsCriteria %} {% endif %} border-success m-3">
       <div class="row align-items-center">
@@ -108,7 +113,7 @@
 </div>
 </div>
 
-
+<script src="{% static 'FAQ/js/faq.js' %}"></script>
 
 
 {% endblock content %}

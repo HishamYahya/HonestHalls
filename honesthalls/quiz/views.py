@@ -161,10 +161,11 @@ def results_view(request):
     for hall in all_halls:
         filtered_halls[hall.name] = FilteredHall(hall)
 
-    results = {k: v for k, v in sorted(scores.items(), key=lambda item: item[1])}
+    results = {k: v for k, v in sorted(scores.items(), key=lambda item: item[1], reverse=True)}
 
     form_halls = []
     for key in results:
+        print(scores[key])
         for hall in all_halls:
             if (key == hall.name):
                 form_halls.append(filtered_halls[key])
