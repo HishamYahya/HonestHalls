@@ -26,8 +26,7 @@
       <div class="row align-items-center">
         <div class="col-sm-4 m-2">
           {% if hall.hall.main_photo_thumbnail %}
-            <img class="img-fluid"
-            data-hh-image-preview="hh-preview-content-{{ photo.id }}"
+            <img class="w-100 rounded shadow-sm mt-3"
             src="{{ hall.hall.main_photo_thumbnail }}" alt="{{ hall.hall.main_photo_thumbnail }}" />
             {% else %}
             <div class="card-img-top m-0 hh-no-image-placeholder w-60">
@@ -108,8 +107,8 @@
     {% empty %}
     <h5>No halls fit criteria.</h5>
     {% endfor %}
-  
-  
+
+
 </div>
 </div>
 
