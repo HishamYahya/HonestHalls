@@ -31,7 +31,7 @@ CAMPUSES = [
 ]
 
 ACCESSIBLE = [
-    ('na', 'None required'),
+    ('na', 'None Required'),
     ('accessible', 'Require accessible halls'),
 ]
 

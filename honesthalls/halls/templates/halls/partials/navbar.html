@@ -43,7 +43,10 @@
                 </div>
             </li>
             {% else %}
-            <a class="nav-link" href="{% url 'login' %}">Login</a>
+            <a class="nav-link d-flex" href="{% url 'login' %}">
+                <i class="material-icons align-bottom mr-1">lock</i>
+                Login
+            </a>
             {% endif %}
         </ul>
     </div>

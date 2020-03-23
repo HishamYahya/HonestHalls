@@ -1,10 +1,11 @@
 {% extends "halls/base.html" %}
+{% load static %}
 {% block title %}Review of {{ hall.name }}{% endblock %}
 <!-- -------------------------------- -->
 {% block content %}
 <div class="container">
   {% if profile.verified == True %}
-  
+
   <form method="POST">
 
     {% csrf_token %}
@@ -34,8 +35,8 @@
     <div class="card mb-3" style="max-width: 720px;">
       <div class="row no-gutters">
         <div class="col-md-4">
-          {% if hall.thumbnail %}
-          <img class="card-img" src="{{ hall.thumbnail }}"
+          {% if hall.main_photo %}
+          <img class="card-img" src="{{ hall.main_photo.thumbnail_url }}"
             alt="{{ hall.name }}">
           {% else %}
           <!-- There are no images for this hall -->
@@ -230,57 +231,15 @@
 
   </form>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      (function initializeCharCount() {
-        /**
-         * Updates the char count for the textarea whenever the text changes
-         */
-        const $reviewText = $('#reviewText');
-        const $reviewCharCount = $("#reviewCharCount");
-
-        function updateCharCount() {
-          const length = $reviewText.val().length;
-          $reviewCharCount.text(length);
-        }
-
-        $reviewText.on('keypress keyup', updateCharCount);
-        updateCharCount();
-      })(); // Self-invoked
-
-      (function initializeRatings() {
-        /**
-         * Updates the overall rating whenever one of the other ratings change.
-         */
-        const $overallRating = $('#overallRating');
-        const $overallRatingText = $('#overallRatingText');
-        const $sourceRatings = $('#cleanlinessRating, #socialLifeRating, #facilitiesRating, #noiseRating');
-
-        function updateOverallRating() {
-          let total = 0;
-          $sourceRatings.each(function () {
-            total += $(this).val() | 0;
-          });
-
-          const newRating = total / $sourceRatings.length;
-          // Set the rating using the attached $rating property.
-          $overallRating[0].$rating.setRating(newRating);
-          // Show value with two decimal digits.
-          $overallRatingText.text(newRating.toFixed(2));
-        }
-
-        $sourceRatings.each(function () {
-          $(this).on('change', updateOverallRating);
-        });
-
-        updateOverallRating();
-      })(); // Self-invoked
-    });
-  </script>
   {% else %}
-  <p class="mt-4">You cannot write a review as you have not verified with a
-    University of Manchester email address.</p>
-  <a href="{% url 'profile' %}">Click here to verify your account.</a>
+  <div class="my-5">
+    <h2>Account not verified</h3>
+    <p>
+      You cannot write a review as you have not verified with a
+      University of Manchester email address.
+    </p>
+    <a class="btn btn-outline-primary" href="{% url 'profile' %}">Verify your account</a>
+  </div>
   {% endif %}
 </div>
 {% endblock content %}

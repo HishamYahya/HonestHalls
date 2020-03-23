@@ -127,8 +127,9 @@
 								{{review.text}}
 						</p>
 					</div>
+				</div>
 				{% if reviewphotos %}
-				<div class="row mt-2 border-top">
+				<div class="row w-100 ml-0 mt-2 border-top">
 					<!-- SHOW PHOTOS FOR REVIEW- POP UP OPTION?? -->
 					{% for photo in reviewphotos %}
 						{% if photo.review.id == review.id %}
@@ -156,7 +157,6 @@
 					{% endfor %}
 				</div>
 			{% endif %}
-			</div>
 		</div>
 	</div>
 	{% endwith %}
